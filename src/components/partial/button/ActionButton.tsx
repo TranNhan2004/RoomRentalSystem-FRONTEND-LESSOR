@@ -13,7 +13,9 @@ import {
   TrashIcon, 
   XMarkIcon,
   XCircleIcon, 
-  LockClosedIcon
+  LockClosedIcon,
+  ArrowLeftEndOnRectangleIcon,
+  UserPlusIcon
 } from '@heroicons/react/24/outline';
 
 const colorVariants = {
@@ -73,6 +75,14 @@ const buttonConfig = {
   lock: {
     icon: <LockClosedIcon className='w-5 h-5' />,
     color: 'red'
+  },
+  login: {
+    icon: <ArrowLeftEndOnRectangleIcon className='w-5 h-5'/>,
+    color: 'green'
+  },
+  register: {
+    icon: <UserPlusIcon className='w-5 h-5' />,
+    color: 'green'
   }
 } as const;
 

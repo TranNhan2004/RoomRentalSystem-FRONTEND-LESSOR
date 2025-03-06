@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import { Aleo } from "next/font/google"; 
 import { ToastContainer } from "react-toastify";
+import { Aleo } from "next/font/google"; 
 import "./globals.css";
 import "sweetalert2/src/sweetalert2.scss";
 

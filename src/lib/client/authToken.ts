@@ -80,7 +80,7 @@ export const getAccessToken = async () => {
 };
 
 export const getMyInfo = async () => {
-  return JSON.parse(await getSecureCookie(await getMyInfoCookieName()) ?? '') as UserType;
+  return JSON.parse(await getSecureCookie(await getMyInfoCookieName()) ?? '{}') as UserType;
 };
 
 export const setMyInfo = async (data: UserType) => {

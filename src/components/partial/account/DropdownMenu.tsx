@@ -45,7 +45,7 @@ export const DropdownMenu = (props: DropdownMenuProps) => {
       {
         isOpen && (
           <ul 
-            className='absolute bg-gray-50 shadow-md rounded-lg w-48 border border-gray-200 top-full mt-6 right-0' 
+            className='absolute bg-gray-50 shadow-md rounded-lg w-48 border border-gray-200 top-full mt-6 right-0 z-[9999]' 
           >
             <li className='p-2 ml-[3%] mr-[3%] mt-[2%]'>
               <p className='text-sm text-gray-500'>{truncate(fullName)}</p>

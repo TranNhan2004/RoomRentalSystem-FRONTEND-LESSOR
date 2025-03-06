@@ -11,7 +11,7 @@ export const Footer = () => {
   return (
     <>
       <footer className='bottom-0 right-0 p-4 text-gray-600 text-sm'>
-        <div className='ml-[50%] flex items-center'>
+        <div className='flex items-center justify-center'>
           &copy;
           Bản quyền thuộc về Trần Hải Nhân
         </div>
