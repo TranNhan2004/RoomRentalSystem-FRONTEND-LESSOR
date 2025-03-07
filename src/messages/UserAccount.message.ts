@@ -18,12 +18,15 @@ export class AuthMessage {
   public static readonly CHANGE_PASSWORD_DUPLICATED = 'Mật khẩu mới và mật khẩu cũ không được trùng nhau!';
 
   public static readonly LOGIN_ERROR = 'Email hoặc mật khẩu không đúng!';
+  public static readonly REGISTER_ERROR = 'Đã xảy ra lỗi khi đăng ký tài khoản mới!';
   public static readonly RESET_PASSWORD_URL_ERROR = 'Đã xảy ra lỗi khi lấy liên kết để đặt lại mật khẩu!';
   public static readonly RESET_PASSWORD_ERROR = 'Đã xảy ra lỗi khi lấy liên kết để đặt lại mật khẩu!';
   public static readonly CHANGE_PASSWORD_ERROR = 'Đã có lỗi xảy ra khi đổi mật khẩu! Vui lòng thử lại sau!';
+  public static readonly ACTIVATE_ERROR = 'Đã xảy ra lỗi khi kích hoạt tài khoản!';
   
   public static readonly RESET_PASSWORD_SUCCESS = 'Mật khẩu đã được đặt lại thành công!';
   public static readonly CHANGE_PASSWORD_SUCCESS = 'Đổi mật khẩu thành công! Vui lòng đăng nhập lại!';
+  public static readonly REGISTER_SUCCESS = 'Tài khoản đã được tạo thành công!';
 }
 
 export class UserMessage {
@@ -49,6 +52,4 @@ export class UserMessage {
   public static readonly DEACTIVE_ERROR = 'Đã xảy ra lỗi khi vô hiệu hóa tài khoản!';
   
   public static readonly PATCH_SUCCESS = 'Chỉnh sửa thông tin người dùng thành công!';
-  public static readonly ACTIVE_SUCCESS = 'Kích hoạt tài khoản thành công!';
-  public static readonly DEACTIVE_SUCCESS = 'Vô hiệu hóa tài khoản thành công!';
 }

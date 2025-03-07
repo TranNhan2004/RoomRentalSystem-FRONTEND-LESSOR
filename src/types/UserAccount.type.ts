@@ -44,6 +44,17 @@ export type UserType = {
   updated_at?: Date;
 }
 
+export type RegisterUserType = {
+  confirm_password?: UserType['password'];
+} & Omit<UserType, 
+'id' 
+| 'workplace_commune' 
+| 'workplace_additional_address' 
+| 'last_login' 
+| 'created_at' 
+| 'updated_at'
+>
+
 export type UserQueryType = {
   id_not?: UserType['id'];
   role_include?: UserType['role'][];

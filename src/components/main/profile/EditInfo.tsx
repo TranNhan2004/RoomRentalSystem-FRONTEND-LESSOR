@@ -22,17 +22,17 @@ import { GeneralMessage } from '@/messages/General.message';
 
 const EditInfo = () => {
   const router = useRouter();
-  const [data, setData] = useState<UserType>(INITIAL_USER);
+  const [reqData, setReqData] = useState<UserType>(INITIAL_USER);
 
   const handleInputOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    return handleInputChange(e, setData);
+    return handleInputChange(e, setReqData);
   };
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const data = await getMyInfo();
-        setData(data);
+        setReqData(data);
 
       } catch {
         await toastError(UserMessage.GET_ERROR);
@@ -86,8 +86,8 @@ const EditInfo = () => {
 
   const patchData = async (actionAfter?: () => void) => {
     try {
-      await userService.patch(data.id ?? '', data);
-      await setMyInfo(data);
+      await userService.patch(reqData.id ?? '', reqData);
+      await setMyInfo(reqData);
       await toastSuccess(UserMessage.PATCH_SUCCESS);
       actionAfter?.();
     
@@ -110,52 +110,52 @@ const EditInfo = () => {
 
   const validators: Validators<UserType> = {
     email: () => {
-      if (!data.email) {
+      if (!reqData.email) {
         return AuthMessage.EMAIL_REQUIRED;
       }
 
-      if (!EMAIL_REG_EXP.test(data.email)) {
+      if (!EMAIL_REG_EXP.test(reqData.email)) {
         return AuthMessage.EMAIL_FORMAT_ERROR;
       }
       return null;
     },
 
     last_name: () => {
-      if (!data.last_name) {
+      if (!reqData.last_name) {
         return UserMessage.LAST_NAME_REQUIRED;
       }
       return null;
     },
 
     first_name: () => {
-      if (!data.first_name) {
+      if (!reqData.first_name) {
         return UserMessage.FIRST_NAME_REQUIRED;
       }
       return null;
     },
 
     phone_number: () => {
-      if (!data.phone_number) {
+      if (!reqData.phone_number) {
         return UserMessage.PHONE_NUMBER_REQUIRED;
       }
-      if (data.phone_number.length !== 10) {
+      if (reqData.phone_number.length !== 10) {
         return UserMessage.PHONE_NUMBER_FORMAT_ERROR;
       }
       return null;
     },
 
     citizen_number: () => {
-      if (!data.citizen_number) {
+      if (!reqData.citizen_number) {
         return UserMessage.CITIZEN_NUMBER_REQUIRED;
       }
-      if (data.citizen_number.length !== 12) {
+      if (reqData.citizen_number.length !== 12) {
         return UserMessage.CITIZEN_NUMBER_FORMAT_ERROR;
       }
       return null;
     },
 
     gender: () => {
-      if (!data.gender) {
+      if (!reqData.gender) {
         return UserMessage.GENDER_REQUIRED;
       }
       return null;
@@ -163,7 +163,7 @@ const EditInfo = () => {
   };
 
   const handleGenderChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setData({ ...data, gender: e.target.value as UserType['gender'] });
+    setReqData({ ...reqData, gender: e.target.value as UserType['gender'] });
   };
 
   return (
@@ -181,7 +181,7 @@ const EditInfo = () => {
           name='email'
           type='text' 
           className='w-[300px] ml-[-300px]'
-          value={data.email}
+          value={reqData.email}
           onChange={handleInputOnChange}
           validate={validators.email}
         />
@@ -194,7 +194,7 @@ const EditInfo = () => {
           name='last_name'
           type='text' 
           className='w-[300px] ml-[-300px]'
-          value={data.last_name}
+          value={reqData.last_name}
           onChange={handleInputOnChange}
           validate={validators.last_name}
         />
@@ -207,7 +207,7 @@ const EditInfo = () => {
           name='first_name'
           type='text'
           className='w-[300px] ml-[-300px]'
-          value={data.first_name}
+          value={reqData.first_name}
           onChange={handleInputOnChange}
           validate={validators.first_name}
         />
@@ -220,7 +220,7 @@ const EditInfo = () => {
           name='phone_number'
           type='text'
           className='w-[300px] ml-[-300px]'
-          value={data.phone_number}
+          value={reqData.phone_number}
           onChange={handleInputOnChange}
           validate={validators.phone_number}
         />
@@ -233,7 +233,7 @@ const EditInfo = () => {
           name='citizen_number'
           type='text'
           className='w-[300px] ml-[-300px]'
-          value={data.citizen_number}
+          value={reqData.citizen_number}
           onChange={handleInputOnChange}
           validate={validators.citizen_number}
         />
@@ -243,7 +243,7 @@ const EditInfo = () => {
         <Label htmlFor='gender' required>Giới tính: </Label>
         <Select 
           id='gender'
-          value={data.gender}
+          value={reqData.gender}
           options={[
             { label: 'Nam', value: 'MALE'},
             { label: 'Nữ', value: 'FEMALE'},
@@ -262,7 +262,7 @@ const EditInfo = () => {
           name='date_of_birth'
           type='date'
           className='w-[300px] ml-[-300px]'
-          value={formatDate(data.date_of_birth, 'ymd')}
+          value={formatDate(reqData.date_of_birth, 'ymd')}
           onChange={handleInputOnChange}
           min={dateStrOfMaxAge}
           max={dateStrOfMinAge}

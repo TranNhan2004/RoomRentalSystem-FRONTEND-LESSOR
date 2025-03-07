@@ -21,7 +21,7 @@ export const Form = (props: FormProps) => {
       </div>
     </div>
   ) : (
-    <div className=''>
+    <div>
       <h2 className='text-2xl font-semibold text-left text-gray-800 mb-6'>{props.label}</h2>
       <form className={`space-y-4 ${props.className}`} onSubmit={props.onSubmit}>
         {props.children}

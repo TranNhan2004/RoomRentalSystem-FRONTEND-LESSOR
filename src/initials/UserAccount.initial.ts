@@ -1,4 +1,4 @@
-import { ChangePasswordType, LoginRequestType, ResetPasswordRequestAfterType, ResetPasswordRequestBeforeType, UserQueryType, UserType } from "@/types/UserAccount.type";
+import { ChangePasswordType, LoginRequestType, RegisterUserType, ResetPasswordRequestAfterType, ResetPasswordRequestBeforeType, UserQueryType, UserType } from "@/types/UserAccount.type";
 
 export const INITIAL_LOGIN_REQUEST: LoginRequestType = {
   email: '',
@@ -30,7 +30,7 @@ export const INITIAL_USER: UserType = {
   citizen_number: '',
   date_of_birth: new Date(),
   gender: 'UNKNOWN',
-  role: 'MANAGER',
+  role: 'LESSOR',
   workplace_commune: '',
   workplace_additional_address: '',
   is_active: false,
@@ -38,6 +38,20 @@ export const INITIAL_USER: UserType = {
   created_at: new Date(),
   updated_at: new Date()
 };
+
+export const INITIAL_REGISTER_USER: RegisterUserType = {
+  email: '',
+  password: '',
+  confirm_password: '',
+  first_name: '',
+  last_name: '',
+  phone_number: '',
+  citizen_number: '',
+  date_of_birth: new Date(),
+  gender: 'UNKNOWN',
+  role: 'LESSOR',
+  is_active: false
+}
 
 export const INITIAL_USER_QUERY: UserQueryType = {
   id_not: '',

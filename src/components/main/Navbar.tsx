@@ -12,8 +12,10 @@ import { Background } from '../partial/navbar/Background';
 import { ActionButton } from '../partial/button/ActionButton';
 import { INITIAL_USER } from '@/initials/UserAccount.initial';
 import { objectEquals } from '@/lib/client/objectEquals';
+import { useRouter } from 'next/navigation';
 
 export const Navbar = () => {
+  const router = useRouter();
   const [myInfo, setMyInfo] = useState<UserType>(INITIAL_USER);
 
   useEffect(() => {
@@ -26,9 +28,7 @@ export const Navbar = () => {
 
   return (
     <div>
-      {/* Navbar */}
       <div className='flex items-center top-0 left-0 w-full h-[10%] bg-mygreen p-2'>
-        {/* Logo (left) */}
         <div className='ml-4 mr-4'>
           <Link href={'/'}>
             <Image 
@@ -53,8 +53,19 @@ export const Navbar = () => {
           {
             objectEquals(myInfo, INITIAL_USER) ? (
               <div className='flex items-center space-x-4'>
-                <ActionButton mode='register'>Đăng ký</ActionButton>
-                <ActionButton mode='login'>Đăng nhập</ActionButton>
+                <ActionButton 
+                  mode='register' 
+                  onClick={() => { router.push('/auth/register') }}
+                >
+                  Đăng ký
+                </ActionButton>
+
+                <ActionButton 
+                  mode='login'
+                  onClick={() => { router.push('/auth/login') }}
+                >
+                  Đăng nhập
+                </ActionButton>
               </div>
             ) : <AccountInfo {...myInfo} />
           }
