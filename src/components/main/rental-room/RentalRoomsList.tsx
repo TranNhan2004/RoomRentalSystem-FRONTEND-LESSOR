@@ -1,13 +1,11 @@
 'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
-import { toastError, toastSuccess } from '@/lib/client/alert';
-import { Table, DisplayedDataType } from '@/components/partial/data/Table';
+import { handleDeleteAlert, toastError, toastSuccess } from '@/lib/client/alert';
 import { useRouter } from 'next/navigation';
 import { Title } from '@/components/partial/data/Title';
 import { InputSearch } from '@/components/partial/data/InputSearch';
 import { Sorting } from '@/components/partial/data/Sorting';
-import { DataLine } from '@/components/partial/data/DataLine';
 import { FilterModal } from '@/components/partial/data/FilterModal';
 import { Label } from '@/components/partial/form/Label';
 import { OptionType, Select } from '@/components/partial/form/Select';
@@ -16,14 +14,17 @@ import { RentalRoomQueryType, RentalRoomType } from '@/types/RentalRoom.type';
 import { INITIAL_RENTAL_ROOM_QUERY } from '@/initials/RentalRoom.initial';
 import { rentalRoomService } from '@/services/RentalRoom.service';
 import { RentalRoomMessage } from '@/messages/RentalRoom.message';
-import { formatDate } from '@/lib/client/formatDate';
-import { userService } from '@/services/UserAccount.service';
 import { communeService, districtService, provinceService } from '@/services/Address.service';
 import { mapOptions } from '@/lib/client/handleOptions';
 import { CommuneType, DistrictType } from '@/types/Address.type';
+import { Loading } from '@/components/partial/data/Loading';
+import { RentalRoomCard } from './RentalRoomCard';
+import { ActionButton } from '@/components/partial/button/ActionButton';
+import { AxiosError } from 'axios';
+import { GeneralMessage } from '@/messages/General.message';
 
 
-export const RoomsList = () => {
+export const RentalRoomsList = () => {
   const router = useRouter();
   const originialDataRef = useRef<RentalRoomType[]>([]);
   const myIdRef = useRef<string | undefined>(undefined);
@@ -31,8 +32,6 @@ export const RoomsList = () => {
   const [loading, setLoading] = useState(true);
   const [query, setQuery] = useState<RentalRoomQueryType>(INITIAL_RENTAL_ROOM_QUERY);  
   
-  const [lessorOptions, setLessorOptions] = useState<OptionType[]>([]);
-  const [managerOptions, setManagerOptions] = useState<OptionType[]>([]);
   const [provinceOptions, setProvinceOptions] = useState<OptionType[]>([]);
   const [districtOptions, setDistrictOptions] = useState<OptionType[]>([]);
   const [communeOptions, setCommuneOptions] = useState<OptionType[]>([]);
@@ -44,28 +43,26 @@ export const RoomsList = () => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const [data, lessorData, managerData, provinceData, districtData, communeData] = await Promise.all([
-          rentalRoomService.getMany(),
-          userService.getMany({ role_include: ['LESSOR'] }),
-          userService.getMany({ role_include: ['MANAGER'] }),
+        myIdRef.current = (await getMyInfo()).id;
+
+        const [data, provinceData, districtData, communeData] = await Promise.all([
+          rentalRoomService.getMany({ lessor: myIdRef.current }),
           provinceService.getMany(),
           districtService.getMany(),
           communeService.getMany(),
         ]);
         
         originialDataRef.current = data;
-        myIdRef.current = (await getMyInfo()).id;
+        
         setData(data);
       
-        setLessorOptions(mapOptions(lessorData, ['first_name', 'last_name', 'phone_number'], 'id'));
-        setManagerOptions(mapOptions(managerData, ['first_name', 'last_name', 'phone_number'], 'id'));
         setProvinceOptions(mapOptions(provinceData, ['name'], 'id'));
         setDistrictOptions(mapOptions(districtData, ['name'], 'id'));
         setCommuneOptions(mapOptions(communeData, ['name'], 'id'));
 
         originalDistrictDataRef.current = districtData;
         originalCommuneDataRef.current = communeData;
-
+        
       } catch {
         await toastError(RentalRoomMessage.GET_MANY_ERROR);
       
@@ -77,62 +74,47 @@ export const RoomsList = () => {
     fetchData();
   }, []);
 
-  const generateDataForTable = (): DisplayedDataType[] => {
-    return data.map((item) => {
-      return {
-        id: `${item.id}`,
-        basicInfo: (
-          <div>
-            <DataLine label='Tên phòng' value={item.name} />
-            <DataLine label='Thời gian tạo' value={formatDate(item.created_at, 'dmy')} />
-          </div>
-        )
-      };
+  
+  
+
+  const handleDeleteError = async (error: unknown) => {
+    if (!(error instanceof AxiosError)) {
+      await toastError(GeneralMessage.UNKNOWN_ERROR);
+      return;
+    }
+
+    if (
+      error.response?.status === 500 && 
+      error.response.data?.includes(GeneralMessage.BACKEND_PROTECTED_ERROR_PREFIX)
+    ) {
+      await toastError(RentalRoomMessage.DELETE_PROTECTED_ERROR);
+      return;
+    }
+    
+    await toastError(RentalRoomMessage.DELETE_ERROR);
+  };
+
+  const deleteFunction = async (id: string) => {
+    await handleDeleteAlert(async () => {
+      try {
+        await rentalRoomService.delete(id);
+        await toastSuccess(RentalRoomMessage.DELETE_SUCCESS);
+        originialDataRef.current = originialDataRef.current.filter((item) => item.id !== id);
+        setData(originialDataRef.current); 
+      
+      } catch (error) {
+        await handleDeleteError(error);
+      }
     });
   };
 
   const detailsFunction = (id: string) => {
-    router.push(`rooms/${id}`);
+    router.push(`rental-rooms/${id}`);
   };
 
-  const approveFunction = async (id: string) => {
-    try {
-      await rentalRoomService.patch(id, { manager: myIdRef.current, is_active: true });
-      await toastSuccess(RentalRoomMessage.APPROVE_SUCCESS);
-      const data = originialDataRef.current.find(data => data.id === id);
-      if (data && !data.manager) {  
-        data.manager = myIdRef.current;
-        setData([...originialDataRef.current]);  
-      }
-
-    } catch {
-      await toastError(RentalRoomMessage.APPROVE_ERROR);
-    }
+  const addOnClick = () => {
+    router.push(`rental-rooms/add`);
   };
-
-  const lockFunction = async (id: string) => {
-    try {
-      await rentalRoomService.patch(id, { is_active: false });
-      await toastSuccess(RentalRoomMessage.LOCK_SUCCESS);
-      const data = originialDataRef.current.find(data => data.id === id);
-      if (data && !data.manager) {  
-        data.manager = undefined;
-        setData([...originialDataRef.current]);  
-      }
-
-    } catch {
-      await toastError(RentalRoomMessage.LOCK_ERROR);
-    }
-  };
-
-  const disabledFunctionForApprove = (id: string) => {
-    return !!data.find(data => data.id === id)?.manager?.trim();
-  };
-
-  const disabledFunctionForLock = (id: string) => {
-    return !data.find(data => data.id === id)?.is_active;
-  };
-  
 
   const filterOnClick = async () => {
     try {
@@ -174,14 +156,6 @@ export const RoomsList = () => {
     setQuery(INITIAL_RENTAL_ROOM_QUERY);
   };
 
-  const handleLessorChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setQuery({ ...query, lessor: e.target.value });
-  };
-
-  const handleManagerChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setQuery({ ...query, manager: e.target.value });
-  };
-
   const handleProvinceChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setQuery({ ...query, _province: e.target.value });
     if (e.target.value === '') {
@@ -209,22 +183,45 @@ export const RoomsList = () => {
   const handleStatusChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value;
     if (value === 'pending') {
-      setQuery({ ...query, manager_is_null: true, is_active: false });
+      setQuery({ ...query, manager_is_null: true });
     
     } else if (value === 'approved') {
-      setQuery({ ...query, manager_is_null: false, is_active: true });
-    
-    } else if (value === 'locked') {
-      setQuery({ ...query, manager_is_null: false, is_active: false });
+      setQuery({ ...query, manager_is_null: false });
     
     } else {
-      setQuery({...query, manager_is_null: undefined, is_active: undefined });
+      setQuery({...query, manager_is_null: undefined });
     }
   };
 
+  const getValidRoomCharge = (item: RentalRoomType) => {
+    if (!item.charges_lists) {
+      return -1;
+    }
+
+    const today = new Date();
+    for (const charges_list of item.charges_lists) {
+      if (!charges_list.start_date) {
+        continue;
+      }
+
+      if (new Date(charges_list.start_date) > today) {
+        continue;
+      }
+
+      if (!charges_list.end_date || (charges_list.end_date && new Date(charges_list.end_date) <= today)) {
+        return charges_list.room_charge;
+      }
+    }
+    return -1;
+  }
+
+  if (loading) {
+    return <Loading />
+  }
+
   return (
     <div>
-      <Title>Danh sách người dùng</Title>
+      <Title>Danh sách phòng trọ</Title>
       <div className='flex items-center'>
         <div className='w-[40%]'>
           <InputSearch 
@@ -289,28 +286,6 @@ export const RoomsList = () => {
             </div> 
 
             <div className='grid grid-cols-2 items-center mt-1 mb-1'>
-              <Label htmlFor='lessor-query'>Chủ trọ: </Label>
-              <Select
-                id='lessor-query'
-                value={query.lessor}
-                className='ml-[-200px] w-[300px]'
-                options={lessorOptions}
-                onChange={handleLessorChange}
-              />
-            </div>   
-
-            <div className='grid grid-cols-2 items-center mt-1 mb-1'>
-              <Label htmlFor='manager-query'>Quản lý phê duyệt: </Label>
-              <Select
-                id='manager-query'
-                value={query.manager}
-                className='ml-[-200px] w-[300px]'
-                options={managerOptions}
-                onChange={handleManagerChange}
-              />
-            </div> 
-
-            <div className='grid grid-cols-2 items-center mt-1 mb-1'>
               <Label htmlFor='status-query'>Trạng thái: </Label>
               <Select
                 id='status-query'
@@ -318,34 +293,35 @@ export const RoomsList = () => {
                 options={[
                   { label: 'Đã được duyệt', value: 'approved' },
                   { label: 'Đang chờ duyệt', value: 'pending' },
-                  { label: 'Bị khóa', value: 'locked' },
                 ]}
                 onChange={handleStatusChange}
               />
             </div>  
           </FilterModal>
         </div>
-      </div>
 
-      <Table 
-        data={generateDataForTable()}
-        detailsFunction={detailsFunction}
-        otherFunctions={[
-          { 
-            rowName: 'Duyệt',
-            function: approveFunction,
-            disabledFunction: disabledFunctionForApprove,
-            buttonConfig: { mode: 'active' }
-          },
-          { 
-            rowName: 'Khóa',
-            function: lockFunction,
-            disabledFunction: disabledFunctionForLock,
-            buttonConfig: { mode: 'lock' }
-          },
-        ]}
-        loading={loading}
-      />
+        <div className='flex ml-auto'>
+          <ActionButton mode='add' onClick={addOnClick}>Thêm mới</ActionButton>
+        </div>
+      </div>
+      
+      <div className='mt-8 grid grid-cols-3 space-x-4 space-y-6'>
+        {
+          data.map((item, index) => (
+            <RentalRoomCard
+              key={index}
+              id={item.id}
+              name={item.name}
+              manager={item.manager}
+              averageRating={item.average_rating}
+              image={item.images?.[0]?.image}
+              roomCharge={getValidRoomCharge(item)}
+              detailsFunction={detailsFunction}
+              deleteFunction={deleteFunction}
+            />
+          ))
+        }
+      </div>
     </div>
   );
 };

@@ -19,6 +19,7 @@ import { Label } from '@/components/partial/form/Label';
 import { dateStrOfMaxAge, dateStrOfMinAge } from '@/lib/client/dateLimit';
 import { formatDate } from '@/lib/client/formatDate';
 import { Select } from '@/components/partial/form/Select';
+import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
 
 
 export const Register = () => {
@@ -174,12 +175,17 @@ export const Register = () => {
     setIsSubmitted(true);
     
     try {
+      alert(JSON.stringify(reqData));
       await authService.register(reqData);
       await toastSuccess(AuthMessage.REGISTER_SUCCESS);
-      setIsSubmitted(false);
-    } catch (error){
+
+    } catch (error) {
       await handleRegisterError(error);
+    
+    } finally {
+      setIsSubmitted(false);
     }
+
   };
 
   return (
@@ -339,7 +345,9 @@ export const Register = () => {
               className="px-4 py-2 bg-gray-300 rounded-lg hover:bg-gray-400"
               onClick={handlePrevStep}
             >
-              Trước đó
+              <div className='flex items-center'>
+                <ChevronLeftIcon className='w-5 h-5'/> Trước đó
+              </div>
             </button>
           )
         }
@@ -350,7 +358,9 @@ export const Register = () => {
               className={`px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-800`}
               onClick={handleNextStep}
             >
-              Kế tiếp
+              <div className='flex items-center'>
+                Kế tiếp <ChevronRightIcon className='w-5 h-5'/>
+              </div>
             </button>
           ) : (
             <button 

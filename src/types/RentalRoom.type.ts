@@ -13,7 +13,8 @@ export type RentalRoomType = {
   average_rating?: number;
   lessor?: string;
   manager?: string;
-  is_active?: boolean;
+  images?: RentalRoomImageType[];
+  charges_lists?: ChargesListType[];
   created_at?: Date;
   updated_at?: Date;
 }
@@ -21,9 +22,7 @@ export type RentalRoomType = {
 export type RentalRoomQueryType = {
   commune?: RentalRoomType['commune'];
   lessor?: RentalRoomType['lessor'];
-  manager?: RentalRoomType['manager'];
   manager_is_null?: boolean;
-  is_active?: RentalRoomType['is_active'];
   _province?: ProvinceType['id'];
   _district?: DistrictType['id'];
 };
@@ -31,12 +30,12 @@ export type RentalRoomQueryType = {
 export type ChargesListType = {
   id?: string;
   rental_room?: string;
-  room_charges?: number;
+  room_charge?: number;
   deposit?: number;
-  electricity_charges?: number;
-  water_charges?: number;
-  wifi_charges?: number;
-  rubbish_charges?: number;
+  electricity_charge?: number;
+  water_charge?: number;
+  wifi_charge?: number;
+  rubbish_charge?: number;
   start_date?: Date;
   end_date?: Date;
 }

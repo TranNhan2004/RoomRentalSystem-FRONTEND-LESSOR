@@ -68,7 +68,7 @@ export const Login = () => {
   };
 
   return (
-    <Form label='Trang quản lý' className='w-[300px]' onSubmit={handleSubmit} useModal>
+    <Form label='Trang dành cho chủ trọ' className='w-[300px]' onSubmit={handleSubmit} useModal>
       <div>
         <Input
           id='email'
@@ -93,8 +93,9 @@ export const Login = () => {
         />
       </div>
 
-      <div>
-        <Link href={'/auth/reset-password'} className='underline text-blue-500 text-left'>Quên mật khẩu?</Link>
+      <div className='flex justify-between'>
+        <Link href={'/auth/reset-password'} className='underline text-sm text-blue-500 text-left'>Quên mật khẩu?</Link>
+        <Link href={'/auth/register'} className='underline text-sm text-blue-500 text-left'>Đăng ký ngay</Link>
       </div>
 
       <div className='flex justify-center'>

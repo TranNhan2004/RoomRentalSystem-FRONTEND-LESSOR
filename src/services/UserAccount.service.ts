@@ -41,7 +41,7 @@ class AuthService {
 
   public async register(data: RegisterUserType) {
     data.role = 'LESSOR';
-    const response = await axiosInstance.post(`${this.defaultURL}/register/`, smoothData(data));
+    const response = await axiosInstance.post(`${this.defaultURL}/register/`, await smoothData(data));
     return response.data;
   }
 
