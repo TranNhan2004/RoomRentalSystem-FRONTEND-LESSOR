@@ -40,8 +40,33 @@ export type ChargesListType = {
   end_date?: Date;
 }
 
-export type ChargesListQueryType = {
-  rental_room?: ChargesListType['rental_room'];
+export type RoomCodeType = {
+  id?: string;
+  value?: string;
+  rental_room?: string;
+}
+
+export type MonthlyChargesDetailsType = {
+  id?: string;
+  room_code?: string;
+  old_kWh_reading?: number;
+  new_kWh_reading?: number;
+  old_m3_reading?: number;
+  new_m3_reading?: number;
+  prev_remaining_charges?: number;
+  due_charges?: number;
+  paid_charges?: number;
+  is_settled?: boolean;
+  created_at?: Date;
+  updated_at?: Date;
+}
+
+export type MonitoringRentalType = {
+  id?: string;
+  room_code?: string;
+  renter?: string;
+  start_date?: Date;
+  end_date?: Date;
 }
 
 export type RentalRoomImageType = {
@@ -52,4 +77,21 @@ export type RentalRoomImageType = {
 
 export type RentalRoomImageQueryType = {
   rental_room?: RentalRoomImageType['rental_room'];
+}
+
+export type ChargesListQueryType = {
+  rental_room?: ChargesListType['rental_room'];
+}
+
+export type RoomCodeQueryType = {
+  rental_room?: RoomCodeType['rental_room'];
+}
+
+export type MonthlyChargesDetailsQueryType = {
+  room_code?: MonthlyChargesDetailsType['room_code'];
+}
+
+export type MonitoringRentalQueryType = {
+  room_code?: MonitoringRentalType['room_code'];
+  renter?: MonitoringRentalType['renter'];
 }

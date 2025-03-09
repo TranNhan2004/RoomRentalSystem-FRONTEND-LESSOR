@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { toastError, toastSuccess } from '@/lib/client/alert';
 import { AxiosError } from 'axios';
 import { useRouter } from 'next/navigation';
@@ -11,9 +11,26 @@ import { INITIAL_RENTAL_ROOM } from '@/initials/RentalRoom.initial';
 import { RentalRoomMessage } from '@/messages/RentalRoom.message';
 import { rentalRoomService } from '@/services/RentalRoom.service';
 
-export const RentalRoomAdd = () => {
+type RentalRoomEditProps = {
+  id: string;
+}
+
+export const RentalRoomEdit = (props: RentalRoomEditProps) => {
   const router = useRouter();
   const [reqData, setReqData] = useState<RentalRoomType>(INITIAL_RENTAL_ROOM);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data = await rentalRoomService.get(props.id);
+        setReqData(data);
+      } catch {
+        await toastError(RentalRoomMessage.GET_ERROR);
+      }
+    }
+
+    fetchData();
+  }, [props]);
 
   const handlePostError = async (error: unknown) => {
     if (!(error instanceof AxiosError)) {
@@ -50,7 +67,7 @@ export const RentalRoomAdd = () => {
   return (
     <>
       <RentalRoomForm 
-        formLabel='Thêm phòng trọ mới'
+        formLabel={`Chỉnh sửa phòng trọ ${reqData.name}`}
         saveOnClick={saveOnClick}
         saveAndExitOnClick={saveAndExitOnClick}
         reqData={reqData}

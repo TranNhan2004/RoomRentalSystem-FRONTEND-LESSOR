@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 };
 
 export default async function NotFound() {
-  // await checkLoginStatusForAuthPage();
+  await checkLoginStatusForAuthPage();
 
   return (
     <div className="fixed top-[120px] bottom-[120px] left-[220px]">

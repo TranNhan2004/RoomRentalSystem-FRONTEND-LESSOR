@@ -17,14 +17,14 @@ export const INITIAL_DISTRICT: DistrictType = {
   province: ''
 } as const;
 
-export const INITIAL_DISTRICT_QUERY: DistrictQueryType = {
-  province: ''
-} as const;
-
 export const INITIAL_COMMUNE: CommuneType = {
   id: '',
   name: '',
   district: ''
+} as const;
+
+export const INITIAL_DISTRICT_QUERY: DistrictQueryType = {
+  province: ''
 } as const;
 
 export const INITIAL_COMMUNE_QUERY: CommuneQueryType = {
