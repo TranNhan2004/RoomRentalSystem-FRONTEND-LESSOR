@@ -13,8 +13,6 @@ export type RentalRoomType = {
   average_rating?: number;
   lessor?: string;
   manager?: string;
-  images?: RentalRoomImageType[];
-  charges_lists?: ChargesListType[];
   created_at?: Date;
   updated_at?: Date;
 }

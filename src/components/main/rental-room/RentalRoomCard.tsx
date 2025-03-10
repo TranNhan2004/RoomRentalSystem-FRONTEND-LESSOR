@@ -14,8 +14,8 @@ type RentalRoomCardProps = {
   name: RentalRoomType['name'];
   manager: RentalRoomType['manager'];
   averageRating: RentalRoomType['average_rating'];
-  image: RentalRoomImageType['image'];
-  roomCharge: ChargesListType['room_charge'];
+  image?: RentalRoomImageType['image'];
+  roomCharge?: ChargesListType['room_charge'];
   detailsFunction?: (id: string) => void;
   deleteFunction?: (id: string) => void;
 };
@@ -38,7 +38,7 @@ export const RentalRoomCard = (props: RentalRoomCardProps) => {
         <h2 className="text-xl font-bold text-gray-800 mb-2">{props.name}</h2>
 
         <div className="text-lg font-semibold text-gray-800 mb-3">
-          {currencyFormat(props.roomCharge ?? 0)}
+          {currencyFormat(props.roomCharge ?? -1)}
         </div>
 
         <div className="flex items-center mb-1">

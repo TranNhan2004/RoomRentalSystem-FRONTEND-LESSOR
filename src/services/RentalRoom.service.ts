@@ -1,14 +1,20 @@
 import { 
   ChargesListQueryType,
   ChargesListType,
+  MonitoringRentalQueryType,
+  MonitoringRentalType,
+  MonthlyChargesDetailsQueryType,
+  MonthlyChargesDetailsType,
   RentalRoomImageQueryType, 
   RentalRoomImageType, 
   RentalRoomQueryType, 
-  RentalRoomType, 
+  RentalRoomType,
+  RoomCodeQueryType,
+  RoomCodeType, 
 } from "@/types/RentalRoom.type";
 import { ApiService } from "./Api.service";
 
-export class RentalRoomService extends 
+class RentalRoomService extends 
 ApiService<
   RentalRoomType, 
   RentalRoomQueryType
@@ -18,18 +24,18 @@ ApiService<
   }
 };
 
-export class ChargesListService extends 
+class ChargesListService extends 
 ApiService<
   ChargesListType, 
   ChargesListQueryType
 > {
 
   constructor() {
-    super('/app.rental-room/room-charges-lists');
+    super('/app.rental-room/charges-lists');
   }
 };
 
-export class RentalRoomImageService extends 
+class RentalRoomImageService extends 
 ApiService<
   RentalRoomImageType, 
   RentalRoomImageQueryType
@@ -48,6 +54,43 @@ ApiService<
   }
 };
 
+class RoomCodeService extends 
+ApiService<
+  RoomCodeType, 
+  RoomCodeQueryType
+> {
+
+  constructor() {
+    super('/app.rental-room/room-codes');
+  }
+};
+
+class MonthlyChargesDetailsService extends 
+ApiService<
+  MonthlyChargesDetailsType, 
+  MonthlyChargesDetailsQueryType
+> {
+
+  constructor() {
+    super('/app.rental-room/monthly-charges-details');
+  }
+};
+
+class MonitoringRentalService extends 
+ApiService<
+  MonitoringRentalType, 
+  MonitoringRentalQueryType
+> {
+
+  constructor() {
+    super('/app.rental-room/monitoring-rentals');
+  }
+};
+
+
 export const rentalRoomService = new RentalRoomService();
 export const chargesListService = new ChargesListService();
 export const rentalRoomImageService = new RentalRoomImageService();
+export const roomCodeService = new RoomCodeService();
+export const monthlyChargesDetailsService = new MonthlyChargesDetailsService();
+export const monitoringRentalService = new MonitoringRentalService();

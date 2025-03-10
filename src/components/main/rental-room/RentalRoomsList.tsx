@@ -10,9 +10,9 @@ import { FilterModal } from '@/components/partial/data/FilterModal';
 import { Label } from '@/components/partial/form/Label';
 import { OptionType, Select } from '@/components/partial/form/Select';
 import { getMyInfo } from '@/lib/client/authToken';
-import { RentalRoomQueryType, RentalRoomType } from '@/types/RentalRoom.type';
+import { ChargesListType, RentalRoomImageType, RentalRoomQueryType, RentalRoomType } from '@/types/RentalRoom.type';
 import { INITIAL_RENTAL_ROOM_QUERY } from '@/initials/RentalRoom.initial';
-import { rentalRoomService } from '@/services/RentalRoom.service';
+import { chargesListService, rentalRoomImageService, rentalRoomService } from '@/services/RentalRoom.service';
 import { RentalRoomMessage } from '@/messages/RentalRoom.message';
 import { communeService, districtService, provinceService } from '@/services/Address.service';
 import { mapOptions } from '@/lib/client/handleOptions';
@@ -29,9 +29,16 @@ export const RentalRoomsList = () => {
   const originialDataRef = useRef<RentalRoomType[]>([]);
   const myIdRef = useRef<string | undefined>(undefined);
   const [data, setData] = useState<RentalRoomType[]>([]);
+  const [firstImageData, setFirstImageData] = useState<Map<
+    RentalRoomImageType['rental_room'], 
+    RentalRoomImageType
+  >>(new Map());
+  const [firstChargesListData, setFirstChargesListData] = useState<Map<
+    ChargesListType['rental_room'],
+    ChargesListType
+  >>(new Map());
   const [loading, setLoading] = useState(true);
-  const [query, setQuery] = useState<RentalRoomQueryType>(INITIAL_RENTAL_ROOM_QUERY);  
-  
+  const [query, setQuery] = useState<RentalRoomQueryType>(INITIAL_RENTAL_ROOM_QUERY); 
   const [provinceOptions, setProvinceOptions] = useState<OptionType[]>([]);
   const [districtOptions, setDistrictOptions] = useState<OptionType[]>([]);
   const [communeOptions, setCommuneOptions] = useState<OptionType[]>([]);
@@ -52,14 +59,28 @@ export const RentalRoomsList = () => {
           communeService.getMany(),
         ]);
         
-        originialDataRef.current = data;
+        const imageDataMap = new Map();
+        const chargesDataMap = new Map();
+        await Promise.all(
+          data.map(async (item) => {
+            const [imageData, chargesListData] = await Promise.all([
+              rentalRoomImageService.getMany({ rental_room: item.id }, 'first'),
+              chargesListService.getMany({ rental_room: item.id }, 'first')
+            ]);
+            imageDataMap.set(item.id, imageData[0]);
+            chargesDataMap.set(item.id, chargesListData[0]);
+          })
+        );
         
         setData(data);
-      
+        setFirstImageData(imageDataMap);
+        setFirstChargesListData(chargesDataMap);
+
         setProvinceOptions(mapOptions(provinceData, ['name'], 'id'));
         setDistrictOptions(mapOptions(districtData, ['name'], 'id'));
         setCommuneOptions(mapOptions(communeData, ['name'], 'id'));
 
+        originialDataRef.current = data;
         originalDistrictDataRef.current = districtData;
         originalCommuneDataRef.current = communeData;
         
@@ -128,14 +149,14 @@ export const RentalRoomsList = () => {
         const communes = communesArray.flat();
         
         const dataArray = await Promise.all(communes.map(
-          commune => rentalRoomService.getMany({ commune: commune.id })
+          commune => rentalRoomService.getMany({ commune: commune.id, ...query })
         ));
         setData(dataArray.flat());
 
       } else if (query._district !== '' && query.commune === '') {
         const communes = await communeService.getMany({ district: query._district });
         const dataArray = await Promise.all(communes.map(
-          commune => rentalRoomService.getMany({ commune: commune.id })
+          commune => rentalRoomService.getMany({ commune: commune.id, ...query })
         ));
         setData(dataArray.flat());
 
@@ -192,28 +213,6 @@ export const RentalRoomsList = () => {
       setQuery({...query, manager_is_null: undefined });
     }
   };
-
-  const getValidRoomCharge = (item: RentalRoomType) => {
-    if (!item.charges_lists) {
-      return -1;
-    }
-
-    const today = new Date();
-    for (const charges_list of item.charges_lists) {
-      if (!charges_list.start_date) {
-        continue;
-      }
-
-      if (new Date(charges_list.start_date) > today) {
-        continue;
-      }
-
-      if (!charges_list.end_date || (charges_list.end_date && new Date(charges_list.end_date) <= today)) {
-        return charges_list.room_charge;
-      }
-    }
-    return -1;
-  }
 
   if (loading) {
     return <Loading />
@@ -307,19 +306,21 @@ export const RentalRoomsList = () => {
       
       <div className='mt-8 grid grid-cols-3 space-x-4 space-y-6'>
         {
-          data.map((item, index) => (
-            <RentalRoomCard
-              key={index}
-              id={item.id}
-              name={item.name}
-              manager={item.manager}
-              averageRating={item.average_rating}
-              image={item.images?.[0]?.image}
-              roomCharge={getValidRoomCharge(item)}
-              detailsFunction={detailsFunction}
-              deleteFunction={deleteFunction}
-            />
-          ))
+          data.length === 0 
+            ? 'Không có dữ liệu' 
+            : data.map((item, index) => (
+              <RentalRoomCard
+                key={index}
+                id={item.id}
+                name={item.name}
+                manager={item.manager}
+                averageRating={item.average_rating}
+                image={firstImageData.get(item.id)?.image}
+                roomCharge={firstChargesListData.get(item.id)?.room_charge}
+                detailsFunction={detailsFunction}
+                deleteFunction={deleteFunction}
+              />
+            )) 
         }
       </div>
     </div>
