@@ -30,8 +30,8 @@ export default function InstructionsPage() {
             </h2>
             <p className="text-gray-600">
               Phần <strong>ĐỊA CHỈ CỤ THỂ</strong> của phòng trọ nên dùng <strong>GOOGLE MAPS</strong> để kiểm tra xem địa chỉ có hợp lệ hay không. Nếu không, hãy dùng địa chỉ gần đó để tránh sai sót không mong muốn.
-              Các <strong>ĐỊA CHỈ CỤ THỂ</strong> cần được đặt theo <strong>CÚ PHÁP</strong> sau: <strong>&quot;&lt;Số nhà&gt;, Đ. &lt;X&gt;&quot;</strong>. 
-              Ví dụ địa chỉ <strong>&quot;122B, Đường Võ Văn Kiệt&quot;</strong> viết đúng cú pháp là <strong>&quot;122B, Đ. Võ Văn Kiệt&quot;</strong>.
+              Các <strong>ĐỊA CHỈ CỤ THỂ</strong> cần được đặt theo <strong>CÚ PHÁP</strong> sau: <strong>&quot;&lt;Số nhà&gt;, Hẻm &lt;X&gt;, Đ. &lt;Y&gt;&quot;</strong>. 
+              Ví dụ địa chỉ <strong>&quot;122B, Hẻm 12, Đường Võ Văn Kiệt&quot;</strong> viết đúng cú pháp là <strong>&quot;122B, Hẻm 12, Đ. Võ Văn Kiệt&quot;</strong>.
             </p>
           </li>
 
