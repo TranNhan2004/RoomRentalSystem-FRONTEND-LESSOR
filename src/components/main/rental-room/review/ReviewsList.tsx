@@ -4,14 +4,14 @@ import { Title } from '@/components/partial/data/Title';
 import React from 'react';
                           
 type ReviewsListProps = {
-  rentalRoomId: string;
+  roomId: string;
 }
 
 export const ReviewsList = (props: ReviewsListProps) => {
   return (
     <div>
       <Title>Các đánh giá</Title>
-      {props.rentalRoomId}
+      {props.roomId}
     </div>
   );
 };

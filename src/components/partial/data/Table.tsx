@@ -92,7 +92,7 @@ export const Table = (props: TableProps) => {
   };
   
   return (
-    <div className='min-h-screen flex flex-col'>
+    <div className='flex flex-col'>
       <div className='flex-grow overflow-x-auto mt-8'>
         <table className='min-w-full border border-gray-200'>
           <thead>

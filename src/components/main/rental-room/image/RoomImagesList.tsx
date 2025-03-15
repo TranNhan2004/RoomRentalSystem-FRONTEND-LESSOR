@@ -6,12 +6,12 @@ import { ActionButton } from '@/components/partial/button/ActionButton';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
 import { RentalRoomImageType } from '@/types/RentalRoom.type';
 import { rentalRoomImageService } from '@/services/RentalRoom.service';
-import { toastError, toastSuccess } from '@/lib/client/alert';
+import { handleDeleteAlert, toastError, toastSuccess } from '@/lib/client/alert';
 import { RentalRoomImageMessage } from '@/messages/RentalRoom.message';
 import { INITIAL_RENTAL_ROOM_IMAGE } from '@/initials/RentalRoom.initial';
 
 type RoomImagesListProps = {
-  rentalRoomId: string;
+  roomId: string;
 }
 
 export const RoomImagesList = (props: RoomImagesListProps) => {
@@ -26,7 +26,7 @@ export const RoomImagesList = (props: RoomImagesListProps) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data = await rentalRoomImageService.getMany({ rental_room: props.rentalRoomId });
+        const data = await rentalRoomImageService.getMany({ rental_room: props.roomId });
         setData(data);
       } catch {
         await toastError(RentalRoomImageMessage.GET_MANY_ERROR);
@@ -34,7 +34,7 @@ export const RoomImagesList = (props: RoomImagesListProps) => {
     };
 
     fetchData();
-  }, [props.rentalRoomId]);
+  }, [props.roomId]);
 
   const prevImage = () => {
     if (currentIndex > 0) {
@@ -55,27 +55,29 @@ export const RoomImagesList = (props: RoomImagesListProps) => {
   };
 
   const deleteOnClick = async () => {
-    try {
-      setIsSubmitted(true);
-      await rentalRoomImageService.delete(data[currentIndex].id ?? '');
-      await toastSuccess(RentalRoomImageMessage.DELETE_SUCCESS);
-
-      const newImages = data.filter((_, index) => index !== currentIndex);
-      setData(newImages);
-      if (currentIndex >= newImages.length) {
-        setCurrentIndex(newImages.length - 1);
-      }
-    
-      if (thumbnailOffset >= newImages.length - 2) {
-        setThumbnailOffset(Math.max(0, newImages.length - 3));
-      }
+    await handleDeleteAlert(async () => {
+      try {
+        setIsSubmitted(true);
+        await rentalRoomImageService.delete(data[currentIndex].id ?? '');
+        await toastSuccess(RentalRoomImageMessage.DELETE_SUCCESS);
   
-    } catch {
-      await toastError(RentalRoomImageMessage.DELETE_ERROR);
+        const newImages = data.filter((_, index) => index !== currentIndex);
+        setData(newImages);
+        if (currentIndex >= newImages.length) {
+          setCurrentIndex(newImages.length - 1);
+        }
+      
+        if (thumbnailOffset >= newImages.length - 2) {
+          setThumbnailOffset(Math.max(0, newImages.length - 3));
+        }
     
-    } finally {
-      setIsSubmitted(false);
-    }
+      } catch {
+        await toastError(RentalRoomImageMessage.DELETE_ERROR);
+      
+      } finally {
+        setIsSubmitted(false);
+      }
+    });
   };
 
   const handleUploadOnClick = () => {
@@ -103,7 +105,7 @@ export const RoomImagesList = (props: RoomImagesListProps) => {
       setIsSubmitted(true);
       const image = await rentalRoomImageService.post({ 
         ...uploadedImage, 
-        rental_room: props.rentalRoomId 
+        rental_room: props.roomId 
       });
       await toastSuccess(RentalRoomImageMessage.POST_SUCCESS);
       setData((prevData) => {
@@ -143,7 +145,7 @@ export const RoomImagesList = (props: RoomImagesListProps) => {
                 <Image
                   src={data[currentIndex].image as string}
                   alt='Image Carousel'
-                  className='object-contain max-w-full max-h-full rounded-lg' // Tailwind classes
+                  className='object-contain max-w-full max-h-full rounded-lg'
                   width={200}
                   height={200}
                 />

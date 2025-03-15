@@ -1,18 +1,22 @@
+const normalize = (x: number) => x > 10 ? x : `0${x}`;
+
 export const formatDate = (date: Date | null | undefined, format: 'ymd' | 'dmy' | 'mdy'): string => {
   if (!date) {
     date = new Date();
   }
 
-  const formattedDate = new Date(date).toISOString().split('T')[0]; 
-  const [year, month, day] = formattedDate.split('-');
-  
+  date = new Date(date);
+
+  const year = date.getFullYear();
+  const month = date.getMonth() + 1;
+  const day = date.getDate();
+
   switch (format) {
     case 'dmy':
-      return `${day}-${month}-${year}`;
+      return `${normalize(day)}-${normalize(month)}-${year}`;
     case 'mdy':
-      return `${month}-${day}-${year}`;
+      return `${normalize(month)}-${normalize(day)}-${year}`;
     case 'ymd':
-    default:
-      return formattedDate;
+      return `${year}-${normalize(month)}-${normalize(day)}`;
   }
 };

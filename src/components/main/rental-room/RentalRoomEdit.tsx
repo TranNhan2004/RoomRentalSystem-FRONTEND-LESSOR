@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { toastError, toastSuccess } from '@/lib/client/alert';
+import { handleCancelAlert, toastError, toastSuccess } from '@/lib/client/alert';
 import { AxiosError } from 'axios';
 import { useRouter } from 'next/navigation';
 import { RentalRoomForm } from './RentalRoomForm';
@@ -70,6 +70,12 @@ export const RentalRoomEdit = (props: RentalRoomEditProps) => {
     });
   };
 
+  const cancelOnClick = async () => {
+    await handleCancelAlert(() => {
+      router.push(`/rental-rooms/${reqData.id}`);
+    });
+  };
+
   if (loading) {
     return <Loading />;
   }
@@ -77,11 +83,12 @@ export const RentalRoomEdit = (props: RentalRoomEditProps) => {
   return (
     <>
       <RentalRoomForm 
+        reqData={reqData}
+        setReqData={setReqData}
         formLabel={`Chỉnh sửa phòng trọ ${reqData.name}`}
         saveOnClick={saveOnClick}
         saveAndExitOnClick={saveAndExitOnClick}
-        reqData={reqData}
-        setReqData={setReqData}
+        cancelOnClick={cancelOnClick}
       />
     </>
   );

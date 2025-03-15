@@ -59,6 +59,10 @@ export const RentalRoomDetails = (props: RentalRoomDetailsProps) => {
     router.push(`${props.id}/edit`);
   };
 
+  const cancelOnClick = () => {
+    router.push('/rental-rooms');
+  };
+
   if (loading) {
     return <Loading />;
   }
@@ -68,14 +72,14 @@ export const RentalRoomDetails = (props: RentalRoomDetailsProps) => {
     <>
       <div className='flex space-x-8 mt-[-5%]'>
         <div className='w-1/3'>
-          <RoomImagesList rentalRoomId={props.id} />
+          <RoomImagesList roomId={props.id} />
         </div>
 
         <div className='w-2 bg-white-400 h-full'></div>
 
         <div className='w-2/3'>
           <div className='p-4 mt-5'>
-            <h2 className='text-xl font-bold'>Chi tiết phòng trọ</h2>
+            <h2 className='text-2xl font-bold'>Chi tiết phòng trọ</h2>
             <div className='mt-4 space-y-4'>
               <DataLine label='ID' value={data.id} />
               <DataLine label='Tên' value={data.name} />
@@ -90,24 +94,27 @@ export const RentalRoomDetails = (props: RentalRoomDetailsProps) => {
               <DataLine label='Ngày cập nhật gần nhất' value={formatDate(data.updated_at, 'dmy')} />
             </div>
           </div>
-          <div className='mt-2 ml-3'>
+          <div className='mt-2 ml-3 flex items-center space-x-4'>
             <ActionButton mode='edit' onClick={editOnClick}>
               Chỉnh sửa
+            </ActionButton>
+            <ActionButton mode='cancel' onClick={cancelOnClick}>
+              Thoát
             </ActionButton>
         </div>
         </div>
       </div>
 
-      <div className='mt-8'>
-        <ChargesListsList rentalRoomId={props.id} />
+      <div className='mt-16'>
+        <ChargesListsList roomId={props.id} />
       </div>
 
-      <div className='mt-8'>
-        <RoomCodesList rentalRoomId={props.id} />
+      <div className='mt-16'>
+        <RoomCodesList roomId={props.id} />
       </div>
 
-      <div className='mt-8'>
-        <ReviewsList rentalRoomId={props.id} />
+      <div className='mt-16'>
+        <ReviewsList roomId={props.id} />
       </div>
     </>
   );

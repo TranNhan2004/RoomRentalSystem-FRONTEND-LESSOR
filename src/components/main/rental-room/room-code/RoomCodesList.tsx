@@ -4,14 +4,14 @@ import { Title } from '@/components/partial/data/Title';
 import React from 'react';
                           
 type RoomCodesListProps = {
-  rentalRoomId: string;
+  roomId: string;
 }
 
 export const RoomCodesList = (props: RoomCodesListProps) => {
   return (
     <div>
       <Title>Danh sách mã phòng</Title>
-      {props.rentalRoomId}
+      {props.roomId}
     </div>
   );
 };

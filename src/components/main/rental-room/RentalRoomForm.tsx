@@ -5,12 +5,10 @@ import { DataForm, DataFormProps } from '@/components/partial/data/DataForm';
 import { Input } from '@/components/partial/form/Input';
 import { Label } from '@/components/partial/form/Label';
 import { OptionType, Select } from '@/components/partial/form/Select';
-import { handleCancelAlert } from '@/lib/client/alert';
 import { handleInputChange } from '@/lib/client/handleInputChange';
 import { mapOptions } from '@/lib/client/handleOptions';
 import { communeService, districtService, provinceService } from '@/services/Address.service';
 import { CommuneType, DistrictType } from '@/types/Address.type';
-import { useRouter } from 'next/navigation';
 import { Validators } from '@/types/Validators.type';
 import { RentalRoomType } from '@/types/RentalRoom.type';
 import { RentalRoomMessage } from '@/messages/RentalRoom.message';
@@ -19,10 +17,9 @@ import { TextArea } from '@/components/partial/form/TextArea';
 type RentalRoomFormProps = {
   reqData: RentalRoomType;
   setReqData: React.Dispatch<React.SetStateAction<RentalRoomType>>;
-} & Omit<DataFormProps<RentalRoomType>, 'children' | 'cancelOnClick' | 'validators'>;
+} & Omit<DataFormProps<RentalRoomType>, 'children' | 'validators'>;
 
 export const RentalRoomForm = (props: RentalRoomFormProps) => {
-  const router = useRouter();
   const [provinceOptions, setProvinceOptions] = useState<OptionType[]>([]);
   const [districtOptions, setDistrictOptions] = useState<OptionType[]>([]);
   const [communeOptions, setCommuneOptions] = useState<OptionType[]>([]);
@@ -46,12 +43,6 @@ export const RentalRoomForm = (props: RentalRoomFormProps) => {
 
     fetchOptionData();
   }, []);
-
-  const cancelOnClick = async () => {
-    await handleCancelAlert(() => {
-      router.back();
-    });
-  };
 
   const handleInputOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     return handleInputChange(e, props.setReqData);
@@ -133,7 +124,7 @@ export const RentalRoomForm = (props: RentalRoomFormProps) => {
         formLabel={props.formLabel}
         saveOnClick={props.saveOnClick}
         saveAndExitOnClick={props.saveAndExitOnClick}
-        cancelOnClick={cancelOnClick}
+        cancelOnClick={props.cancelOnClick}
         validators={validators}
       >
         <div className='grid grid-cols-2 items-center'>

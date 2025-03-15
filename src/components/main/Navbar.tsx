@@ -17,10 +17,13 @@ import { useRouter } from 'next/navigation';
 export const Navbar = () => {
   const router = useRouter();
   const [myInfo, setMyInfo] = useState<UserType>(INITIAL_USER);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const setMyInfoFromCookie = async () => {
+      setLoading(true);
       setMyInfo(await getMyInfo());
+      setLoading(false);
     };
 
     setMyInfoFromCookie();
@@ -51,18 +54,19 @@ export const Navbar = () => {
       
         <div className='flex ml-auto mr-2'>
           {
+            loading ? null :
             objectEquals(myInfo, INITIAL_USER) ? (
               <div className='flex items-center space-x-4'>
                 <ActionButton 
                   mode='register' 
-                  onClick={() => { router.push('/auth/register') }}
+                  onClick={() => { router.push('/auth/register'); }}
                 >
                   Đăng ký
                 </ActionButton>
 
                 <ActionButton 
                   mode='login'
-                  onClick={() => { router.push('/auth/login') }}
+                  onClick={() => { router.push('/auth/login'); }}
                 >
                   Đăng nhập
                 </ActionButton>

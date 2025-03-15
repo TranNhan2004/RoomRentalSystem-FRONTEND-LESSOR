@@ -54,7 +54,7 @@ export const setAccessToken = async (accessToken: string) => {
     accessToken, 
     await getAccessTokenExpires()
   );
-} 
+}; 
 
 export const setMyInfo = async (data: UserType) => {
   await removeSecureCookie(await getMyInfoCookieName());

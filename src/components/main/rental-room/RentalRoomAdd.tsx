@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { toastError, toastSuccess } from '@/lib/client/alert';
+import { handleCancelAlert, toastError, toastSuccess } from '@/lib/client/alert';
 import { AxiosError } from 'axios';
 import { useRouter } from 'next/navigation';
 import { RentalRoomForm } from './RentalRoomForm';
@@ -49,14 +49,21 @@ export const RentalRoomAdd = () => {
     });
   };
 
+  const cancelOnClick = async () => {
+    await handleCancelAlert(() => {
+      router.push('/rental-rooms');
+    });
+  };
+
   return (
     <>
       <RentalRoomForm 
         formLabel='Thêm phòng trọ mới'
-        saveOnClick={saveOnClick}
-        saveAndExitOnClick={saveAndExitOnClick}
         reqData={reqData}
         setReqData={setReqData}
+        saveOnClick={saveOnClick}
+        saveAndExitOnClick={saveAndExitOnClick}
+        cancelOnClick={cancelOnClick}
       />
     </>
   );

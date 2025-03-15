@@ -35,14 +35,13 @@ export const INITIAL_RENTAL_ROOM_IMAGE: RentalRoomImageType = {
 export const INITIAL_CHARGES_LIST: ChargesListType = {
   id: '',
   rental_room: '',
-  room_charge: 0,
-  deposit: 0,
-  electricity_charge: 0,
-  water_charge: 0,
-  wifi_charge: 0,
-  rubbish_charge: 0,
+  room_charge: 1000000,
+  deposit: 500000,
+  electricity_charge: 4000,
+  water_charge: 12000,
+  wifi_charge: -1,
+  rubbish_charge: 10000,
   start_date: new Date(),
-  end_date: new Date(),
 } as const;
 
 export const INITIAL_ROOM_CODE: RoomCodeType = {
@@ -72,7 +71,6 @@ export const INITIAL_MONITORING_RENTAL: MonitoringRentalType = {
   room_code: '',
   renter: '',
   start_date: new Date(),
-  end_date: new Date(),
 } as const;
 
 
@@ -85,6 +83,8 @@ export const INITIAL_RENTAL_ROOM_QUERY: RentalRoomQueryType = {
 
 export const INITIAL_CHARGES_LIST_QUERY: ChargesListQueryType = {
   rental_room: '',
+  from_date: new Date(),
+  to_date: new Date(),
 } as const;
 
 export const INITIAL_RENTAL_ROOM_IMAGE_QUERY: RentalRoomImageQueryType = {

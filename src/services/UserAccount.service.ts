@@ -18,7 +18,7 @@ const smoothData = async (data: UserType | RegisterUserType) => {
     dataToSend.date_of_birth = formatDate(data.date_of_birth, 'ymd');
   }
   return dataToSend;
-}
+};
 
 class UserService extends ApiService<UserType, UserQueryType> {
   constructor() {
@@ -75,5 +75,4 @@ class AuthService {
 
 
 export const userService = new UserService();
-
 export const authService = new AuthService();

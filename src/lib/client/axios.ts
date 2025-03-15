@@ -13,7 +13,7 @@ export const axiosInstance = axios.create({
 
 const refreshTokenAxiosIntance = axios.create({
   ...axiosInstance.defaults
-})
+});
 
 axiosInstance.interceptors.request.use(
   async (config) => {
@@ -39,18 +39,21 @@ axiosInstance.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
     console.log(JSON.stringify(error.response));
-
+  
     if (error.response && error.response.status === 401) {
       originalRequest._retry = true;
-
+      
       try {
-        const response = await refreshTokenAxiosIntance.post('/app.user-account/auth/token/refresh/');
+        const response = await refreshTokenAxiosIntance.post(
+          '/app.user-account/auth/token/refresh/', 
+          { role: 'LESSOR' }
+        );
         await setAccessToken(response.data.access);
         originalRequest.headers['Authorization'] = `Bearer ${response.data.access}`;
         
-      } catch (error) {
+      } catch {
         await resetAuthTokens();
-        return Promise.reject(error);
+        window.location.href = `${process.env.NEXT_PUBLIC_BASE_PATH}/auth/login`;
       }
       
       return axiosInstance(originalRequest);

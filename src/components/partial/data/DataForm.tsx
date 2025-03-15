@@ -9,7 +9,7 @@ import { Validators } from '@/types/Validators.type';
 export type DataFormProps<T extends object> = {
   formLabel: string;
   validators: Validators<T>;
-  saveOnClick: () => void;
+  saveOnClick?: () => void;
   saveAndExitOnClick?: () => void;
   cancelOnClick: () => void;
   children: React.ReactNode;
@@ -30,7 +30,7 @@ export const DataForm = <T extends object>(props: DataFormProps<T>) => {
     }
   
     if (action === 'save') {
-      await props.saveOnClick();
+      await props.saveOnClick?.();
     } else {
       await props.saveAndExitOnClick?.();
     }
@@ -43,14 +43,18 @@ export const DataForm = <T extends object>(props: DataFormProps<T>) => {
       {props.children}
       <div className='w-full h-[60px] rounded-lg bg-gray-200 mt-10'>
         <div className='flex justify-end items-center h-full space-x-2 mr-4'>
-          <ActionButton
-            mode='save'
-            isSubmit
-            onClick={() => setAction('save')} 
-            disabled={isSaving} 
-          >
-            Lưu
-          </ActionButton>
+          {
+            props.saveOnClick && (
+              <ActionButton
+                mode='save'
+                isSubmit
+                onClick={() => setAction('save')} 
+                disabled={isSaving} 
+              >
+                Lưu
+              </ActionButton>
+            )
+          }
           
           {
             props.saveAndExitOnClick && (

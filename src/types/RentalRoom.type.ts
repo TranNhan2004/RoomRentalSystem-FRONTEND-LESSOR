@@ -71,7 +71,7 @@ export type MonitoringRentalType = {
 export type RentalRoomImageType = {
   id?: string;
   rental_room?: string;
-  image?: string | File;
+  image?: File | string;
 }
 
 export type RentalRoomImageQueryType = {
@@ -80,6 +80,8 @@ export type RentalRoomImageQueryType = {
 
 export type ChargesListQueryType = {
   rental_room?: ChargesListType['rental_room'];
+  from_date?: Date | string;
+  to_date?: Date | string;
 }
 
 export type RoomCodeQueryType = {
