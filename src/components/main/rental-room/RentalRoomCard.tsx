@@ -4,10 +4,10 @@ import React from 'react';
 import Image from 'next/image';
 import { CheckCircleIcon, XCircleIcon } from '@heroicons/react/24/outline';
 import { RentalRoomType, RentalRoomImageType, ChargesListType } from '@/types/RentalRoom.type';
-import { getImageSrc } from '@/lib/client/getImageSrc';
 import { currencyFormat } from '@/lib/client/currencyFormat';
 import { RatingStar } from '@/components/partial/data/RatingStar';
 import { ActionButton } from '@/components/partial/button/ActionButton';
+import { getImageSrc } from '@/lib/client/getImageSrc';
 
 type RentalRoomCardProps = {
   id: RentalRoomType['id'];
@@ -22,11 +22,10 @@ type RentalRoomCardProps = {
 
 export const RentalRoomCard = (props: RentalRoomCardProps) => {
   return (
-    <div className="border rounded-lg shadow-lg overflow-hidden w-80 bg-gray-50">
-      {/* Hình ảnh */}
+    <div className="border rounded-lg shadow-lg overflow-hidden w-50 bg-gray-50">
       <div className="h-48">
         <Image
-          src={props.image ?? getImageSrc('not-found.png')}
+          src={props.image as string ?? getImageSrc('not-found.png')}
           alt={`Image of ${props.name}`}
           width={300}
           height={300}
@@ -44,7 +43,7 @@ export const RentalRoomCard = (props: RentalRoomCardProps) => {
         <div className="flex items-center mb-1">
           <RatingStar value={props.averageRating ?? 0} />
           <span className="ml-2 text-gray-600 text-sm">
-            {props.averageRating ? `${props.averageRating}/5` : 'Chưa có đánh giá'}
+            {`${props.averageRating}/5`}
           </span>
         </div>
 

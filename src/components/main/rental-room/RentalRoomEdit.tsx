@@ -10,6 +10,7 @@ import { RentalRoomType } from '@/types/RentalRoom.type';
 import { INITIAL_RENTAL_ROOM } from '@/initials/RentalRoom.initial';
 import { RentalRoomMessage } from '@/messages/RentalRoom.message';
 import { rentalRoomService } from '@/services/RentalRoom.service';
+import { Loading } from '@/components/partial/data/Loading';
 
 type RentalRoomEditProps = {
   id: string;
@@ -18,51 +19,60 @@ type RentalRoomEditProps = {
 export const RentalRoomEdit = (props: RentalRoomEditProps) => {
   const router = useRouter();
   const [reqData, setReqData] = useState<RentalRoomType>(INITIAL_RENTAL_ROOM);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
+        setLoading(true);
         const data = await rentalRoomService.get(props.id);
         setReqData(data);
+
       } catch {
         await toastError(RentalRoomMessage.GET_ERROR);
+      
+      } finally {
+        setLoading(false);
       }
-    }
+    };
 
     fetchData();
   }, [props]);
 
-  const handlePostError = async (error: unknown) => {
+  const handlePatchError = async (error: unknown) => {
     if (!(error instanceof AxiosError)) {
       await toastError(GeneralMessage.UNKNOWN_ERROR);
       return;
     }
 
-    await toastError(RentalRoomMessage.POST_ERROR);
+    await toastError(RentalRoomMessage.PATCH_ERROR);
   };
 
-  const postData = async (actionAfter: () => void) => {
+  const patchData = async (actionAfter?: () => void) => {
     try {
-      await rentalRoomService.post(reqData);
-      await toastSuccess(RentalRoomMessage.POST_SUCCESS);
-      actionAfter();
+      alert(JSON.stringify(reqData));
+      await rentalRoomService.patch(props.id, reqData);
+      await toastSuccess(RentalRoomMessage.PATCH_SUCCESS);
+      actionAfter?.();
       
     } catch (error) {
-      await handlePostError(error);
+      await handlePatchError(error);
     }
   };
 
   const saveOnClick = async () => {
-    await postData(() => {
-      setReqData(INITIAL_RENTAL_ROOM);
-    });
+    await patchData();
   };
 
   const saveAndExitOnClick = async () => {
-    await postData(() => {
+    await patchData(() => {
       router.back();
     });
   };
+
+  if (loading) {
+    return <Loading />;
+  }
 
   return (
     <>

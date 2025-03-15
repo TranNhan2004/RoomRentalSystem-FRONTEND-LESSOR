@@ -21,15 +21,9 @@ export const INITIAL_RENTAL_ROOM: RentalRoomType = {
   commune: '',
   additional_address: '',
   closing_time: '',
-  max_occupancy_per_room: 0,
-  total_number: 0,
-  empty_number: 0,
-  further_description: '',
+  total_number: 1,
   average_rating: 0,
-  lessor: '',
-  manager: '',
-  created_at: new Date(),
-  updated_at: new Date(),
+  further_description: '',
 } as const;
 
 export const INITIAL_RENTAL_ROOM_IMAGE: RentalRoomImageType = {
@@ -55,6 +49,9 @@ export const INITIAL_ROOM_CODE: RoomCodeType = {
   id: '',
   value: '',
   rental_room: '',
+  max_occupancy: 0,
+  remaining_occupancy: 0,
+  is_shareable: false,
 } as const;
 
 export const INITIAL_MONTHLY_CHARGES_DETAILS: MonthlyChargesDetailsType = {
@@ -68,9 +65,7 @@ export const INITIAL_MONTHLY_CHARGES_DETAILS: MonthlyChargesDetailsType = {
   due_charges: 0,
   paid_charges: 0,
   is_settled: false,
-  created_at: new Date(),
-  updated_at: new Date(),
-}
+} as const;
 
 export const INITIAL_MONITORING_RENTAL: MonitoringRentalType = {
   id: '',

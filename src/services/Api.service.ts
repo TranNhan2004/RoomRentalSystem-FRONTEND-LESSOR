@@ -11,9 +11,17 @@ export class ApiService<T extends object, Q extends object> {
   protected async _toFormData(data: T) {
     const formData = new FormData();
     for (const key in data) {
-      formData.append(key, data[key] as string);
+      const value = data[key];
+      if (!isValidQueryValue(value)) {
+        continue;
+      }
+
+      if (value instanceof File) {
+        formData.append(key, value);
+      } else {
+        formData.append(key, value as string);
+      }
     }
-    console.log(formData);
     return formData;
   }
 
@@ -25,12 +33,12 @@ export class ApiService<T extends object, Q extends object> {
       }
 
       if (params[key] instanceof Array) {
-        for (const param of params[key]) {
-          if (!isValidQueryValue(param)) {
+        for (const value of params[key]) {
+          if (!isValidQueryValue(value)) {
             continue;
           }
 
-          fullParams += `${key}=${param}&`;
+          fullParams += `${key}=${value}&`;
         }
 
       } else {
@@ -43,7 +51,7 @@ export class ApiService<T extends object, Q extends object> {
 
   public async post(data: T, useFormData?: boolean) {
     const response = useFormData ?
-                      await axiosInstance.post<T>(this.endpoint, this._toFormData(data), {
+                      await axiosInstance.post<T>(`${this.endpoint}/`, await this._toFormData(data), {
                         headers: {
                           'Content-Type': 'multipart/form-data',
                         },
@@ -64,7 +72,7 @@ export class ApiService<T extends object, Q extends object> {
 
   public async patch(id: string, data: T, useFormData?: boolean) {
     const response = useFormData ?
-                      await axiosInstance.patch<T>(`${this.endpoint}/${id}`, this._toFormData(data), {
+                      await axiosInstance.patch<T>(`${this.endpoint}/${id}/`, await this._toFormData(data), {
                         headers: {
                           'Content-Type': 'multipart/form-data',
                         },

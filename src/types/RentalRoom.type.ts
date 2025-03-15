@@ -6,9 +6,7 @@ export type RentalRoomType = {
   commune?: string;
   additional_address?: string;
   closing_time?: string;
-  max_occupancy_per_room?: number;
   total_number?: number;
-  empty_number?: number;
   further_description?: string;
   average_rating?: number;
   lessor?: string;
@@ -42,6 +40,9 @@ export type RoomCodeType = {
   id?: string;
   value?: string;
   rental_room?: string;
+  max_occupancy?: number;
+  remaining_occupancy?: number;
+  is_shareable?: boolean;
 }
 
 export type MonthlyChargesDetailsType = {
@@ -70,7 +71,7 @@ export type MonitoringRentalType = {
 export type RentalRoomImageType = {
   id?: string;
   rental_room?: string;
-  image?: string;
+  image?: string | File;
 }
 
 export type RentalRoomImageQueryType = {

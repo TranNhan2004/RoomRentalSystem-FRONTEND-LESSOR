@@ -16,7 +16,6 @@ import { RentalRoomType } from '@/types/RentalRoom.type';
 import { RentalRoomMessage } from '@/messages/RentalRoom.message';
 import { TextArea } from '@/components/partial/form/TextArea';
 
-
 type RentalRoomFormProps = {
   reqData: RentalRoomType;
   setReqData: React.Dispatch<React.SetStateAction<RentalRoomType>>;
@@ -89,11 +88,11 @@ export const RentalRoomForm = (props: RentalRoomFormProps) => {
 
   const handleCommuneChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     props.setReqData({ ...props.reqData, commune: e.target.value });
-  }
+  };
 
   const handleFurtherDescriptionChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     props.setReqData({ ...props.reqData, further_description: e.target.value });
-  }
+  };
   
   const validators: Validators<RentalRoomType> = {
     name: () => {
@@ -116,25 +115,14 @@ export const RentalRoomForm = (props: RentalRoomFormProps) => {
       } 
       return null;
     },
-    
-    max_occupancy_per_room: () => {
-      if (!props.reqData.max_occupancy_per_room) {
-        return RentalRoomMessage.MAX_OCCUPANCY_PER_ROOM_REQUIRED;
-      } 
-      return null;
-    },
-    
+      
     total_number: () => {
       if (!props.reqData.total_number) {
         return RentalRoomMessage.TOTAL_NUMBER_REQUIRED;
       } 
-      return null;
-    },
-    
-    empty_number: () => {
-      if (!props.reqData.empty_number) {
-        return RentalRoomMessage.EMPTY_NUMBER_REQUIRED;
-      } 
+      if (props.reqData.total_number <= 0) {
+        return RentalRoomMessage.TOTAL_NUMBER_POSITIVE;
+      }
       return null;
     },    
   };
@@ -212,21 +200,8 @@ export const RentalRoomForm = (props: RentalRoomFormProps) => {
             name='closing_time'
             type='time'
             className='w-[300px] ml-[-360px]'
-            value={props.reqData.closing_time}
+            value={props.reqData.closing_time ?? ''}
             onChange={handleInputOnChange}
-          />
-        </div>
-
-        <div className='grid grid-cols-2 items-center'>
-          <Label htmlFor='max-occupancy-per-room' required>Số người tối đa/phòng: </Label>
-          <Input 
-            id='max-occupancy-per-room'
-            name='max_occupancy_per_room'
-            type='text'
-            className='w-[300px] ml-[-360px]'
-            value={props.reqData.max_occupancy_per_room}
-            onChange={handleInputOnChange}
-            validate={validators.max_occupancy_per_room}
           />
         </div>
 
@@ -235,24 +210,11 @@ export const RentalRoomForm = (props: RentalRoomFormProps) => {
           <Input 
             id='total-number'
             name='total_number'
-            type='text'
+            type='number'
             className='w-[300px] ml-[-360px]'
             value={props.reqData.total_number}
             onChange={handleInputOnChange}
             validate={validators.total_number}
-          />
-        </div>
-
-        <div className='grid grid-cols-2 items-center'>
-          <Label htmlFor='empty-number' required>Số phòng trống: </Label>
-          <Input 
-            id='empty-number'
-            name='empty_number'
-            type='text'
-            className='w-[300px] ml-[-360px]'
-            value={props.reqData.empty_number}
-            onChange={handleInputOnChange}
-            validate={validators.empty_number}
           />
         </div>
 
@@ -262,7 +224,7 @@ export const RentalRoomForm = (props: RentalRoomFormProps) => {
             id='further-description'
             className='w-[300px] ml-[-360px]'
             rows={5}
-            value={props.reqData.further_description}
+            value={props.reqData.further_description ?? ''}
             onChange={handleFurtherDescriptionChange}
           />
         </div>

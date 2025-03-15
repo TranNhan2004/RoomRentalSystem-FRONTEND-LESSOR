@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { getAccessToken, resetAuthTokens } from '@/lib/client/authToken';
+import { getAccessToken, resetAuthTokens, setAccessToken } from '@/lib/client/authToken';
 
 export const axiosInstance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_BASE_URL,
@@ -45,13 +45,15 @@ axiosInstance.interceptors.response.use(
 
       try {
         const response = await refreshTokenAxiosIntance.post('/app.user-account/auth/token/refresh/');
+        await setAccessToken(response.data.access);
         originalRequest.headers['Authorization'] = `Bearer ${response.data.access}`;
+        
       } catch (error) {
         await resetAuthTokens();
         return Promise.reject(error);
       }
       
-      return axios(originalRequest);
+      return axiosInstance(originalRequest);
     }
 
     return Promise.reject(error);

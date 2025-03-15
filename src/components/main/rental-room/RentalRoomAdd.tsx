@@ -10,6 +10,7 @@ import { RentalRoomType } from '@/types/RentalRoom.type';
 import { INITIAL_RENTAL_ROOM } from '@/initials/RentalRoom.initial';
 import { RentalRoomMessage } from '@/messages/RentalRoom.message';
 import { rentalRoomService } from '@/services/RentalRoom.service';
+import { getMyInfo } from '@/lib/client/authToken';
 
 export const RentalRoomAdd = () => {
   const router = useRouter();
@@ -26,7 +27,8 @@ export const RentalRoomAdd = () => {
 
   const postData = async (actionAfter: () => void) => {
     try {
-      await rentalRoomService.post(reqData);
+      const { id } = await getMyInfo();
+      await rentalRoomService.post({ ...reqData, lessor: id });
       await toastSuccess(RentalRoomMessage.POST_SUCCESS);
       actionAfter();
       

@@ -22,6 +22,7 @@ import { RentalRoomCard } from './RentalRoomCard';
 import { ActionButton } from '@/components/partial/button/ActionButton';
 import { AxiosError } from 'axios';
 import { GeneralMessage } from '@/messages/General.message';
+import { PaginationNav } from '@/components/partial/data/PaginationNav';
 
 
 export const RentalRoomsList = () => {
@@ -29,6 +30,7 @@ export const RentalRoomsList = () => {
   const originialDataRef = useRef<RentalRoomType[]>([]);
   const myIdRef = useRef<string | undefined>(undefined);
   const [data, setData] = useState<RentalRoomType[]>([]);
+  const [displayedData, setDisplayedData] = useState<RentalRoomType[]>([]);
   const [firstImageData, setFirstImageData] = useState<Map<
     RentalRoomImageType['rental_room'], 
     RentalRoomImageType
@@ -42,9 +44,12 @@ export const RentalRoomsList = () => {
   const [provinceOptions, setProvinceOptions] = useState<OptionType[]>([]);
   const [districtOptions, setDistrictOptions] = useState<OptionType[]>([]);
   const [communeOptions, setCommuneOptions] = useState<OptionType[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
 
   const originalDistrictDataRef = useRef<DistrictType[]>([]);
   const originalCommuneDataRef = useRef<CommuneType[]>([]);
+  
+  const cardsPerPage = 20;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -95,8 +100,13 @@ export const RentalRoomsList = () => {
     fetchData();
   }, []);
 
-  
-  
+  useEffect(() => {
+    setDisplayedData(data.slice((currentPage - 1) * cardsPerPage, currentPage * cardsPerPage));
+  }, [data, currentPage]);
+
+  const onPageChange = (pageNumber: number) => {
+    setCurrentPage(pageNumber);
+  };
 
   const handleDeleteError = async (error: unknown) => {
     if (!(error instanceof AxiosError)) {
@@ -149,14 +159,14 @@ export const RentalRoomsList = () => {
         const communes = communesArray.flat();
         
         const dataArray = await Promise.all(communes.map(
-          commune => rentalRoomService.getMany({ commune: commune.id, ...query })
+          commune => rentalRoomService.getMany({ ...query, commune: commune.id })
         ));
         setData(dataArray.flat());
 
       } else if (query._district !== '' && query.commune === '') {
         const communes = await communeService.getMany({ district: query._district });
         const dataArray = await Promise.all(communes.map(
-          commune => rentalRoomService.getMany({ commune: commune.id, ...query })
+          commune => rentalRoomService.getMany({ ...query, commune: commune.id })
         ));
         setData(dataArray.flat());
 
@@ -215,7 +225,7 @@ export const RentalRoomsList = () => {
   };
 
   if (loading) {
-    return <Loading />
+    return <Loading />;
   }
 
   return (
@@ -289,6 +299,10 @@ export const RentalRoomsList = () => {
               <Select
                 id='status-query'
                 className='ml-[-200px] w-[300px]'
+                value={
+                  query.manager_is_null === true ? 'pending' : 
+                  query.manager_is_null === false ? 'approved' : ''
+                }
                 options={[
                   { label: 'Đã được duyệt', value: 'approved' },
                   { label: 'Đang chờ duyệt', value: 'pending' },
@@ -304,24 +318,34 @@ export const RentalRoomsList = () => {
         </div>
       </div>
       
-      <div className='mt-8 grid grid-cols-3 space-x-4 space-y-6'>
-        {
-          data.length === 0 
-            ? 'Không có dữ liệu' 
-            : data.map((item, index) => (
-              <RentalRoomCard
-                key={index}
-                id={item.id}
-                name={item.name}
-                manager={item.manager}
-                averageRating={item.average_rating}
-                image={firstImageData.get(item.id)?.image}
-                roomCharge={firstChargesListData.get(item.id)?.room_charge}
-                detailsFunction={detailsFunction}
-                deleteFunction={deleteFunction}
-              />
-            )) 
-        }
+      <div className='min-h-screen flex flex-col'>
+        <div className='flex-grow mt-12'>
+          <div className='grid grid-cols-4 gap-4'>
+            {
+              displayedData.length === 0 
+                ? 'Không có dữ liệu' 
+                : displayedData.map((item, index) => (
+                  <RentalRoomCard
+                    key={index}
+                    id={item.id}
+                    name={item.name}
+                    manager={item.manager}
+                    averageRating={item.average_rating}
+                    image={firstImageData.get(item.id)?.image}
+                    roomCharge={firstChargesListData.get(item.id)?.room_charge}
+                    detailsFunction={detailsFunction}
+                    deleteFunction={deleteFunction}
+                  />
+                )) 
+            }
+          </div>
+        </div>
+        <PaginationNav 
+          totalPages={Math.ceil(data.length / cardsPerPage)}
+          currentPage={currentPage}
+          onPageChange={onPageChange}
+          step={6}
+        />
       </div>
     </div>
   );

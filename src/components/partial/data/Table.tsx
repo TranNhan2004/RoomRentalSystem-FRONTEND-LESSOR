@@ -35,7 +35,6 @@ export const Table = (props: TableProps) => {
 
   const onPageChange = (pageNumber: number) => {
     setCurrentPage(pageNumber);
-    console.log(`Page ${currentPage}`);
   };
 
   const generateActionRowNames = () => {
