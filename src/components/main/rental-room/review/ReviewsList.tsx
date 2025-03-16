@@ -109,6 +109,7 @@ export const ReviewsList = (props: ReviewsListProps) => {
   const handleRatingChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     if (e.target.value === '') {
       setQuery({ ...query, rating: undefined });
+    
     } else {
       setQuery({...query, rating: parseInt(e.target.value) });
     }

@@ -1,4 +1,5 @@
 import { DistrictType, ProvinceType } from "./Address.type";
+import { UserType } from "./UserAccount.type";
 
 export type RentalRoomType = {
   id?: string;
@@ -7,6 +8,8 @@ export type RentalRoomType = {
   additional_address?: string;
   closing_time?: string;
   total_number?: number;
+  _room_charge?: ChargesListType['room_charge'];
+  _image?: RentalRoomImageType['image'];
   further_description?: string;
   average_rating?: number;
   lessor?: string;
@@ -55,6 +58,7 @@ export type MonthlyChargesDetailsType = {
   prev_remaining_charges?: number;
   due_charges?: number;
   paid_charges?: number;
+  continue_renting?: boolean;
   is_settled?: boolean;
   created_mode?: 'first' | 'auto';
   created_at?: Date;
@@ -65,6 +69,9 @@ export type MonitoringRentalType = {
   id?: string;
   room_code?: string;
   renter?: string;
+  _renter_first_name?: UserType['first_name'];
+  _renter_last_name?: UserType['last_name'];
+  _renter_phone_number?: UserType['phone_number'];
   start_date?: Date;
   end_date?: Date;
 }
@@ -96,4 +103,6 @@ export type MonthlyChargesDetailsQueryType = {
 export type MonitoringRentalQueryType = {
   room_code?: MonitoringRentalType['room_code'];
   renter?: MonitoringRentalType['renter'];
+  from_date?: Date | string;
+  to_date?: Date | string;
 }

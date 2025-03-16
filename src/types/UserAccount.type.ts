@@ -59,4 +59,5 @@ export type UserQueryType = {
   id_not?: UserType['id'];
   role_include?: UserType['role'][];
   is_active?: UserType['is_active'];
+  phone_number?: UserType['phone_number'];
 }

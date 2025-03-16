@@ -10,7 +10,7 @@ import { FilterModal } from '@/components/partial/data/FilterModal';
 import { Label } from '@/components/partial/form/Label';
 import { OptionType, Select } from '@/components/partial/form/Select';
 import { getMyInfo } from '@/lib/client/authToken';
-import { ChargesListType, RentalRoomImageType, RentalRoomQueryType, RentalRoomType } from '@/types/RentalRoom.type';
+import { RentalRoomQueryType, RentalRoomType } from '@/types/RentalRoom.type';
 import { INITIAL_RENTAL_ROOM_QUERY } from '@/initials/RentalRoom.initial';
 import { chargesListService, rentalRoomImageService, rentalRoomService } from '@/services/RentalRoom.service';
 import { RentalRoomMessage } from '@/messages/RentalRoom.message';
@@ -31,14 +31,6 @@ export const RentalRoomsList = () => {
   const myIdRef = useRef<string | undefined>(undefined);
   const [data, setData] = useState<RentalRoomType[]>([]);
   const [displayedData, setDisplayedData] = useState<RentalRoomType[]>([]);
-  const [firstImageData, setFirstImageData] = useState<Map<
-    RentalRoomImageType['rental_room'], 
-    RentalRoomImageType
-  >>(new Map());
-  const [firstChargesListData, setFirstChargesListData] = useState<Map<
-    ChargesListType['rental_room'],
-    ChargesListType
-  >>(new Map());
   const [loading, setLoading] = useState(true);
   const [query, setQuery] = useState<RentalRoomQueryType>(INITIAL_RENTAL_ROOM_QUERY); 
   const [provinceOptions, setProvinceOptions] = useState<OptionType[]>([]);
@@ -63,29 +55,34 @@ export const RentalRoomsList = () => {
           districtService.getMany(),
           communeService.getMany(),
         ]);
-        
-        const imageDataMap = new Map();
-        const chargesDataMap = new Map();
+
+        originialDataRef.current = data;
+
         await Promise.all(
           data.map(async (item) => {
             const [imageData, chargesListData] = await Promise.all([
               rentalRoomImageService.getMany({ rental_room: item.id }, 'first'),
               chargesListService.getMany({ rental_room: item.id }, 'first')
             ]);
-            imageDataMap.set(item.id, imageData[0]);
-            chargesDataMap.set(item.id, chargesListData[0]);
+            
+            originialDataRef.current = originialDataRef.current.map(thisItem => {
+              if (thisItem.id === item.id) {
+                return {
+                  ...thisItem,
+                  _image: imageData.length ? imageData[0].image : '',
+                  _room_charge: chargesListData.length ? chargesListData[0].room_charge : -1
+                };
+              }
+              return thisItem;
+            });
           })
         );
-        
-        setData(data);
-        setFirstImageData(imageDataMap);
-        setFirstChargesListData(chargesDataMap);
 
+        setData([...originialDataRef.current]);
         setProvinceOptions(mapOptions(provinceData, ['name'], 'id'));
         setDistrictOptions(mapOptions(districtData, ['name'], 'id'));
         setCommuneOptions(mapOptions(communeData, ['name'], 'id'));
 
-        originialDataRef.current = data;
         originalDistrictDataRef.current = districtData;
         originalCommuneDataRef.current = communeData;
         
@@ -331,8 +328,8 @@ export const RentalRoomsList = () => {
                     name={item.name}
                     manager={item.manager}
                     averageRating={item.average_rating}
-                    image={firstImageData.get(item.id)?.image}
-                    roomCharge={firstChargesListData.get(item.id)?.room_charge}
+                    image={item._image}
+                    roomCharge={item._room_charge}
                     detailsFunction={detailsFunction}
                     deleteFunction={deleteFunction}
                   />

@@ -85,3 +85,32 @@ export class RoomCodeMessage {
   public static readonly DELETE_SUCCESS = 'Xóa mã phòng thành công!';
   public static readonly DELETE_PROTECTED_ERROR = 'Phải xóa các dữ liệu có tham chiếu đến mã phòng này trước!';
 }
+
+export class MonitoringRentalMessage {
+  public static readonly BACKEND_ROOM_CODE_SAME_TIME = 'Renter already has a rental in progress.';
+  public static readonly BACKEND_ROOM_CODE_UNAVAILABLE = 'Room is not available.';
+
+  public static readonly RENTER_PHONE_NUMBER_FORMAT_REQUIRED = 'Số điện thoại của người thuê không được để trống!';
+  public static readonly START_DATE_REQUIRED = 'Ngày bắt đầu thuê không được để trống!';
+
+  public static readonly START_DATE_INVALID = 'Ngày bắt đầu thuê phải ít nhất là ngày hôm nay!';
+  public static readonly END_DATE_INVALID = 'Ngày kết thúc phải lớn hơn ngày bắt đầu!';
+
+  public static readonly ROOM_CODE_SAME_TIME = 'Người dùng hiện đang thuê phòng trọ này! Không thể tạo thêm bản ghi mới, trừ khi dừng thuê!';
+  public static readonly ROOM_CODE_UNAVAILABLE = 'Phòng trọ này đã hết chỗ!';
+
+  public static readonly RENTER_PHONE_NUMBER_FORMAT_ERROR = 'Số điện thoại phải có đủ 10 chữ số!';
+
+  public static readonly STOP_RENT_WARNING = 'Việc dừng theo dõi cho thuê sẽ không thể thay đổi';
+
+  public static readonly RENTER_PHONE_NUMBER_NOT_FOUND = 'Số điện thoại chưa được đăng ký tài khoản!';
+
+  public static readonly GET_MANY_ERROR = 'Đã xảy ra lỗi khi lấy danh sách các bản ghi theo dõi cho thuê!';
+  public static readonly POST_ERROR = 'Đã xảy ra lỗi khi thêm bản ghi theo dõi cho thuê!';
+  public static readonly STOP_RENT_ERROR = 'Đã xảy ra lỗi khi dừng theo dõi cho thuê!';
+  public static readonly DELETE_ERROR = 'Đã xảy ra lỗi khi xóa bản ghi theo dõi cho thuê!';
+
+  public static readonly POST_SUCCESS = 'Thêm bản ghi theo dõi cho thuê thành công!';
+  public static readonly STOP_RENT_SUCCESS = 'Dừng theo dõi cho thuê thành công!';
+  public static readonly DELETE_SUCCESS = 'Xóa bản ghi theo dõi cho thuê thành công!';
+}

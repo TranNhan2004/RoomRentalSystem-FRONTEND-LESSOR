@@ -7,7 +7,7 @@ import { INITIAL_REGISTER_USER } from '@/initials/UserAccount.initial';
 import { handleInputChange } from '@/lib/client/handleInputChange';
 import { Validators } from '@/types/Validators.type';
 import { AuthMessage, UserMessage } from '@/messages/UserAccount.message';
-import { EMAIL_REG_EXP, isValidForm, PASSWORD_REG_EXP } from '@/lib/client/isValidForm';
+import { EMAIL_REG_EXP, isValidForm, PASSWORD_REG_EXP, PHONE_NUMBER_REG_EXP } from '@/lib/client/isValidForm';
 import { authService } from '@/services/UserAccount.service';
 import { toastError, toastSuccess } from '@/lib/client/alert';
 import { Input } from '@/components/partial/form/Input';
@@ -123,7 +123,7 @@ export const Register = () => {
       if (!reqData.phone_number) {
         return UserMessage.PHONE_NUMBER_REQUIRED;
       }
-      if (reqData.phone_number.length !== 10) {
+      if (!PHONE_NUMBER_REG_EXP.test(reqData.phone_number)) {
         return UserMessage.PHONE_NUMBER_FORMAT_ERROR;
       }
       return null;

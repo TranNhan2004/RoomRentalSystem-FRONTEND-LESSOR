@@ -10,6 +10,7 @@ import { RoomCodeType } from '@/types/RentalRoom.type';
 import { RoomCodeMessage } from '@/messages/RentalRoom.message';
 
 type RoomCodeFormProps = {
+  mode: 'add' | 'edit';
   reqData: RoomCodeType;
   setReqData: React.Dispatch<React.SetStateAction<RoomCodeType>>;
 } & Omit<DataFormProps<RoomCodeType>, 'children' | 'validators'>;
@@ -59,6 +60,23 @@ export const RoomCodeForm = (props: RoomCodeFormProps) => {
             validate={validators.value}
           />
         </div>
+        {
+          props.mode === 'edit' && (
+            <div className='grid grid-cols-2 items-center'>
+              <Label htmlFor='remaining-occupancy'>Số người có thể ở thêm: </Label>
+              <Input 
+                id='remaining-occupancy'
+                name='remaining_occupancy'
+                type='number'
+                className='w-[300px] ml-[-360px]'
+                value={props.reqData.remaining_occupancy}
+                onChange={handleInputOnChange}
+                validate={validators.remaining_occupancy}
+                disabled
+              />
+            </div>
+          )
+        }
         <div className='grid grid-cols-2 items-center'>
           <Label htmlFor='max-occupancy' required>Số người ở tối đa: </Label>
           <Input 

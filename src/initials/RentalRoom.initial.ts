@@ -63,6 +63,7 @@ export const INITIAL_MONTHLY_CHARGES_DETAILS: MonthlyChargesDetailsType = {
   prev_remaining_charges: 0,
   due_charges: 0,
   paid_charges: 0,
+  continue_renting: true,
   is_settled: false,
 } as const;
 
@@ -70,6 +71,7 @@ export const INITIAL_MONITORING_RENTAL: MonitoringRentalType = {
   id: '',
   room_code: '',
   renter: '',
+  _renter_phone_number: '',
   start_date: new Date(),
 } as const;
 
@@ -101,5 +103,7 @@ export const INITIAL_MONTHLY_CHARGES_DETAILS_QUERY: MonthlyChargesDetailsQueryTy
 
 export const INITIAL_MONITORING_RENTAL_QUERY: MonitoringRentalQueryType = {
   room_code: '',
-  renter: ''
+  renter: '',
+  from_date: new Date(),
+  to_date: new Date(),
 } as const;

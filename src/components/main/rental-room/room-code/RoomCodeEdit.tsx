@@ -94,6 +94,7 @@ export const RoomCodeEdit = (props: RoomCodeEditProps) => {
   return (
     <RoomCodeForm 
       formLabel='Chỉnh sửa mã phòng'
+      mode='edit'
       reqData={reqData}
       setReqData={setReqData}
       cancelOnClick={cancelOnClick}

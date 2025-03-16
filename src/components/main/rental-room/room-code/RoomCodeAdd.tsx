@@ -71,6 +71,7 @@ export const RoomCodeAdd = (props: RoomCodeAddProps) => {
   return (
     <RoomCodeForm 
       formLabel='Thêm mã phòng mới'
+      mode='add'
       reqData={reqData}
       setReqData={setReqData}
       cancelOnClick={cancelOnClick}

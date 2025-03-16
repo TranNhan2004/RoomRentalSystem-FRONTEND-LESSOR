@@ -9,6 +9,7 @@ import { useRouter } from 'next/navigation';
 import { RoomCodeType } from '@/types/RentalRoom.type';
 import { roomCodeService } from '@/services/RentalRoom.service';
 import { ActionButton } from '@/components/partial/button/ActionButton';
+import { MonitoringRentalsList } from '../monitoring-rental/MonitoringRentalsList';
 
 type RoomCodeDetailsProps = {
   roomId: string;
@@ -82,6 +83,10 @@ export const RoomCodeDetails = (props: RoomCodeDetailsProps) => {
             Thoát
           </ActionButton>  
         </div>
+      </div>
+
+      <div className='mt-10'>
+        <MonitoringRentalsList roomId={props.roomId} roomCodeId={props.id} />
       </div>
     </>
   );

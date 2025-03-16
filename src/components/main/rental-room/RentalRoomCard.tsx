@@ -25,7 +25,7 @@ export const RentalRoomCard = (props: RentalRoomCardProps) => {
     <div className="border rounded-lg shadow-lg overflow-hidden w-50 bg-gray-50">
       <div className="w-50 h-48">
         <Image
-          src={props.image as string ?? getImageSrc('not-found.png')}
+          src={props.image as string || getImageSrc('not-found.png')}
           alt={`Image of ${props.name}`}
           width={150}
           height={150}
