@@ -20,3 +20,8 @@ export const formatDate = (date: Date | null | undefined, format: 'ymd' | 'dmy' 
       return `${year}-${normalize(month)}-${normalize(day)}`;
   }
 };
+
+export const formatCurrency = (value: number) => new Intl.NumberFormat('vi-VN', {
+  style: 'currency',
+  currency: 'VND',
+}).format(value);

@@ -34,9 +34,6 @@ export const INITIAL_USER: UserType = {
   workplace_commune: '',
   workplace_additional_address: '',
   is_active: false,
-  last_login: new Date(),
-  created_at: new Date(),
-  updated_at: new Date()
 };
 
 export const INITIAL_REGISTER_USER: RegisterUserType = {
@@ -51,7 +48,7 @@ export const INITIAL_REGISTER_USER: RegisterUserType = {
   gender: 'UNKNOWN',
   role: 'LESSOR',
   is_active: false
-}
+};
 
 export const INITIAL_USER_QUERY: UserQueryType = {
   id_not: '',

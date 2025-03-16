@@ -13,7 +13,7 @@ import {
   RoomCodeType, 
 } from "@/types/RentalRoom.type";
 import { ApiService } from "./Api.service";
-import { formatDate } from "@/lib/client/formatDate";
+import { formatDate } from "@/lib/client/format";
 
 const smoothData = async (data: ChargesListType) => {
   const dataToSend: Record<string, unknown> = { ...data };

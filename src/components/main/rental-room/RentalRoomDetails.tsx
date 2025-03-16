@@ -11,12 +11,13 @@ import { rentalRoomService } from '@/services/RentalRoom.service';
 import { communeService, districtService, provinceService } from '@/services/Address.service';
 import { useRouter } from 'next/navigation';
 import { NOT_FOUND_URL } from '@/lib/client/notFoundURL';
-import { formatDate } from '@/lib/client/formatDate';
 import { RoomCodesList } from './room-code/RoomCodesList';
 import { ReviewsList } from './review/ReviewsList';
 import { ChargesListsList } from './charges-list/ChargesListsList';
 import { ActionButton } from '@/components/partial/button/ActionButton';
 import { Loading } from '@/components/partial/data/Loading';
+import { formatDate } from '@/lib/client/format';
+import { RatingStar } from '@/components/partial/data/RatingStar';
 
 type RentalRoomDetailsProps = {
   id: string;
@@ -81,7 +82,6 @@ export const RentalRoomDetails = (props: RentalRoomDetailsProps) => {
           <div className='p-4 mt-5'>
             <h2 className='text-2xl font-bold'>Chi tiết phòng trọ</h2>
             <div className='mt-4 space-y-4'>
-              <DataLine label='ID' value={data.id} />
               <DataLine label='Tên' value={data.name} />
               <DataLine label='Thuộc tỉnh/thành phố' value={provinceData.name} />
               <DataLine label='Thuộc huyện/quận/thị xã' value={districtData.name} />
@@ -89,6 +89,11 @@ export const RentalRoomDetails = (props: RentalRoomDetailsProps) => {
               <DataLine label='Địa chỉ cụ thể' value={data.additional_address} />
               <DataLine label='Giờ đóng cửa' value={data.closing_time || 'Chưa xác định'} />
               <DataLine label='Tổng số phòng' value={data.total_number} />
+              <div className='flex items-center'>
+                <DataLine label='Đánh giá trung bình' value={''} />   
+                <RatingStar value={data.average_rating ?? 0} />
+                <span className='ml-2 text-gray-800'>{data.average_rating}/5</span>
+              </div>
               <DataLine label='Mô tả' value={data.further_description || 'Không có mô tả'} />
               <DataLine label='Ngày tạo' value={formatDate(data.created_at, 'dmy')} />
               <DataLine label='Ngày cập nhật gần nhất' value={formatDate(data.updated_at, 'dmy')} />

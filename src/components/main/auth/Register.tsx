@@ -17,9 +17,9 @@ import { AxiosError } from 'axios';
 import { GeneralMessage } from '@/messages/General.message';
 import { Label } from '@/components/partial/form/Label';
 import { dateStrOfMaxAge, dateStrOfMinAge } from '@/lib/client/dateLimit';
-import { formatDate } from '@/lib/client/formatDate';
 import { Select } from '@/components/partial/form/Select';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
+import { formatDate } from '@/lib/client/format';
 
 
 export const Register = () => {
@@ -161,7 +161,7 @@ export const Register = () => {
     if (step > 1) {
       setStep(step - 1);
     }
-  }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

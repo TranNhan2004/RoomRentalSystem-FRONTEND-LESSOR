@@ -17,11 +17,11 @@ import { INITIAL_CHARGES_LIST_QUERY } from '@/initials/RentalRoom.initial';
 import { chargesListService } from '@/services/RentalRoom.service';
 import { ChargesListMessage } from '@/messages/RentalRoom.message';
 import { DataLine } from '@/components/partial/data/DataLine';
-import { formatDate } from '@/lib/client/formatDate';
 import { handleInputChange } from '@/lib/client/handleInputChange';
 import { Input } from '@/components/partial/form/Input';
 import { Validators } from '@/types/Validators.type';
-import { currencyFormat } from '@/lib/client/currencyFormat';
+import { formatCurrency, formatDate } from '@/lib/client/format';
+
                           
 type ChargesListsListProps = {
   roomId: string;
@@ -61,7 +61,7 @@ export const ChargesListsList = (props: ChargesListsListProps) => {
       id: `${item.id}`,
       basicInfo: (
         <>
-          <DataLine label='Giá phòng' value={currencyFormat(item.room_charge ?? -1)} />
+          <DataLine label='Giá phòng' value={formatCurrency(item.room_charge ?? -1)} />
           <DataLine label='Ngày bắt đầu áp dụng' value={formatDate(item.start_date, 'dmy')} />
           <DataLine 
             label='Ngày kết thúc áp dụng' 
@@ -121,7 +121,8 @@ export const ChargesListsList = (props: ChargesListsListProps) => {
   };
 
   const stopApplyDisabledFunction = (id: string) => {
-    return !!data.find(item => item.id === id)?.end_date;
+    const item = data.find(item => item.id === id);
+    return !!item?.end_date || formatDate(item?.start_date, 'ymd') === formatDate(new Date(), 'ymd');
   };
 
   const detailsFunction = (id: string) => {
@@ -171,7 +172,7 @@ export const ChargesListsList = (props: ChargesListsListProps) => {
 
   return (
     <div>
-      <Title>Danh sách các loại phí</Title>
+      <Title>Danh sách các mức giá</Title>
       <div className='flex items-center'>
         <div className='w-[40%]'>
           <InputSearch 
@@ -256,7 +257,9 @@ export const ChargesListsList = (props: ChargesListsListProps) => {
             disabledFunction: deleteDisabledFunction,
           }
         ]}
+        note='Lưu ý: Chỉ có thể dừng áp dụng sau ngày bắt đầu 1 ngày.'
       />
+      
     </div>
   );
 };

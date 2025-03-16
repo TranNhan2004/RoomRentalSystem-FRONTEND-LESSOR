@@ -56,6 +56,7 @@ export type MonthlyChargesDetailsType = {
   due_charges?: number;
   paid_charges?: number;
   is_settled?: boolean;
+  created_mode?: 'first' | 'auto';
   created_at?: Date;
   updated_at?: Date;
 }

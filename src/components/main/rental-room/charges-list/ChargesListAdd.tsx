@@ -25,6 +25,14 @@ export const ChargesListAdd = (props: ChargesListAddProps) => {
       return;
     }
 
+    if (
+      error.response?.status === 400 &&
+      error.response.data[0] === ChargesListMessage.BACKEND_POST_INVALID
+    ) {
+      await toastError(ChargesListMessage.POST_INVALID);
+      return;
+    }
+
     await toastError(ChargesListMessage.POST_ERROR);
   };
 
@@ -32,21 +40,20 @@ export const ChargesListAdd = (props: ChargesListAddProps) => {
     try {
       await chargesListService.post({ ...reqData, rental_room: props.roomId });
       await toastSuccess(ChargesListMessage.POST_SUCCESS);
+      router.push(`/rental-rooms/${props.roomId}`);
+    
     } catch (error) {
       await handlePostError(error);
     }
   };
 
   const saveAndExitOnClick = async () => {
-    await handleGeneralAlert(ChargesListMessage.POST_WARNING, async () => {
-      await postData();
-      router.push(`/rental-rooms/${props.roomId}`);
-    });
+    await handleGeneralAlert(ChargesListMessage.POST_WARNING, postData);
   };
 
   return (
     <ChargesListForm
-      formLabel='Thêm các loại phí' 
+      formLabel='Thêm mức giá mới' 
       roomId={props.roomId}
       reqData={reqData}
       setReqData={setReqData}

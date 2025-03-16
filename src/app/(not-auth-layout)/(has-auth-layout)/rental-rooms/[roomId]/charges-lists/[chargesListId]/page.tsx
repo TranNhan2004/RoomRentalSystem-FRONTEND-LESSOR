@@ -1,3 +1,4 @@
+import { ChargesListDetails } from "@/components/main/rental-room/charges-list/ChargesListDetails";
 import { Metadata } from "next";
                                   
 export const metadata: Metadata = {
@@ -5,7 +6,7 @@ export const metadata: Metadata = {
   description: "Details of the charges list page.",
 };
                                   
-export default function ChargesListDetailsPage({
+export default async function ChargesListDetailsPage({
   params,
 }: {
   params: Promise<{
@@ -14,10 +15,11 @@ export default function ChargesListDetailsPage({
   }>
 }) {
 
+  const { roomId, chargesListId } = await params;
 
   return (
     <>
-      
+      <ChargesListDetails roomId={roomId} id={chargesListId} />
     </>
   );
 };

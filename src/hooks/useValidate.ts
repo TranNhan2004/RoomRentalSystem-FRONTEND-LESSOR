@@ -22,7 +22,7 @@ export const useValidate = <T extends HTMLElement>(
 
   const handleChange = (e: React.ChangeEvent<T>) => {
     onChange(e);
-    validateInput();  
+    validateInput(); 
   };
 
   useEffect(() => {

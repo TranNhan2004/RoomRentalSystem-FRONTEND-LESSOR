@@ -14,11 +14,11 @@ import { DataForm } from '@/components/partial/data/DataForm';
 import { Label } from '@/components/partial/form/Label';
 import { Input } from '@/components/partial/form/Input';
 import { EMAIL_REG_EXP } from '@/lib/client/isValidForm';
-import { formatDate } from '@/lib/client/formatDate';
 import { Select } from '@/components/partial/form/Select';
 import { dateStrOfMaxAge, dateStrOfMinAge } from '@/lib/client/dateLimit';
 import { AxiosError } from 'axios';
 import { GeneralMessage } from '@/messages/General.message';
+import { formatDate } from '@/lib/client/format';
 
 const EditInfo = () => {
   const router = useRouter();

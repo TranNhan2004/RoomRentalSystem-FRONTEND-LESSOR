@@ -10,7 +10,8 @@ import { useRouter } from 'next/navigation';
 import { Validators } from '@/types/Validators.type';
 import { ChargesListType } from '@/types/RentalRoom.type';
 import { ChargesListMessage } from '@/messages/RentalRoom.message';
-import { formatDate } from '@/lib/client/formatDate';
+import { formatDate } from '@/lib/client/format';
+
 
 type ChargesListFormProps = {
   roomId: string;

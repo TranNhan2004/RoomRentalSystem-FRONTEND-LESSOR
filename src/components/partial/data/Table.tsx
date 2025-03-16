@@ -19,6 +19,7 @@ export type TableProps = {
     buttonConfig: Omit<ActionButtonProps, 'onClick'>;
     disabledFunction?: (id: string) => boolean | undefined;
   }[];
+  note?: string;
 }
 
 export const Table = (props: TableProps) => {
@@ -94,6 +95,9 @@ export const Table = (props: TableProps) => {
   return (
     <div className='flex flex-col'>
       <div className='flex-grow overflow-x-auto mt-8'>
+        <p className='italic text-gray-500 text-sm mb-2'>
+          {props.note}
+        </p>
         <table className='min-w-full border border-gray-200'>
           <thead>
             <tr className='bg-gray-100 text-center'>

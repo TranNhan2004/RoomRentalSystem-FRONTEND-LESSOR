@@ -4,10 +4,10 @@ import React from 'react';
 import Image from 'next/image';
 import { CheckCircleIcon, XCircleIcon } from '@heroicons/react/24/outline';
 import { RentalRoomType, RentalRoomImageType, ChargesListType } from '@/types/RentalRoom.type';
-import { currencyFormat } from '@/lib/client/currencyFormat';
 import { RatingStar } from '@/components/partial/data/RatingStar';
 import { ActionButton } from '@/components/partial/button/ActionButton';
 import { getImageSrc } from '@/lib/client/getImageSrc';
+import { formatCurrency } from '@/lib/client/format';
 
 type RentalRoomCardProps = {
   id: RentalRoomType['id'];
@@ -37,7 +37,7 @@ export const RentalRoomCard = (props: RentalRoomCardProps) => {
         <h2 className="text-xl font-bold text-gray-800 mb-2">{props.name}</h2>
 
         <div className="text-lg font-semibold text-gray-800 mb-3">
-          {currencyFormat(props.roomCharge ?? -1)}
+          {formatCurrency(props.roomCharge ?? -1)}
         </div>
 
         <div className="flex items-center mb-1">

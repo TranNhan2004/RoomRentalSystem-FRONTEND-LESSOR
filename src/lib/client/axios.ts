@@ -44,10 +44,7 @@ axiosInstance.interceptors.response.use(
       originalRequest._retry = true;
       
       try {
-        const response = await refreshTokenAxiosIntance.post(
-          '/app.user-account/auth/token/refresh/', 
-          { role: 'LESSOR' }
-        );
+        const response = await refreshTokenAxiosIntance.post('/app.user-account/auth/token/refresh/');
         await setAccessToken(response.data.access);
         originalRequest.headers['Authorization'] = `Bearer ${response.data.access}`;
         

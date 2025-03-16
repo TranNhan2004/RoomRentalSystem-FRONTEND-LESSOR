@@ -1,12 +1,12 @@
-import { RoomCodeDetails } from "@/components/main/rental-room/room-code/RoomCodeDetails";
+import { RoomCodeEdit } from "@/components/main/rental-room/room-code/RoomCodeEdit";
 import { Metadata } from "next";
                                   
 export const metadata: Metadata = {
-  title: "Details of the room code",
-  description: "Details of the room code page.",
+  title: "Edit the room code",
+  description: "Edit the room code page.",
 };
                                   
-export default async function RoomCodeDetailsPage({
+export default async function RoomCodeEditPage({
   params,
 }: {
   params: Promise<{
@@ -18,7 +18,7 @@ export default async function RoomCodeDetailsPage({
 
   return (
     <>
-      <RoomCodeDetails roomId={roomId} id={roomCodeId} />
+      <RoomCodeEdit roomId={roomId} id={roomCodeId} />
     </>
   );
 };

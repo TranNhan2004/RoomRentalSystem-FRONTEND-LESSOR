@@ -48,8 +48,8 @@ export const INITIAL_ROOM_CODE: RoomCodeType = {
   id: '',
   value: '',
   rental_room: '',
-  max_occupancy: 0,
-  remaining_occupancy: 0,
+  max_occupancy: 1,
+  remaining_occupancy: 1,
   is_shareable: false,
 } as const;
 
