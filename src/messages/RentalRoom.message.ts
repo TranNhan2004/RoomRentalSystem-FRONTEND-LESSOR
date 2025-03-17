@@ -119,6 +119,8 @@ export class MonthlyChargesDetailsMessage {
   public static readonly BACKEND_CHARGES_LIST_NOT_FOUND = 'Charges list not found for this room.';
   public static readonly BACKEND_UNSETTLED_RECORD_EXIST = 'There is an existing unsettled record.';
   public static readonly BACKEND_PREV_RECORD_NOT_FOUND = 'Previous record not found.';
+  public static readonly BACKEND_NEW_KWH_READING_INVALID_SUBSTR = 'new_kWh_reading__gte';
+  public static readonly BACKEND_NEW_M3_READING_INVALID_SUBSTR = 'new_m3_reading__gte';
   
   public static readonly OLD_KWH_READING_REQUIRED = 'Chỉ số điện cũ không được để trống!';
   public static readonly NEW_KWH_READING_REQUIRED = 'Chỉ số điện mới không được để trống!';
@@ -140,13 +142,14 @@ export class MonthlyChargesDetailsMessage {
   public static readonly UNSETTLED_RECORD_EXIST = 'Tồn tại hóa đơn chưa hoàn thành kết toán!';
   public static readonly PREV_RECORD_NOT_FOUND = 'Vui lòng chọn chế độ thêm là "Lần đầu" khi tạo bản ghi đầu tiên';
   
-
   public static readonly GET_MANY_ERROR = 'Đã xảy ra lỗi khi lấy danh sách các hóa đơn tiền trọ hằng tháng!';
   public static readonly POST_ERROR = 'Đã xảy ra lỗi khi thêm hóa đơn tiền trọ hằng tháng!';
+  public static readonly PATCH_ERROR = 'Đã xảy ra lỗi khi chỉnh sửa thông tin hóa đơn tiền trọ hằng tháng!';
   public static readonly SETTLE_ERROR = 'Đã xảy ra lỗi khi kết toán hóa đơn tiền trọ hằng tháng!';
   public static readonly DELETE_ERROR = 'Đã xảy ra lỗi khi xóa hóa đơn tiền trọ hằng tháng!';
 
   public static readonly POST_SUCCESS = 'Thêm hóa đơn tiền trọ hằng tháng thành công!';
+  public static readonly PATCH_SUCCESS = 'Chỉnh sửa thông tin hóa đơn tiền trọ hằng tháng thành công!';
   public static readonly SETTLE_SUCCESS = 'Kết toán hóa đơn tiền trọ hằng tháng thành công!';
   public static readonly DELETE_SUCCESS = 'Xóa hóa đơn tiền trọ hằng tháng thành công!';
 }

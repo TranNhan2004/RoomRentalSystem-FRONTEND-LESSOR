@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { handleDeleteAlert, handleGeneralAlert, toastError, toastSuccess } from '@/lib/client/alert';
 import { DisplayedDataType, Table } from '@/components/partial/data/Table';
 import { useRouter } from 'next/navigation';
@@ -37,32 +37,36 @@ export const MonitoringRentalsList = (props: MonitoringRentalsListProps) => {
   
   const originialDataRef = useRef<MonitoringRentalType[]>([]);
 
+  const fetchRelatedData = useCallback(async (data: MonitoringRentalType[]) => {
+    let newData = [...data];
+    await Promise.all(
+      data.map(async (item) => {
+        const renter = await userService.get(item.renter ?? '');
+        
+        newData = newData.map(thisItem => {
+          if (thisItem.id === item.id) {
+            return { 
+              ...thisItem,
+              _rental_first_name: renter.first_name,
+              _rental_last_name: renter.last_name,
+              _rental_phone_number: renter.phone_number,
+            };
+          }
+          return thisItem;
+        });  
+      })
+    );
+
+    return newData;
+  }, []);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
         setLoading(true);
         const data = await monitoringRentalService.getMany({ room_code: props.roomCodeId });
+        originialDataRef.current = await fetchRelatedData(data);
         
-        originialDataRef.current = data;
-        
-        await Promise.all(
-          data.map(async (item) => {
-            const renter = await userService.get(item.renter ?? '');
-            
-            originialDataRef.current = originialDataRef.current.map(thisItem => {
-              if (thisItem.id === item.id) {
-                return { 
-                  ...thisItem,
-                  _rental_first_name: renter.first_name,
-                  _rental_last_name: renter.last_name,
-                  _rental_phone_number: renter.phone_number,
-                };
-              }
-              return thisItem;
-            });  
-          })
-        );
-
         setData([...originialDataRef.current]);
 
       } catch {
@@ -74,7 +78,7 @@ export const MonitoringRentalsList = (props: MonitoringRentalsListProps) => {
     };
 
     fetchData();
-  }, [props.roomCodeId]);
+  }, [props.roomCodeId, fetchRelatedData]);
 
   const generateDataForTable = (): DisplayedDataType[] => {
     return data.map((item) => ({
@@ -160,8 +164,8 @@ export const MonitoringRentalsList = (props: MonitoringRentalsListProps) => {
         to_date: formatDate(query.to_date as Date, 'ymd'),
       });
 
-      originialDataRef.current = data;
-      setData(data);
+      originialDataRef.current = await fetchRelatedData(data);
+      setData([...originialDataRef.current]);
       
     } catch {
       await toastError(MonitoringRentalMessage.GET_MANY_ERROR);

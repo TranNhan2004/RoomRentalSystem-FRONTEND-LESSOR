@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { handleDeleteAlert, toastError, toastSuccess } from '@/lib/client/alert';
 import { useRouter } from 'next/navigation';
 import { Title } from '@/components/partial/data/Title';
@@ -43,6 +43,31 @@ export const RentalRoomsList = () => {
   
   const cardsPerPage = 20;
 
+  const fetchRelatedData = useCallback(async (data: RentalRoomType[]) => {
+    let newData = [...data];
+    await Promise.all(
+      data.map(async (item) => {
+        const [imageData, chargesListData] = await Promise.all([
+          rentalRoomImageService.getMany({ rental_room: item.id, mode: 'first' }),
+          chargesListService.getMany({ rental_room: item.id, mode: 'first' })
+        ]);
+        
+        newData = newData.map(thisItem => {
+          if (thisItem.id === item.id) {
+            return {
+              ...thisItem,
+              _image: imageData.length ? imageData[0].image : '',
+              _room_charge: chargesListData.length ? chargesListData[0].room_charge : -1
+            };
+          }
+          return thisItem;
+        });
+      })
+    );
+
+    return newData;
+  }, []);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -56,28 +81,8 @@ export const RentalRoomsList = () => {
           communeService.getMany(),
         ]);
 
-        originialDataRef.current = data;
-
-        await Promise.all(
-          data.map(async (item) => {
-            const [imageData, chargesListData] = await Promise.all([
-              rentalRoomImageService.getMany({ rental_room: item.id }, 'first'),
-              chargesListService.getMany({ rental_room: item.id }, 'first')
-            ]);
-            
-            originialDataRef.current = originialDataRef.current.map(thisItem => {
-              if (thisItem.id === item.id) {
-                return {
-                  ...thisItem,
-                  _image: imageData.length ? imageData[0].image : '',
-                  _room_charge: chargesListData.length ? chargesListData[0].room_charge : -1
-                };
-              }
-              return thisItem;
-            });
-          })
-        );
-
+        originialDataRef.current = await fetchRelatedData(data);
+        
         setData([...originialDataRef.current]);
         setProvinceOptions(mapOptions(provinceData, ['name'], 'id'));
         setDistrictOptions(mapOptions(districtData, ['name'], 'id'));
@@ -95,7 +100,7 @@ export const RentalRoomsList = () => {
     };
 
     fetchData();
-  }, []);
+  }, [fetchRelatedData]);
 
   useEffect(() => {
     setDisplayedData(data.slice((currentPage - 1) * cardsPerPage, currentPage * cardsPerPage));
@@ -158,20 +163,26 @@ export const RentalRoomsList = () => {
         const dataArray = await Promise.all(communes.map(
           commune => rentalRoomService.getMany({ ...query, commune: commune.id })
         ));
-        setData(dataArray.flat());
+
+        const data = dataArray.flat();
+        originialDataRef.current = await fetchRelatedData(data);
+        setData([...originialDataRef.current]);
 
       } else if (query._district !== '' && query.commune === '') {
         const communes = await communeService.getMany({ district: query._district });
         const dataArray = await Promise.all(communes.map(
           commune => rentalRoomService.getMany({ ...query, commune: commune.id })
         ));
-        setData(dataArray.flat());
+        const data = dataArray.flat();
+        originialDataRef.current = await fetchRelatedData(data);
+        setData([...originialDataRef.current]);
 
       } else {
         const data = await rentalRoomService.getMany(query);
-        originialDataRef.current = data;
-        setData(data);
+        originialDataRef.current = await fetchRelatedData(data);
+        setData([...originialDataRef.current]);
       }
+      
     } catch {
       await toastError(RentalRoomMessage.GET_MANY_ERROR);
 
@@ -302,7 +313,7 @@ export const RentalRoomsList = () => {
                 }
                 options={[
                   { label: 'Đã được duyệt', value: 'approved' },
-                  { label: 'Đang chờ duyệt', value: 'pending' },
+                  { label: 'Chưa được duyệt', value: 'pending' },
                 ]}
                 onChange={handleStatusChange}
               />

@@ -92,8 +92,11 @@ export const MonthlyChargesDetailsForm = (props: MonthlyChargesDetailsFormProps)
       if (!props.reqData.paid_charge) {
         return MonthlyChargesDetailsMessage.PAID_CHARGE_REQUIRED;
       }
-      if (props.reqData.paid_charge > 5) {
+      if (props.reqData.paid_charge < 0) {
         return MonthlyChargesDetailsMessage.PAID_CHARGE_INVALID;
+      }
+      if (props.reqData.due_charge && props.reqData.paid_charge > props.reqData.due_charge) {
+        return MonthlyChargesDetailsMessage.PAID_CHARGE_INVALID_2;
       }
       return null;
     },
@@ -171,6 +174,43 @@ export const MonthlyChargesDetailsForm = (props: MonthlyChargesDetailsFormProps)
                 />
               </div>
 
+              <div className='grid grid-cols-2 items-center'>
+                <Label htmlFor='continue-renting' required>Tiếp tục thuê: </Label>
+                <div className='px-4 py-2 flex items-center w-[300px] ml-[-375px] space-x-8'>
+                  <div className='flex items-center'>
+                    <Input 
+                      id='continue-renting-1'
+                      name='continue_renting'
+                      type='radio'
+                      className='mr-2'
+                      value={'true'}
+                      checked={props.reqData.continue_renting === true}
+                      onChange={handleContinueRentingChange}
+                      validate={validators.continue_renting}
+                    /> Có
+                  </div>
+                  <div className='flex items-center'>
+                    <Input 
+                      id='continue-renting-2'
+                      name='continue_renting'
+                      type='radio'
+                      className='ml-8 mr-2'
+                      value={'false'}
+                      checked={props.reqData.continue_renting === false}
+                      onChange={handleContinueRentingChange}
+                      validate={validators.continue_renting}
+                    /> Không
+                  </div>
+                </div>
+              </div>
+
+              <div className='grid grid-cols-2 items-center'>
+                <div></div>
+                <p className='w-[500px] ml-[-360px] italic text-gray-500'>
+                  Chọn tiếp tục thuê là &quot;Có&quot; nếu người dùng tiếp tục thuê vào tháng sau
+                </p>
+              </div>
+
               <div className='grid grid-cols-2 items-center mt-3 mb-3'>
                 <Label htmlFor='created-mode' required>Chế độ thêm: </Label>
                 <div className='px-4 py-2 flex items-center w-[300px] ml-[-375px] space-x-8'>
@@ -210,49 +250,33 @@ export const MonthlyChargesDetailsForm = (props: MonthlyChargesDetailsFormProps)
             </>      
           ) : (
             <>
-
+              <div className='grid grid-cols-2 items-center'>
+                <Label htmlFor='due-charge' required>Số tiền phải trả: </Label>
+                <Input 
+                  id='due-charge'
+                  name='due_charge'
+                  type='number'
+                  className='w-[300px] ml-[-360px]'
+                  value={props.reqData.due_charge}
+                  onChange={handleInputOnChange}
+                  disabled
+                />
+              </div>
+              <div className='grid grid-cols-2 items-center'>
+                <Label htmlFor='paid-charge' required>Số tiền đã trả: </Label>
+                <Input 
+                  id='paid-charge'
+                  name='paid_charge'
+                  type='number'
+                  className='w-[300px] ml-[-360px]'
+                  value={props.reqData.paid_charge}
+                  onChange={handleInputOnChange}
+                  validate={validators.paid_charge}
+                />
+              </div>
             </>
           )
-
-          
         }
-        
-        <div className='grid grid-cols-2 items-center'>
-          <Label htmlFor='continue-renting' required>Tiếp tục thuê: </Label>
-          <div className='px-4 py-2 flex items-center w-[300px] ml-[-375px] space-x-8'>
-            <div className='flex items-center'>
-              <Input 
-                id='continue-renting-1'
-                name='continue_renting'
-                type='radio'
-                className='mr-2'
-                value={'true'}
-                checked={props.reqData.continue_renting === true}
-                onChange={handleContinueRentingChange}
-                validate={validators.continue_renting}
-              /> Có
-            </div>
-            <div className='flex items-center'>
-              <Input 
-                id='continue-renting-2'
-                name='continue_renting'
-                type='radio'
-                className='ml-8 mr-2'
-                value={'false'}
-                checked={props.reqData.continue_renting === false}
-                onChange={handleContinueRentingChange}
-                validate={validators.continue_renting}
-              /> Không
-            </div>
-          </div>
-        </div>
-
-        <div className='grid grid-cols-2 items-center'>
-          <div></div>
-          <p className='w-[500px] ml-[-360px] italic text-gray-500'>
-            Chọn tiếp tục thuê là &quot;Có&quot; nếu người dùng tiếp tục thuê vào tháng sau
-          </p>
-        </div>
       </DataForm>
     </>
   );

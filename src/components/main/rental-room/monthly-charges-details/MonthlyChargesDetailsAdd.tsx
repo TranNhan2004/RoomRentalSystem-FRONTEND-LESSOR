@@ -43,6 +43,18 @@ export const MonthlyChargesDetailsAdd = (props: MonthlyChargesDetailsAddProps) =
       }
     }
 
+    if (error.response?.status === 500) {
+      if (error.response.data.includes(MonthlyChargesDetailsMessage.BACKEND_NEW_KWH_READING_INVALID_SUBSTR)) {
+        await toastError(MonthlyChargesDetailsMessage.NEW_KWH_READING_INVALID);
+        return;
+      }
+
+      if (error.response.data.includes(MonthlyChargesDetailsMessage.BACKEND_NEW_M3_READING_INVALID_SUBSTR)) {
+        await toastError(MonthlyChargesDetailsMessage.NEW_M3_READING_INVALID);
+        return;
+      }
+    }
+
     await toastError(MonthlyChargesDetailsMessage.POST_ERROR);
   };
 
@@ -65,7 +77,7 @@ export const MonthlyChargesDetailsAdd = (props: MonthlyChargesDetailsAddProps) =
 
   return (
     <MonthlyChargesDetailsForm
-      formLabel='Thêm hóa đơn hằng tháng mới' 
+      formLabel='Thêm hóa đơn tiền trọ hằng tháng mới' 
       mode='add'
       roomCodeId={props.roomCodeId}
       roomId={props.roomId}

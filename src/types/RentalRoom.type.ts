@@ -84,12 +84,14 @@ export type RentalRoomImageType = {
 
 export type RentalRoomImageQueryType = {
   rental_room?: RentalRoomImageType['rental_room'];
+  mode?: 'first' | 'many';
 }
 
 export type ChargesListQueryType = {
   rental_room?: ChargesListType['rental_room'];
   from_date?: Date | string;
   to_date?: Date | string;
+  mode?: 'first' | 'many';
 }
 
 export type RoomCodeQueryType = {
