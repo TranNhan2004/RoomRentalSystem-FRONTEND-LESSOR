@@ -1,11 +1,11 @@
 import { Metadata } from "next";
                                   
 export const metadata: Metadata = {
-  title: "Edit the monthly charges",
-  description: "Edit of the monthly charges page.",
+  title: "Details of the monthly charges",
+  description: "Details of the monthly charges page.",
 };
                                   
-export default async function MonthlyChargesDetailsEditPage() {
+export default async function MonthlyChargesDetailsDetailsPage() {
   return (
     <>
       

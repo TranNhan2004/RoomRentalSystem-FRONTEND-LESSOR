@@ -63,15 +63,14 @@ export const RoomCodeForm = (props: RoomCodeFormProps) => {
         {
           props.mode === 'edit' && (
             <div className='grid grid-cols-2 items-center'>
-              <Label htmlFor='remaining-occupancy'>Số người có thể ở thêm: </Label>
+              <Label htmlFor='current-occupancy'>Số người ở hiện tại: </Label>
               <Input 
-                id='remaining-occupancy'
-                name='remaining_occupancy'
+                id='current-occupancy'
+                name='current_occupancy'
                 type='number'
                 className='w-[300px] ml-[-360px]'
-                value={props.reqData.remaining_occupancy}
+                value={props.reqData.current_occupancy}
                 onChange={handleInputOnChange}
-                validate={validators.remaining_occupancy}
                 disabled
               />
             </div>

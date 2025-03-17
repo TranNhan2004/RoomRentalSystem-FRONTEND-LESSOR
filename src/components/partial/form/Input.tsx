@@ -11,6 +11,7 @@ type InputProps = {
   validate?: ValidateFunctionType;
   min?: string | number | undefined;
   max?: string | number | undefined;
+  checked?: boolean;
   placeholder?: string;
   className?: string;
   disabled?: boolean;
@@ -35,6 +36,7 @@ export const Input = (props: InputProps) => {
         onChange={props.onChange}
         onInvalid={(e) => e.preventDefault()}
         disabled={props.disabled}
+        checked={props.checked}
       />
       {error && <p className="text-red-500 text-sm mt-1">{error}</p>} 
     </div>

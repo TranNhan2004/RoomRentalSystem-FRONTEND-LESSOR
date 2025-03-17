@@ -39,11 +39,7 @@ export const RoomCodeAdd = (props: RoomCodeAddProps) => {
 
   const postData = async (actionAfter: () => void) => {
     try {
-      await roomCodeService.post({ 
-        ...reqData, 
-        rental_room: props.roomId, 
-        remaining_occupancy: reqData.max_occupancy 
-      });
+      await roomCodeService.post({ ...reqData, rental_room: props.roomId });
       await toastSuccess(RoomCodeMessage.POST_SUCCESS);
       actionAfter();
     

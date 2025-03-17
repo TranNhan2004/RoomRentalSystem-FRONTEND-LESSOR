@@ -44,7 +44,7 @@ export type RoomCodeType = {
   value?: string;
   rental_room?: string;
   max_occupancy?: number;
-  remaining_occupancy?: number;
+  current_occupancy?: number;
   is_shareable?: boolean;
 }
 
@@ -55,9 +55,9 @@ export type MonthlyChargesDetailsType = {
   new_kWh_reading?: number;
   old_m3_reading?: number;
   new_m3_reading?: number;
-  prev_remaining_charges?: number;
-  due_charges?: number;
-  paid_charges?: number;
+  prev_remaining_charge?: number;
+  due_charge?: number;
+  paid_charge?: number;
   continue_renting?: boolean;
   is_settled?: boolean;
   created_mode?: 'first' | 'auto';
@@ -98,6 +98,9 @@ export type RoomCodeQueryType = {
 
 export type MonthlyChargesDetailsQueryType = {
   room_code?: MonthlyChargesDetailsType['room_code'];
+  is_settled?: MonthlyChargesDetailsType['is_settled'];
+  from_created_date?: Date | string;
+  to_created_date?: Date | string;
 }
 
 export type MonitoringRentalQueryType = {

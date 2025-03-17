@@ -179,9 +179,9 @@ export const ChargesListForm = (props: ChargesListFormProps) => {
           />
         </div>
 
-        <div className='grid grid-cols-3 items-center'>
+        <div className='grid grid-cols-2 items-center'>
           <div></div>
-          <p className='w-[500px] ml-[-170px] italic text-gray-500'>
+          <p className='w-[500px] ml-[-360px] italic text-gray-500'>
             Giá wifi = -1 là không có wifi, còn = 0 là có wifi nhưng miễn phí!
           </p>
         </div>

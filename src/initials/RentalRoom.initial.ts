@@ -49,7 +49,7 @@ export const INITIAL_ROOM_CODE: RoomCodeType = {
   value: '',
   rental_room: '',
   max_occupancy: 1,
-  remaining_occupancy: 1,
+  current_occupancy: 0,
   is_shareable: false,
 } as const;
 
@@ -60,9 +60,10 @@ export const INITIAL_MONTHLY_CHARGES_DETAILS: MonthlyChargesDetailsType = {
   new_kWh_reading: 0,
   old_m3_reading: 0,
   new_m3_reading: 0,
-  prev_remaining_charges: 0,
-  due_charges: 0,
-  paid_charges: 0,
+  prev_remaining_charge: 0,
+  due_charge: 0,
+  paid_charge: 0,
+  created_mode: 'auto',
   continue_renting: true,
   is_settled: false,
 } as const;

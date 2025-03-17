@@ -10,6 +10,7 @@ import { RoomCodeType } from '@/types/RentalRoom.type';
 import { roomCodeService } from '@/services/RentalRoom.service';
 import { ActionButton } from '@/components/partial/button/ActionButton';
 import { MonitoringRentalsList } from '../monitoring-rental/MonitoringRentalsList';
+import { MonthlyChargesDetailsList } from '../monthly-charges-details/MonthlyChargesDetailsList';
 
 type RoomCodeDetailsProps = {
   roomId: string;
@@ -61,8 +62,8 @@ export const RoomCodeDetails = (props: RoomCodeDetailsProps) => {
             value: data.value
           },
           {
-            label: 'Số người ở còn lại',
-            value: data.remaining_occupancy
+            label: 'Số người ở hiện tại',
+            value: data.current_occupancy
           },
           {
             label: 'Số người ở tối đa',
@@ -86,7 +87,11 @@ export const RoomCodeDetails = (props: RoomCodeDetailsProps) => {
       </div>
 
       <div className='mt-10'>
-        <MonitoringRentalsList roomId={props.roomId} roomCodeId={props.id} />
+        <MonitoringRentalsList roomCodeId={props.id} />
+      </div>
+
+      <div className='mt-10'>
+        <MonthlyChargesDetailsList roomCodeId={props.id} />
       </div>
     </>
   );

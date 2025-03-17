@@ -114,3 +114,39 @@ export class MonitoringRentalMessage {
   public static readonly STOP_RENT_SUCCESS = 'Dừng theo dõi cho thuê thành công!';
   public static readonly DELETE_SUCCESS = 'Xóa bản ghi theo dõi cho thuê thành công!';
 }
+
+export class MonthlyChargesDetailsMessage {
+  public static readonly BACKEND_CHARGES_LIST_NOT_FOUND = 'Charges list not found for this room.';
+  public static readonly BACKEND_UNSETTLED_RECORD_EXIST = 'There is an existing unsettled record.';
+  public static readonly BACKEND_PREV_RECORD_NOT_FOUND = 'Previous record not found.';
+  
+  public static readonly OLD_KWH_READING_REQUIRED = 'Chỉ số điện cũ không được để trống!';
+  public static readonly NEW_KWH_READING_REQUIRED = 'Chỉ số điện mới không được để trống!';
+  public static readonly OLD_M3_READING_REQUIRED = 'Chỉ số nước cũ không được để trống!';
+  public static readonly NEW_M3_READING_REQUIRED = 'Chỉ số nước mới không được để trống!';
+  public static readonly PAID_CHARGE_REQUIRED = 'Số tiền đã trả không được để trống!'; 
+
+  public static readonly OLD_KWH_READING_INVALID = 'Chỉ số điện cũ không được nhỏ hơn 0!';
+  public static readonly NEW_KWH_READING_INVALID = 'Chỉ số điện mới không được nhỏ hơn chỉ số điện cũ!';
+  public static readonly OLD_M3_READING_INVALID = 'Chỉ số nước cũ không được nhỏ hơn 0!';
+  public static readonly NEW_M3_READING_INVALID = 'Chỉ số nước mới không được nhỏ hơn chỉ số nước cũ!';
+  public static readonly PAID_CHARGE_INVALID = 'Số tiền đã trả không được nhỏ hơn 0!';
+  public static readonly PAID_CHARGE_INVALID_2 = 'Số tiền đã trả không được lớn hơn số tiền phải trả!';
+  public static readonly END_DATE_INVALID = 'Ngày kết thúc phải lớn hơn ngày bắt đầu!';
+
+  public static readonly SETTLE_WARNING = 'Sau khi kết toán hóa đơn, bạn không thể chỉnh sửa nội dung bên trong nữa!';
+
+  public static readonly CHARGES_LIST_NOT_FOUND = 'Chưa có dữ liệu về mức giá của phòng này!';
+  public static readonly UNSETTLED_RECORD_EXIST = 'Tồn tại hóa đơn chưa hoàn thành kết toán!';
+  public static readonly PREV_RECORD_NOT_FOUND = 'Vui lòng chọn chế độ thêm là "Lần đầu" khi tạo bản ghi đầu tiên';
+  
+
+  public static readonly GET_MANY_ERROR = 'Đã xảy ra lỗi khi lấy danh sách các hóa đơn tiền trọ hằng tháng!';
+  public static readonly POST_ERROR = 'Đã xảy ra lỗi khi thêm hóa đơn tiền trọ hằng tháng!';
+  public static readonly SETTLE_ERROR = 'Đã xảy ra lỗi khi kết toán hóa đơn tiền trọ hằng tháng!';
+  public static readonly DELETE_ERROR = 'Đã xảy ra lỗi khi xóa hóa đơn tiền trọ hằng tháng!';
+
+  public static readonly POST_SUCCESS = 'Thêm hóa đơn tiền trọ hằng tháng thành công!';
+  public static readonly SETTLE_SUCCESS = 'Kết toán hóa đơn tiền trọ hằng tháng thành công!';
+  public static readonly DELETE_SUCCESS = 'Xóa hóa đơn tiền trọ hằng tháng thành công!';
+}
