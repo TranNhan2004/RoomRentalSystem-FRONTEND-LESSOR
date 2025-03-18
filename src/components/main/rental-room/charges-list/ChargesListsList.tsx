@@ -61,7 +61,7 @@ export const ChargesListsList = (props: ChargesListsListProps) => {
       id: `${item.id}`,
       basicInfo: (
         <>
-          <DataLine label='Giá phòng' value={formatCurrency(item.room_charge ?? -1)} />
+          <DataLine label='Giá phòng' value={formatCurrency(item.room_charge)} />
           <DataLine label='Ngày bắt đầu áp dụng' value={formatDate(item.start_date, 'dmy')} />
           <DataLine 
             label='Ngày kết thúc áp dụng' 

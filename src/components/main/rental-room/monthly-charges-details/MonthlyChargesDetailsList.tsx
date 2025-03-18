@@ -61,8 +61,8 @@ export const MonthlyChargesDetailsList = (props: MonthlyChargesDetailsListProps)
       id: `${item.id}`,
       basicInfo: (
         <>
-          <DataLine label='Số tiền phải trả' value={formatCurrency(item.due_charge ?? -1)} />
-          <DataLine label='Số tiền đã trả' value={formatCurrency(item.paid_charge ?? -1)} />
+          <DataLine label='Số tiền phải trả' value={formatCurrency(item.due_charge)} />
+          <DataLine label='Số tiền đã trả' value={formatCurrency(item.paid_charge)} />
           <DataLine label='Ngày tạo' value={formatDate(item.created_at, 'dmy')} />
           <DataLine 
             label='Trạng thái' 

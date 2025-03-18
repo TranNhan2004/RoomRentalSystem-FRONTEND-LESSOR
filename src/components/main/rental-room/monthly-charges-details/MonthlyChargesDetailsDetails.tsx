@@ -69,15 +69,15 @@ export const MonthlyChargesDetailsDetails = (props: MonthlyChargesDetailsDetails
         },
         {
           label: 'Số tiền nợ tháng trước',
-          value: formatCurrency(data.prev_remaining_charge ?? -1),
+          value: formatCurrency(data.prev_remaining_charge),
         },
         {
           label: 'Số tiền phải trả',
-          value: formatCurrency(data.due_charge ?? -1),
+          value: formatCurrency(data.due_charge),
         },
         {
           label: 'Số tiền đã trả',
-          value: formatCurrency(data.paid_charge ?? -1),
+          value: formatCurrency(data.paid_charge),
         },
         {
           label: 'Tiếp tục thuê',

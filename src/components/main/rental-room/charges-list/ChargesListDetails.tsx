@@ -53,27 +53,27 @@ export const ChargesListDetails = (props: ChargesListDetailsProps) => {
         data={[
           {
             label: 'Giá phòng',
-            value: formatCurrency(data.room_charge ?? -1)
+            value: formatCurrency(data.room_charge)
           },
           {
             label: 'Giá đặt cọc',
-            value: formatCurrency(data.deposit ?? -1)
+            value: formatCurrency(data.deposit)
           },
           {
             label: 'Giá điện',
-            value: formatCurrency(data.electricity_charge ?? -1)
+            value: formatCurrency(data.electricity_charge)
           },
           {
             label: 'Giá nước',
-            value: formatCurrency(data.water_charge ?? -1)
+            value: formatCurrency(data.water_charge)
           },
           {
             label: 'Giá wifi',
-            value: formatCurrency(data.wifi_charge ?? -1)
+            value: data.wifi_charge === -1 ? 'Không cung cấp wifi' : formatCurrency(data.wifi_charge)
           },
           {
             label: 'Giá thu dọn rác',
-            value: formatCurrency(data.rubbish_charge ?? -1)
+            value: formatCurrency(data.rubbish_charge)
           },
           {
             label: 'Ngày bắt đầu áp dụng',

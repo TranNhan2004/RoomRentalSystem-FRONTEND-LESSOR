@@ -60,11 +60,7 @@ export const RoomCodeEdit = (props: RoomCodeEditProps) => {
 
   const patchData = async (actionAfter?: () => void) => {
     try {
-      await roomCodeService.patch(props.id, { 
-        ...reqData, 
-        rental_room: props.roomId, 
-        remaining_occupancy: reqData.max_occupancy 
-      });
+      await roomCodeService.patch(props.id, reqData);
       await toastSuccess(RoomCodeMessage.PATCH_SUCCESS);
       actionAfter?.();
     

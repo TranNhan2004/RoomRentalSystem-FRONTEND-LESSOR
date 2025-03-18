@@ -37,7 +37,7 @@ export const RentalRoomCard = (props: RentalRoomCardProps) => {
         <h2 className="text-xl font-bold text-gray-800 mb-2">{props.name}</h2>
 
         <div className="text-lg font-semibold text-gray-800 mb-3">
-          {formatCurrency(props.roomCharge ?? -1)}
+          {formatCurrency(props.roomCharge)}
         </div>
 
         <div className="flex items-center mb-1">
