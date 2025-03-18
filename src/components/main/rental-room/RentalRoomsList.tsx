@@ -12,7 +12,7 @@ import { OptionType, Select } from '@/components/partial/form/Select';
 import { getMyInfo } from '@/lib/client/authToken';
 import { RentalRoomQueryType, RentalRoomType } from '@/types/RentalRoom.type';
 import { INITIAL_RENTAL_ROOM_QUERY } from '@/initials/RentalRoom.initial';
-import { chargesListService, rentalRoomImageService, rentalRoomService } from '@/services/RentalRoom.service';
+import { chargesService, roomImageService, rentalRoomService } from '@/services/RentalRoom.service';
 import { RentalRoomMessage } from '@/messages/RentalRoom.message';
 import { communeService, districtService, provinceService } from '@/services/Address.service';
 import { mapOptions } from '@/lib/client/handleOptions';
@@ -47,9 +47,9 @@ export const RentalRoomsList = () => {
     let newData = [...data];
     await Promise.all(
       data.map(async (item) => {
-        const [imageData, chargesListData] = await Promise.all([
-          rentalRoomImageService.getMany({ rental_room: item.id, mode: 'first' }),
-          chargesListService.getMany({ rental_room: item.id, mode: 'first' })
+        const [imageData, chargesData] = await Promise.all([
+          roomImageService.getMany({ rental_room: item.id, mode: 'first' }),
+          chargesService.getMany({ rental_room: item.id, mode: 'first' })
         ]);
         
         newData = newData.map(thisItem => {
@@ -57,7 +57,7 @@ export const RentalRoomsList = () => {
             return {
               ...thisItem,
               _image: imageData.length ? imageData[0].image : '',
-              _room_charge: chargesListData.length ? chargesListData[0].room_charge : -1
+              _room_charge: chargesData.length ? chargesData[0].room_charge : -1
             };
           }
           return thisItem;

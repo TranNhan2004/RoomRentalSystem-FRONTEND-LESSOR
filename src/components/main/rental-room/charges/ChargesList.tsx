@@ -12,10 +12,10 @@ import { AxiosError } from 'axios';
 import { GeneralMessage } from '@/messages/General.message';
 import { FilterModal } from '@/components/partial/data/FilterModal';
 import { Label } from '@/components/partial/form/Label';
-import { ChargesListQueryType, ChargesListType } from '@/types/RentalRoom.type';
-import { INITIAL_CHARGES_LIST_QUERY } from '@/initials/RentalRoom.initial';
-import { chargesListService } from '@/services/RentalRoom.service';
-import { ChargesListMessage } from '@/messages/RentalRoom.message';
+import { ChargesQueryType, ChargesType } from '@/types/RentalRoom.type';
+import { INITIAL_CHARGES_QUERY } from '@/initials/RentalRoom.initial';
+import { chargesService } from '@/services/RentalRoom.service';
+import { ChargesMessage } from '@/messages/RentalRoom.message';
 import { DataLine } from '@/components/partial/data/DataLine';
 import { handleInputChange } from '@/lib/client/handleInputChange';
 import { Input } from '@/components/partial/form/Input';
@@ -23,30 +23,30 @@ import { Validators } from '@/types/Validators.type';
 import { formatCurrency, formatDate } from '@/lib/client/format';
 
                           
-type ChargesListsListProps = {
+type ChargesListProps = {
   roomId: string;
 }
 
-export const ChargesListsList = (props: ChargesListsListProps) => {
+export const ChargesList = (props: ChargesListProps) => {
   const router = useRouter();
   
-  const [data, setData] = useState<ChargesListType[]>([]);
-  const [query, setQuery] = useState<ChargesListQueryType>(INITIAL_CHARGES_LIST_QUERY);
+  const [data, setData] = useState<ChargesType[]>([]);
+  const [query, setQuery] = useState<ChargesQueryType>(INITIAL_CHARGES_QUERY);
   const [loading, setLoading] = useState(true);
   
-  const originialDataRef = useRef<ChargesListType[]>([]);
+  const originialDataRef = useRef<ChargesType[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const data = await chargesListService.getMany({ rental_room: props.roomId });
+        const data = await chargesService.getMany({ rental_room: props.roomId });
         
         setData(data);
         originialDataRef.current = data;
     
       } catch {
-        await toastError(ChargesListMessage.GET_MANY_ERROR);
+        await toastError(ChargesMessage.GET_MANY_ERROR);
     
       } finally {
         setLoading(false);
@@ -78,14 +78,14 @@ export const ChargesListsList = (props: ChargesListsListProps) => {
       return;
     }
 
-    await toastError(ChargesListMessage.DELETE_ERROR);
+    await toastError(ChargesMessage.DELETE_ERROR);
   };
 
   const deleteFunction = async (id: string) => {
     await handleDeleteAlert(async () => {
       try {
-        await chargesListService.delete(id);
-        await toastSuccess(ChargesListMessage.DELETE_SUCCESS);
+        await chargesService.delete(id);
+        await toastSuccess(ChargesMessage.DELETE_SUCCESS);
         originialDataRef.current = originialDataRef.current.filter(item => item.id !== id);
         setData(originialDataRef.current); 
       
@@ -103,8 +103,8 @@ export const ChargesListsList = (props: ChargesListsListProps) => {
     const confirmedMethod = async () => {
       try {
         const today = new Date(); 
-        await chargesListService.patch(id, { end_date: today });
-        await toastSuccess(ChargesListMessage.STOP_APPLY_SUCCESS);
+        await chargesService.patch(id, { end_date: today });
+        await toastSuccess(ChargesMessage.STOP_APPLY_SUCCESS);
       
         const data = originialDataRef.current.find(data => data.id === id);
         if (data && !data.end_date) {  
@@ -113,11 +113,11 @@ export const ChargesListsList = (props: ChargesListsListProps) => {
         }
       
       } catch {
-        await toastError(ChargesListMessage.STOP_APPLY_ERROR);
+        await toastError(ChargesMessage.STOP_APPLY_ERROR);
       }
     };
 
-    await handleGeneralAlert(ChargesListMessage.STOP_APPLY_WARNING, confirmedMethod);
+    await handleGeneralAlert(ChargesMessage.STOP_APPLY_WARNING, confirmedMethod);
   };
 
   const stopApplyDisabledFunction = (id: string) => {
@@ -126,17 +126,17 @@ export const ChargesListsList = (props: ChargesListsListProps) => {
   };
 
   const detailsFunction = (id: string) => {
-    router.push(`${props.roomId}/charges-lists/${id}`);
+    router.push(`${props.roomId}/charges/${id}`);
   };
 
   const addOnClick = () => {
-    router.push(`${props.roomId}/charges-lists/add`);
+    router.push(`${props.roomId}/charges/add`);
   };
 
   const filterOnClick = async () => {
     try {
       setLoading(true);
-      const data = await chargesListService.getMany({ 
+      const data = await chargesService.getMany({ 
         rental_room: props.roomId,
         from_date: formatDate(query.from_date as Date, 'ymd'),
         to_date: formatDate(query.to_date as Date, 'ymd'),
@@ -146,7 +146,7 @@ export const ChargesListsList = (props: ChargesListsListProps) => {
       setData(data);
       
     } catch {
-      await toastError(ChargesListMessage.GET_MANY_ERROR);
+      await toastError(ChargesMessage.GET_MANY_ERROR);
     
     } finally {
       setLoading(false);
@@ -154,13 +154,13 @@ export const ChargesListsList = (props: ChargesListsListProps) => {
   };
 
   const refreshOnClick = () => {
-    setQuery(INITIAL_CHARGES_LIST_QUERY);
+    setQuery(INITIAL_CHARGES_QUERY);
   };
 
-  const dateValidators: Validators<ChargesListQueryType> = {
+  const dateValidators: Validators<ChargesQueryType> = {
     to_date: () => {
       if (query.from_date && query.to_date && query.to_date < query.from_date) {
-        return ChargesListMessage.END_DATE_INVALID;
+        return ChargesMessage.END_DATE_INVALID;
       } 
       return null;
     }

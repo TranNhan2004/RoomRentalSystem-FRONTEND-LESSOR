@@ -1,13 +1,13 @@
-import { ChargesListAdd } from "@/components/main/rental-room/charges-list/ChargesListAdd";
+import { ChargesAdd } from "@/components/main/rental-room/charges/ChargesAdd";
 import { Metadata } from "next";
                                   
 export const metadata: Metadata = {
-  title: "Add a new charges list",
-  description: "Add a new charges list page.",
+  title: "Add a new charges",
+  description: "Add a new charges page.",
 };
 
                                   
-export default async function ChargesListAddPage({
+export default async function ChargesAddPage({
   params,
 }: {
   params: Promise<{
@@ -18,7 +18,7 @@ export default async function ChargesListAddPage({
 
   return (
     <>
-      <ChargesListAdd roomId={roomId} />
+      <ChargesAdd roomId={roomId} />
     </>
   );
 };

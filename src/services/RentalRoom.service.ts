@@ -1,12 +1,12 @@
 import { 
-  ChargesListQueryType,
-  ChargesListType,
+  ChargesQueryType,
+  ChargesType,
   MonitoringRentalQueryType,
   MonitoringRentalType,
-  MonthlyChargesDetailsQueryType,
-  MonthlyChargesDetailsType,
-  RentalRoomImageQueryType, 
-  RentalRoomImageType, 
+  MonthlyRoomInvoiceQueryType,
+  MonthlyRoomInvoiceType,
+  RoomImageQueryType, 
+  RoomImageType, 
   RentalRoomQueryType, 
   RentalRoomType,
   RoomCodeQueryType,
@@ -15,7 +15,7 @@ import {
 import { ApiService } from "./Api.service";
 import { formatDate } from "@/lib/client/format";
 
-const smoothData = async (data: ChargesListType) => {
+const smoothData = async (data: ChargesType) => {
   const dataToSend: Record<string, unknown> = { ...data };
   if (data.start_date) {
     dataToSend.start_date = formatDate(data.start_date, 'ymd');
@@ -36,40 +36,40 @@ ApiService<
   }
 };
 
-class RentalRoomImageService extends 
+class RoomImageService extends 
 ApiService<
-  RentalRoomImageType, 
-  RentalRoomImageQueryType
+  RoomImageType, 
+  RoomImageQueryType
 > {
 
   constructor() {
-    super('/app.rental-room/rental-room-images');
+    super('/app.rental-room/room-images');
   }
 
-  public async post(data: RentalRoomImageType) {
+  public async post(data: RoomImageType) {
     return await super.post(data, true);
   }
 
-  public async patch(id: string, data: RentalRoomImageType) {
+  public async patch(id: string, data: RoomImageType) {
     return await super.patch(id, data, true);
   }
 };
 
-class ChargesListService extends 
+class ChargesService extends 
 ApiService<
-  ChargesListType, 
-  ChargesListQueryType
+  ChargesType, 
+  ChargesQueryType
 > {
 
   constructor() {
-    super('/app.rental-room/charges-lists');
+    super('/app.rental-room/charges');
   }
 
-  public async post(data: ChargesListType) {
+  public async post(data: ChargesType) {
     return await super.post(await smoothData(data));
   }
 
-  public async patch(id: string, data: ChargesListType) {
+  public async patch(id: string, data: ChargesType) {
     return await super.patch(id, await smoothData(data));
   }
 };
@@ -85,14 +85,14 @@ ApiService<
   }
 };
 
-class MonthlyChargesDetailsService extends 
+class MonthlyRoomInvoiceService extends 
 ApiService<
-  MonthlyChargesDetailsType, 
-  MonthlyChargesDetailsQueryType
+  MonthlyRoomInvoiceType, 
+  MonthlyRoomInvoiceQueryType
 > {
 
   constructor() {
-    super('/app.rental-room/monthly-charges-details');
+    super('/app.rental-room/monthly-room-invoices');
   }
 };
 
@@ -109,8 +109,8 @@ ApiService<
 
 
 export const rentalRoomService = new RentalRoomService();
-export const chargesListService = new ChargesListService();
-export const rentalRoomImageService = new RentalRoomImageService();
+export const chargesService = new ChargesService();
+export const roomImageService = new RoomImageService();
 export const roomCodeService = new RoomCodeService();
-export const monthlyChargesDetailsService = new MonthlyChargesDetailsService();
+export const monthlyRoomInvoiceService = new MonthlyRoomInvoiceService();
 export const monitoringRentalService = new MonitoringRentalService();

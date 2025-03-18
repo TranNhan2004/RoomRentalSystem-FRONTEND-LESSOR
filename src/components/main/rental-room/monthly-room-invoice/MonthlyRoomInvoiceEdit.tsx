@@ -1,34 +1,34 @@
 'use client';
                           
 import React, { useEffect, useState } from 'react';
-import { INITIAL_MONTHLY_CHARGES_DETAILS } from '@/initials/RentalRoom.initial';
-import { MonthlyChargesDetailsType } from '@/types/RentalRoom.type';
+import { INITIAL_MONTHLY_ROOM_INVOICE } from '@/initials/RentalRoom.initial';
+import { MonthlyRoomInvoiceType } from '@/types/RentalRoom.type';
 import { useRouter } from 'next/navigation';
-import { MonthlyChargesDetailsForm } from './MonthlyChargesDetailsForm';
+import { MonthlyRoomInvoiceForm } from './MonthlyRoomInvoiceForm';
 import { toastError, toastSuccess } from '@/lib/client/alert';
-import { MonthlyChargesDetailsMessage } from '@/messages/RentalRoom.message';
+import { MonthlyRoomInvoiceMessage } from '@/messages/RentalRoom.message';
 import { AxiosError } from 'axios';
 import { GeneralMessage } from '@/messages/General.message';
-import { monthlyChargesDetailsService } from '@/services/RentalRoom.service';
+import { monthlyRoomInvoiceService } from '@/services/RentalRoom.service';
 import { NOT_FOUND_URL } from '@/lib/client/notFoundURL';
 import { Loading } from '@/components/partial/data/Loading';
                         
-type MonthlyChargesDetailsEditProps = {
+type MonthlyRoomInvoiceEditProps = {
   roomId: string;
   roomCodeId: string;
   id: string;
 }
 
-export const MonthlyChargesDetailsEdit = (props: MonthlyChargesDetailsEditProps) => {
+export const MonthlyRoomInvoiceEdit = (props: MonthlyRoomInvoiceEditProps) => {
   const router = useRouter();
-  const [reqData, setReqData] = useState<MonthlyChargesDetailsType>(INITIAL_MONTHLY_CHARGES_DETAILS);
+  const [reqData, setReqData] = useState<MonthlyRoomInvoiceType>(INITIAL_MONTHLY_ROOM_INVOICE);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const data = await monthlyChargesDetailsService.get(props.id);
+        const data = await monthlyRoomInvoiceService.get(props.id);
         setReqData(data);
 
       } catch {
@@ -48,13 +48,13 @@ export const MonthlyChargesDetailsEdit = (props: MonthlyChargesDetailsEditProps)
       return;
     }
 
-    await toastError(MonthlyChargesDetailsMessage.PATCH_ERROR);
+    await toastError(MonthlyRoomInvoiceMessage.PATCH_ERROR);
   };
 
   const patchData = async (actionAfter?: () => void) => {
     try {
-      await monthlyChargesDetailsService.patch(props.id, reqData);
-      await toastSuccess(MonthlyChargesDetailsMessage.PATCH_SUCCESS);
+      await monthlyRoomInvoiceService.patch(props.id, reqData);
+      await toastSuccess(MonthlyRoomInvoiceMessage.PATCH_SUCCESS);
       actionAfter?.();
     
     } catch (error) {
@@ -77,7 +77,7 @@ export const MonthlyChargesDetailsEdit = (props: MonthlyChargesDetailsEditProps)
   }
 
   return (
-    <MonthlyChargesDetailsForm
+    <MonthlyRoomInvoiceForm
       formLabel='Chỉnh sửa hóa đơn tiền trọ hằng tháng' 
       mode='edit'
       roomCodeId={props.roomCodeId}

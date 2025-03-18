@@ -4,32 +4,32 @@ import React, { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import { ActionButton } from '@/components/partial/button/ActionButton';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
-import { RentalRoomImageType } from '@/types/RentalRoom.type';
-import { rentalRoomImageService } from '@/services/RentalRoom.service';
+import { RoomImageType } from '@/types/RentalRoom.type';
+import { roomImageService } from '@/services/RentalRoom.service';
 import { handleDeleteAlert, toastError, toastSuccess } from '@/lib/client/alert';
-import { RentalRoomImageMessage } from '@/messages/RentalRoom.message';
-import { INITIAL_RENTAL_ROOM_IMAGE } from '@/initials/RentalRoom.initial';
+import { RoomImageMessage } from '@/messages/RentalRoom.message';
+import { INITIAL_ROOM_IMAGE } from '@/initials/RentalRoom.initial';
 
 type RoomImagesListProps = {
   roomId: string;
 }
 
 export const RoomImagesList = (props: RoomImagesListProps) => {
-  const [data, setData] = useState<RentalRoomImageType[]>([]);
+  const [data, setData] = useState<RoomImageType[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [thumbnailOffset, setThumbnailOffset] = useState(0); 
   const [isSubmitted, setIsSubmitted] = useState(false);
 
-  const [uploadedImage, setUploadedImage] = useState<RentalRoomImageType>(INITIAL_RENTAL_ROOM_IMAGE);
+  const [uploadedImage, setUploadedImage] = useState<RoomImageType>(INITIAL_ROOM_IMAGE);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data = await rentalRoomImageService.getMany({ rental_room: props.roomId });
+        const data = await roomImageService.getMany({ rental_room: props.roomId });
         setData(data);
       } catch {
-        await toastError(RentalRoomImageMessage.GET_MANY_ERROR);
+        await toastError(RoomImageMessage.GET_MANY_ERROR);
       }
     };
 
@@ -58,8 +58,8 @@ export const RoomImagesList = (props: RoomImagesListProps) => {
     await handleDeleteAlert(async () => {
       try {
         setIsSubmitted(true);
-        await rentalRoomImageService.delete(data[currentIndex].id ?? '');
-        await toastSuccess(RentalRoomImageMessage.DELETE_SUCCESS);
+        await roomImageService.delete(data[currentIndex].id ?? '');
+        await toastSuccess(RoomImageMessage.DELETE_SUCCESS);
   
         const newImages = data.filter((_, index) => index !== currentIndex);
         setData(newImages);
@@ -72,7 +72,7 @@ export const RoomImagesList = (props: RoomImagesListProps) => {
         }
     
       } catch {
-        await toastError(RentalRoomImageMessage.DELETE_ERROR);
+        await toastError(RoomImageMessage.DELETE_ERROR);
       
       } finally {
         setIsSubmitted(false);
@@ -103,11 +103,11 @@ export const RoomImagesList = (props: RoomImagesListProps) => {
   const confirmOnClick = async () => {
     try {
       setIsSubmitted(true);
-      const image = await rentalRoomImageService.post({ 
+      const image = await roomImageService.post({ 
         ...uploadedImage, 
         rental_room: props.roomId 
       });
-      await toastSuccess(RentalRoomImageMessage.POST_SUCCESS);
+      await toastSuccess(RoomImageMessage.POST_SUCCESS);
       setData((prevData) => {
         const newData = [...prevData, image];
         setCurrentIndex(newData.length - 1); 
@@ -115,10 +115,10 @@ export const RoomImagesList = (props: RoomImagesListProps) => {
       });
     
     } catch {
-      await toastError(RentalRoomImageMessage.POST_ERROR);
+      await toastError(RoomImageMessage.POST_ERROR);
 
     } finally {
-      setUploadedImage(INITIAL_RENTAL_ROOM_IMAGE);
+      setUploadedImage(INITIAL_ROOM_IMAGE);
       setIsSubmitted(false);
       if (fileInputRef.current) {
         fileInputRef.current.value = '';
@@ -128,7 +128,7 @@ export const RoomImagesList = (props: RoomImagesListProps) => {
   };
 
   const cancelOnClick = () => {
-    setUploadedImage(INITIAL_RENTAL_ROOM_IMAGE);
+    setUploadedImage(INITIAL_ROOM_IMAGE);
     setIsSubmitted(false);
     if (fileInputRef.current) {
       fileInputRef.current.value = '';
@@ -141,14 +141,17 @@ export const RoomImagesList = (props: RoomImagesListProps) => {
         {
           data.length > 0 ? (
             <div className='relative'>
-              <div className='flex justify-center items-center w-full h-80 rounded-lg overflow-hidden'>
-                <Image
-                  src={data[currentIndex].image as string}
-                  alt='Image Carousel'
-                  className='object-contain max-w-full max-h-full rounded-lg'
-                  width={200}
-                  height={200}
-                />
+              <div className='flex justify-center items-center rounded-lg overflow-hidden'>
+                <div className='w-64 h-96'>
+                  <Image
+                    src={data[currentIndex].image as string}
+                    alt='Image Carousel'
+                    width={640}
+                    height={900}
+                    className="object-cover w-full h-full rounded-sm"
+                    unoptimized
+                  />
+                </div>
               </div>
 
               <div className='flex justify-center items-center mt-4 space-x-2'>
@@ -174,6 +177,7 @@ export const RoomImagesList = (props: RoomImagesListProps) => {
                             className='w-full h-full object-cover'
                             width={80}
                             height={80}
+                            unoptimized
                           />
                         </div>
                       );
@@ -219,6 +223,7 @@ export const RoomImagesList = (props: RoomImagesListProps) => {
                   width={150}
                   height={150}
                   className='object-cover rounded-lg'
+                  unoptimized
                 />
               </div>
             </div>

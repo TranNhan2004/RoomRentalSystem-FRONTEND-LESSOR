@@ -8,18 +8,18 @@ import { handleCancelAlert } from '@/lib/client/alert';
 import { handleInputChange } from '@/lib/client/handleInputChange';
 import { useRouter } from 'next/navigation';
 import { Validators } from '@/types/Validators.type';
-import { ChargesListType } from '@/types/RentalRoom.type';
-import { ChargesListMessage } from '@/messages/RentalRoom.message';
+import { ChargesType } from '@/types/RentalRoom.type';
+import { ChargesMessage } from '@/messages/RentalRoom.message';
 import { formatDate } from '@/lib/client/format';
 
 
-type ChargesListFormProps = {
+type ChargesFormProps = {
   roomId: string;
-  reqData: ChargesListType;
-  setReqData: React.Dispatch<React.SetStateAction<ChargesListType>>;
-} & Omit<DataFormProps<ChargesListType>, 'children' | 'cancelOnClick' | 'validators'>;
+  reqData: ChargesType;
+  setReqData: React.Dispatch<React.SetStateAction<ChargesType>>;
+} & Omit<DataFormProps<ChargesType>, 'children' | 'cancelOnClick' | 'validators'>;
 
-export const ChargesListForm = (props: ChargesListFormProps) => {
+export const ChargesForm = (props: ChargesFormProps) => {
   const router = useRouter();
   
   const cancelOnClick = async () => {
@@ -32,74 +32,74 @@ export const ChargesListForm = (props: ChargesListFormProps) => {
     return handleInputChange(e, props.setReqData);
   };
     
-  const validators: Validators<ChargesListType> = {
+  const validators: Validators<ChargesType> = {
     room_charge: () =>{
       if (!props.reqData.room_charge) {
-        return ChargesListMessage.ROOM_CHARGE_REQUIRED;
+        return ChargesMessage.ROOM_CHARGE_REQUIRED;
       }
       if (props.reqData.room_charge < 0) {
-        return ChargesListMessage.ROOM_CHARGE_INVALID;
+        return ChargesMessage.ROOM_CHARGE_INVALID;
       }
       return null;
     },
 
     deposit: () =>{
       if (!props.reqData.deposit) {
-        return ChargesListMessage.DEPOSIT_REQUIRED;
+        return ChargesMessage.DEPOSIT_REQUIRED;
       }
       if (props.reqData.deposit < 0) {
-        return ChargesListMessage.DEPOSIT_INVALID;
+        return ChargesMessage.DEPOSIT_INVALID;
       }
       return null;
     },
 
     electricity_charge: () =>{
       if (!props.reqData.electricity_charge) {
-        return ChargesListMessage.ELECTRICITY_CHARGE_REQUIRED;
+        return ChargesMessage.ELECTRICITY_CHARGE_REQUIRED;
       }
       if (props.reqData.electricity_charge < 0) {
-        return ChargesListMessage.ELECTRICITY_CHARGE_INVALID;
+        return ChargesMessage.ELECTRICITY_CHARGE_INVALID;
       }
       return null;
     },
 
     water_charge: () =>{
       if (!props.reqData.water_charge) {
-        return ChargesListMessage.WATER_CHARGE_REQUIRED;
+        return ChargesMessage.WATER_CHARGE_REQUIRED;
       }
       if (props.reqData.water_charge < 0) {
-        return ChargesListMessage.WATER_CHARGE_INVALID;
+        return ChargesMessage.WATER_CHARGE_INVALID;
       }
       return null;
     },
 
     wifi_charge: () =>{
       if (!props.reqData.wifi_charge) {
-        return ChargesListMessage.WIFI_CHARGE_REQUIRED;
+        return ChargesMessage.WIFI_CHARGE_REQUIRED;
       }
       if (props.reqData.wifi_charge < -1) {
-        return ChargesListMessage.WIFI_CHARGE_INVALID;
+        return ChargesMessage.WIFI_CHARGE_INVALID;
       }
       return null;
     },
     
     rubbish_charge: () =>{
       if (!props.reqData.rubbish_charge) {
-        return ChargesListMessage.RUBBISH_CHARGE_REQUIRED;
+        return ChargesMessage.RUBBISH_CHARGE_REQUIRED;
       }
       if (props.reqData.rubbish_charge < 0) {
-        return ChargesListMessage.RUBBISH_CHARGE_INVALID;
+        return ChargesMessage.RUBBISH_CHARGE_INVALID;
       }
       return null;
     },
 
     start_date: () =>{
       if (!props.reqData.start_date) {
-        return ChargesListMessage.START_DATE_REQUIRED;
+        return ChargesMessage.START_DATE_REQUIRED;
       }
       
       if (formatDate(props.reqData.start_date, 'ymd') < formatDate(new Date(), 'ymd')) {
-        return ChargesListMessage.START_DATE_INVALID;
+        return ChargesMessage.START_DATE_INVALID;
       }
       return null;
     },  

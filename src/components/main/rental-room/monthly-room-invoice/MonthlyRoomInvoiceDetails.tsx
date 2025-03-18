@@ -1,31 +1,31 @@
 'use client';
                           
 import React, { useEffect, useState } from 'react';
-import { INITIAL_MONTHLY_CHARGES_DETAILS } from '@/initials/RentalRoom.initial';
-import { MonthlyChargesDetailsType } from '@/types/RentalRoom.type';
+import { INITIAL_MONTHLY_ROOM_INVOICE } from '@/initials/RentalRoom.initial';
+import { MonthlyRoomInvoiceType } from '@/types/RentalRoom.type';
 import { useRouter } from 'next/navigation';
-import { monthlyChargesDetailsService } from '@/services/RentalRoom.service';
+import { monthlyRoomInvoiceService } from '@/services/RentalRoom.service';
 import { NOT_FOUND_URL } from '@/lib/client/notFoundURL';
 import { Loading } from '@/components/partial/data/Loading';
 import { DataDetails } from '@/components/partial/data/DataDetails';
 import { formatCurrency, formatDate } from '@/lib/client/format';
                         
-type MonthlyChargesDetailsDetailsProps = {
+type MonthlyRoomInvoiceDetailsProps = {
   roomId: string;
   roomCodeId: string;
   id: string;
 }
 
-export const MonthlyChargesDetailsDetails = (props: MonthlyChargesDetailsDetailsProps) => {
+export const MonthlyRoomInvoiceDetails = (props: MonthlyRoomInvoiceDetailsProps) => {
   const router = useRouter();
-  const [data, setData] = useState<MonthlyChargesDetailsType>(INITIAL_MONTHLY_CHARGES_DETAILS);
+  const [data, setData] = useState<MonthlyRoomInvoiceType>(INITIAL_MONTHLY_ROOM_INVOICE);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const data = await monthlyChargesDetailsService.get(props.id);
+        const data = await monthlyRoomInvoiceService.get(props.id);
         setData(data);
 
       } catch {

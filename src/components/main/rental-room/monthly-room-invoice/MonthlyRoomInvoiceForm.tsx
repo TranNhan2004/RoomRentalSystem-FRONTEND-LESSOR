@@ -8,19 +8,19 @@ import { handleCancelAlert } from '@/lib/client/alert';
 import { handleInputChange } from '@/lib/client/handleInputChange';
 import { useRouter } from 'next/navigation';
 import { Validators } from '@/types/Validators.type';
-import { MonthlyChargesDetailsType } from '@/types/RentalRoom.type';
-import { MonthlyChargesDetailsMessage } from '@/messages/RentalRoom.message';
+import { MonthlyRoomInvoiceType } from '@/types/RentalRoom.type';
+import { MonthlyRoomInvoiceMessage } from '@/messages/RentalRoom.message';
 
 
-type MonthlyChargesDetailsFormProps = {
+type MonthlyRoomInvoiceFormProps = {
   mode: 'add' | 'edit';
   roomId: string;
   roomCodeId: string;
-  reqData: MonthlyChargesDetailsType;
-  setReqData: React.Dispatch<React.SetStateAction<MonthlyChargesDetailsType>>;
-} & Omit<DataFormProps<MonthlyChargesDetailsType>, 'children' | 'cancelOnClick' | 'validators'>;
+  reqData: MonthlyRoomInvoiceType;
+  setReqData: React.Dispatch<React.SetStateAction<MonthlyRoomInvoiceType>>;
+} & Omit<DataFormProps<MonthlyRoomInvoiceType>, 'children' | 'cancelOnClick' | 'validators'>;
 
-export const MonthlyChargesDetailsForm = (props: MonthlyChargesDetailsFormProps) => {
+export const MonthlyRoomInvoiceForm = (props: MonthlyRoomInvoiceFormProps) => {
   const router = useRouter();
   
   const cancelOnClick = async () => {
@@ -42,25 +42,25 @@ export const MonthlyChargesDetailsForm = (props: MonthlyChargesDetailsFormProps)
     }
   };
     
-  const validators: Validators<MonthlyChargesDetailsType> = {
+  const validators: Validators<MonthlyRoomInvoiceType> = {
     old_kWh_reading: () => {
       if (props.reqData.created_mode === 'auto') {
         return null;
       }
       if (!props.reqData.old_kWh_reading) {
-        return MonthlyChargesDetailsMessage.OLD_KWH_READING_REQUIRED;
+        return MonthlyRoomInvoiceMessage.OLD_KWH_READING_REQUIRED;
       }
       if (props.reqData.old_kWh_reading < 0) {
-        return MonthlyChargesDetailsMessage.OLD_KWH_READING_INVALID;
+        return MonthlyRoomInvoiceMessage.OLD_KWH_READING_INVALID;
       }
       return null;
     },
     new_kWh_reading: () => {
       if (!props.reqData.new_kWh_reading) {
-        return MonthlyChargesDetailsMessage.NEW_KWH_READING_REQUIRED;
+        return MonthlyRoomInvoiceMessage.NEW_KWH_READING_REQUIRED;
       }
       if (props.reqData.old_kWh_reading && props.reqData.new_kWh_reading < props.reqData.old_kWh_reading) {
-        return MonthlyChargesDetailsMessage.NEW_KWH_READING_INVALID;
+        return MonthlyRoomInvoiceMessage.NEW_KWH_READING_INVALID;
       }
       return null;
     },
@@ -69,19 +69,19 @@ export const MonthlyChargesDetailsForm = (props: MonthlyChargesDetailsFormProps)
         return null;
       }
       if (!props.reqData.old_m3_reading) {
-        return MonthlyChargesDetailsMessage.OLD_M3_READING_REQUIRED;
+        return MonthlyRoomInvoiceMessage.OLD_M3_READING_REQUIRED;
       }
       if (props.reqData.old_m3_reading < 0) {
-        return MonthlyChargesDetailsMessage.OLD_M3_READING_INVALID;
+        return MonthlyRoomInvoiceMessage.OLD_M3_READING_INVALID;
       }
       return null;
     },
     new_m3_reading: () => {
       if (!props.reqData.new_m3_reading) {
-        return MonthlyChargesDetailsMessage.NEW_M3_READING_REQUIRED;
+        return MonthlyRoomInvoiceMessage.NEW_M3_READING_REQUIRED;
       }
       if (props.reqData.old_m3_reading && props.reqData.new_m3_reading < props.reqData.old_m3_reading) {
-        return MonthlyChargesDetailsMessage.NEW_M3_READING_INVALID;
+        return MonthlyRoomInvoiceMessage.NEW_M3_READING_INVALID;
       }
       return null;
     },
@@ -90,13 +90,13 @@ export const MonthlyChargesDetailsForm = (props: MonthlyChargesDetailsFormProps)
         return null;
       }
       if (!props.reqData.paid_charge) {
-        return MonthlyChargesDetailsMessage.PAID_CHARGE_REQUIRED;
+        return MonthlyRoomInvoiceMessage.PAID_CHARGE_REQUIRED;
       }
       if (props.reqData.paid_charge < 0) {
-        return MonthlyChargesDetailsMessage.PAID_CHARGE_INVALID;
+        return MonthlyRoomInvoiceMessage.PAID_CHARGE_INVALID;
       }
       if (props.reqData.due_charge && props.reqData.paid_charge > props.reqData.due_charge) {
-        return MonthlyChargesDetailsMessage.PAID_CHARGE_INVALID_2;
+        return MonthlyRoomInvoiceMessage.PAID_CHARGE_INVALID_2;
       }
       return null;
     },

@@ -10,7 +10,7 @@ import { RoomCodeType } from '@/types/RentalRoom.type';
 import { roomCodeService } from '@/services/RentalRoom.service';
 import { ActionButton } from '@/components/partial/button/ActionButton';
 import { MonitoringRentalsList } from '../monitoring-rental/MonitoringRentalsList';
-import { MonthlyChargesDetailsList } from '../monthly-charges-details/MonthlyChargesDetailsList';
+import { MonthlyRoomInvoiceList } from '../monthly-room-invoice/MonthlyRoomInvoicesList';
 
 type RoomCodeDetailsProps = {
   roomId: string;
@@ -91,7 +91,7 @@ export const RoomCodeDetails = (props: RoomCodeDetailsProps) => {
       </div>
 
       <div className='mt-10'>
-        <MonthlyChargesDetailsList roomCodeId={props.id} />
+        <MonthlyRoomInvoiceList roomCodeId={props.id} />
       </div>
     </>
   );

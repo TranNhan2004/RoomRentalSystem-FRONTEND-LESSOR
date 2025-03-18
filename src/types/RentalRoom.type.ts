@@ -8,8 +8,8 @@ export type RentalRoomType = {
   additional_address?: string;
   closing_time?: string;
   total_number?: number;
-  _room_charge?: ChargesListType['room_charge'];
-  _image?: RentalRoomImageType['image'];
+  _room_charge?: ChargesType['room_charge'];
+  _image?: RoomImageType['image'];
   further_description?: string;
   average_rating?: number;
   lessor?: string;
@@ -26,7 +26,7 @@ export type RentalRoomQueryType = {
   _district?: DistrictType['id'];
 };
 
-export type ChargesListType = {
+export type ChargesType = {
   id?: string;
   rental_room?: string;
   room_charge?: number;
@@ -48,7 +48,7 @@ export type RoomCodeType = {
   is_shareable?: boolean;
 }
 
-export type MonthlyChargesDetailsType = {
+export type MonthlyRoomInvoiceType = {
   id?: string;
   room_code?: string;
   old_kWh_reading?: number;
@@ -76,19 +76,19 @@ export type MonitoringRentalType = {
   end_date?: Date;
 }
 
-export type RentalRoomImageType = {
+export type RoomImageType = {
   id?: string;
   rental_room?: string;
   image?: File | string;
 }
 
-export type RentalRoomImageQueryType = {
-  rental_room?: RentalRoomImageType['rental_room'];
+export type RoomImageQueryType = {
+  rental_room?: RoomImageType['rental_room'];
   mode?: 'first' | 'many';
 }
 
-export type ChargesListQueryType = {
-  rental_room?: ChargesListType['rental_room'];
+export type ChargesQueryType = {
+  rental_room?: ChargesType['rental_room'];
   from_date?: Date | string;
   to_date?: Date | string;
   mode?: 'first' | 'many';
@@ -98,9 +98,9 @@ export type RoomCodeQueryType = {
   rental_room?: RoomCodeType['rental_room'];
 }
 
-export type MonthlyChargesDetailsQueryType = {
-  room_code?: MonthlyChargesDetailsType['room_code'];
-  is_settled?: MonthlyChargesDetailsType['is_settled'];
+export type MonthlyRoomInvoiceQueryType = {
+  room_code?: MonthlyRoomInvoiceType['room_code'];
+  is_settled?: MonthlyRoomInvoiceType['is_settled'];
   from_created_date?: Date | string;
   to_created_date?: Date | string;
 }

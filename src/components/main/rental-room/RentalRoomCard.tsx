@@ -3,7 +3,7 @@
 import React from 'react';
 import Image from 'next/image';
 import { CheckCircleIcon, XCircleIcon } from '@heroicons/react/24/outline';
-import { RentalRoomType, RentalRoomImageType, ChargesListType } from '@/types/RentalRoom.type';
+import { RentalRoomType, RoomImageType, ChargesType } from '@/types/RentalRoom.type';
 import { RatingStar } from '@/components/partial/data/RatingStar';
 import { ActionButton } from '@/components/partial/button/ActionButton';
 import { getImageSrc } from '@/lib/client/getImageSrc';
@@ -14,8 +14,8 @@ type RentalRoomCardProps = {
   name: RentalRoomType['name'];
   manager: RentalRoomType['manager'];
   averageRating: RentalRoomType['average_rating'];
-  image?: RentalRoomImageType['image'];
-  roomCharge?: ChargesListType['room_charge'];
+  image?: RoomImageType['image'];
+  roomCharge?: ChargesType['room_charge'];
   detailsFunction?: (id: string) => void;
   deleteFunction?: (id: string) => void;
 };
@@ -30,6 +30,7 @@ export const RentalRoomCard = (props: RentalRoomCardProps) => {
           width={560}
           height={480}
           className="object-cover w-full h-full"
+          unoptimized
         />
       </div>
 

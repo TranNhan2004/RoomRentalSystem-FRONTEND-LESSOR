@@ -17,7 +17,7 @@ export class RentalRoomMessage {
   public static readonly DELETE_SUCCESS = 'Xóa phòng trọ thành công!';
 }
 
-export class RentalRoomImageMessage {
+export class RoomImageMessage {
   public static readonly GET_MANY_ERROR = 'Đã xảy ra lỗi khi lấy danh sách các ảnh trọ!';
   public static readonly POST_ERROR = 'Đã xảy ra lỗi khi thêm ảnh mới!';
   public static readonly DELETE_ERROR = 'Đã xảy ra lỗi khi xóa ảnh!';
@@ -26,7 +26,7 @@ export class RentalRoomImageMessage {
   public static readonly DELETE_SUCCESS = 'Xóa ảnh thành công!';
 }
 
-export class ChargesListMessage {
+export class ChargesMessage {
   public static readonly BACKEND_POST_INVALID = 'There is an existing rental with a null end date.';
   
   public static readonly ROOM_CHARGE_REQUIRED = 'Giá phòng trọ không được để trống!';
@@ -115,7 +115,7 @@ export class MonitoringRentalMessage {
   public static readonly DELETE_SUCCESS = 'Xóa bản ghi theo dõi cho thuê thành công!';
 }
 
-export class MonthlyChargesDetailsMessage {
+export class MonthlyRoomInvoiceMessage {
   public static readonly BACKEND_CHARGES_LIST_NOT_FOUND = 'Charges list not found for this room.';
   public static readonly BACKEND_UNSETTLED_RECORD_EXIST = 'There is an existing unsettled record.';
   public static readonly BACKEND_PREV_RECORD_NOT_FOUND = 'Previous record not found.';

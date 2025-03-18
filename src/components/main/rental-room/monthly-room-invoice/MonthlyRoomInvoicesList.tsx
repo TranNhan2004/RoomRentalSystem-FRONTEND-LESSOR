@@ -12,10 +12,10 @@ import { AxiosError } from 'axios';
 import { GeneralMessage } from '@/messages/General.message';
 import { FilterModal } from '@/components/partial/data/FilterModal';
 import { Label } from '@/components/partial/form/Label';
-import { MonthlyChargesDetailsQueryType, MonthlyChargesDetailsType } from '@/types/RentalRoom.type';
-import { INITIAL_MONTHLY_CHARGES_DETAILS_QUERY } from '@/initials/RentalRoom.initial';
-import { monthlyChargesDetailsService } from '@/services/RentalRoom.service';
-import { MonthlyChargesDetailsMessage } from '@/messages/RentalRoom.message';
+import { MonthlyRoomInvoiceQueryType, MonthlyRoomInvoiceType } from '@/types/RentalRoom.type';
+import { INITIAL_MONTHLY_ROOM_INVOICE_QUERY } from '@/initials/RentalRoom.initial';
+import { monthlyRoomInvoiceService } from '@/services/RentalRoom.service';
+import { MonthlyRoomInvoiceMessage } from '@/messages/RentalRoom.message';
 import { DataLine } from '@/components/partial/data/DataLine';
 import { handleInputChange } from '@/lib/client/handleInputChange';
 import { Input } from '@/components/partial/form/Input';
@@ -24,29 +24,29 @@ import { formatCurrency, formatDate } from '@/lib/client/format';
 import { Select } from '@/components/partial/form/Select';
 
                           
-type MonthlyChargesDetailsListProps = {
+type MonthlyRoomInvoiceListProps = {
   roomCodeId: string;
 }
 
-export const MonthlyChargesDetailsList = (props: MonthlyChargesDetailsListProps) => {
+export const MonthlyRoomInvoiceList = (props: MonthlyRoomInvoiceListProps) => {
   const router = useRouter();
   
-  const [data, setData] = useState<MonthlyChargesDetailsType[]>([]);
-  const [query, setQuery] = useState<MonthlyChargesDetailsQueryType>(INITIAL_MONTHLY_CHARGES_DETAILS_QUERY);
+  const [data, setData] = useState<MonthlyRoomInvoiceType[]>([]);
+  const [query, setQuery] = useState<MonthlyRoomInvoiceQueryType>(INITIAL_MONTHLY_ROOM_INVOICE_QUERY);
   const [loading, setLoading] = useState(true);
   
-  const originialDataRef = useRef<MonthlyChargesDetailsType[]>([]);
+  const originialDataRef = useRef<MonthlyRoomInvoiceType[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const data = await monthlyChargesDetailsService.getMany({ room_code: props.roomCodeId });
+        const data = await monthlyRoomInvoiceService.getMany({ room_code: props.roomCodeId });
         originialDataRef.current = data;
         setData([...originialDataRef.current]);
 
       } catch {
-        await toastError(MonthlyChargesDetailsMessage.GET_MANY_ERROR);
+        await toastError(MonthlyRoomInvoiceMessage.GET_MANY_ERROR);
     
       } finally {
         setLoading(false);
@@ -79,14 +79,14 @@ export const MonthlyChargesDetailsList = (props: MonthlyChargesDetailsListProps)
       return;
     }
 
-    await toastError(MonthlyChargesDetailsMessage.DELETE_ERROR);
+    await toastError(MonthlyRoomInvoiceMessage.DELETE_ERROR);
   };
 
   const deleteFunction = async (id: string) => {
     await handleDeleteAlert(async () => {
       try {
-        await monthlyChargesDetailsService.delete(id);
-        await toastSuccess(MonthlyChargesDetailsMessage.DELETE_SUCCESS);
+        await monthlyRoomInvoiceService.delete(id);
+        await toastSuccess(MonthlyRoomInvoiceMessage.DELETE_SUCCESS);
         originialDataRef.current = originialDataRef.current.filter(item => item.id !== id);
         setData(originialDataRef.current); 
       
@@ -103,8 +103,8 @@ export const MonthlyChargesDetailsList = (props: MonthlyChargesDetailsListProps)
   const settleFunction = async (id: string) => {
     const confirmedMethod = async () => {
       try {
-        await monthlyChargesDetailsService.patch(id, { is_settled: true });
-        await toastSuccess(MonthlyChargesDetailsMessage.SETTLE_SUCCESS);
+        await monthlyRoomInvoiceService.patch(id, { is_settled: true });
+        await toastSuccess(MonthlyRoomInvoiceMessage.SETTLE_SUCCESS);
       
         const data = originialDataRef.current.find(data => data.id === id);
         if (data && !data.is_settled) {  
@@ -113,11 +113,11 @@ export const MonthlyChargesDetailsList = (props: MonthlyChargesDetailsListProps)
         }
       
       } catch {
-        await toastError(MonthlyChargesDetailsMessage.SETTLE_ERROR);
+        await toastError(MonthlyRoomInvoiceMessage.SETTLE_ERROR);
       }
     };
 
-    await handleGeneralAlert(MonthlyChargesDetailsMessage.SETTLE_WARNING, confirmedMethod);
+    await handleGeneralAlert(MonthlyRoomInvoiceMessage.SETTLE_WARNING, confirmedMethod);
   };
 
   const settleDisabledFunction = (id: string) => {
@@ -126,11 +126,11 @@ export const MonthlyChargesDetailsList = (props: MonthlyChargesDetailsListProps)
   };
 
   const detailsFunction = (id: string) => {
-    router.push(`${props.roomCodeId}/monthly-charges-details/${id}`);
+    router.push(`${props.roomCodeId}/monthly-room-invoices/${id}`);
   };
 
   const editFunction = (id: string) => {
-    router.push(`${props.roomCodeId}/monthly-charges-details/${id}/edit`);
+    router.push(`${props.roomCodeId}/monthly-room-invoices/${id}/edit`);
   };
 
   const editDisabledFunction = (id: string) => {
@@ -138,13 +138,13 @@ export const MonthlyChargesDetailsList = (props: MonthlyChargesDetailsListProps)
   };
 
   const addOnClick = () => {
-    router.push(`${props.roomCodeId}/monthly-charges-details/add`);
+    router.push(`${props.roomCodeId}/monthly-room-invoices/add`);
   };
 
   const filterOnClick = async () => {
     try {
       setLoading(true);
-      const data = await monthlyChargesDetailsService.getMany({
+      const data = await monthlyRoomInvoiceService.getMany({
         ...query, 
         room_code: props.roomCodeId,
         from_created_date: formatDate(query.from_created_date as Date, 'ymd'),
@@ -155,7 +155,7 @@ export const MonthlyChargesDetailsList = (props: MonthlyChargesDetailsListProps)
       setData(data);
       
     } catch {
-      await toastError(MonthlyChargesDetailsMessage.GET_MANY_ERROR);
+      await toastError(MonthlyRoomInvoiceMessage.GET_MANY_ERROR);
     
     } finally {
       setLoading(false);
@@ -163,13 +163,13 @@ export const MonthlyChargesDetailsList = (props: MonthlyChargesDetailsListProps)
   };
 
   const refreshOnClick = () => {
-    setQuery(INITIAL_MONTHLY_CHARGES_DETAILS_QUERY);
+    setQuery(INITIAL_MONTHLY_ROOM_INVOICE_QUERY);
   };
 
-  const dateValidators: Validators<MonthlyChargesDetailsQueryType> = {
+  const dateValidators: Validators<MonthlyRoomInvoiceQueryType> = {
     to_created_date: () => {
       if (query.from_created_date && query.to_created_date && query.to_created_date < query.from_created_date) {
-        return MonthlyChargesDetailsMessage.END_DATE_INVALID;
+        return MonthlyRoomInvoiceMessage.END_DATE_INVALID;
       } 
       return null;
     }

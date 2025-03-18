@@ -8,14 +8,13 @@ import { InputSearch } from '@/components/partial/data/InputSearch';
 import { Sorting } from '@/components/partial/data/Sorting';
 import { FilterModal } from '@/components/partial/data/FilterModal';
 import { Label } from '@/components/partial/form/Label';
-import { INITIAL_CHARGES_LIST_QUERY } from '@/initials/RentalRoom.initial';
 import { DataLine } from '@/components/partial/data/DataLine';
 import { handleInputChange } from '@/lib/client/handleInputChange';
 import { Input } from '@/components/partial/form/Input';
 import { Validators } from '@/types/Validators.type';
 import { formatDate } from '@/lib/client/format';
 import { ReviewQueryType, ReviewType } from '@/types/Review.type';
-import { INITIAL_REVIEW_QUERY_TYPE } from '@/initials/Review.initial';
+import { INITIAL_REVIEW_QUERY } from '@/initials/Review.initial';
 import { ReviewMessage } from '@/messages/Review.message';
 import { RatingStar } from '@/components/partial/data/RatingStar';
 import { Select } from '@/components/partial/form/Select';
@@ -27,7 +26,7 @@ type ReviewsListProps = {
 
 export const ReviewsList = (props: ReviewsListProps) => {
   const [data, setData] = useState<ReviewType[]>([]);
-  const [query, setQuery] = useState<ReviewQueryType>(INITIAL_REVIEW_QUERY_TYPE);
+  const [query, setQuery] = useState<ReviewQueryType>(INITIAL_REVIEW_QUERY);
   const [loading, setLoading] = useState(true);
   
   const originialDataRef = useRef<ReviewType[]>([]);
@@ -90,7 +89,7 @@ export const ReviewsList = (props: ReviewsListProps) => {
   };
 
   const refreshOnClick = () => {
-    setQuery(INITIAL_CHARGES_LIST_QUERY);
+    setQuery(INITIAL_REVIEW_QUERY);
   };
 
   const dateValidators: Validators<ReviewQueryType> = {

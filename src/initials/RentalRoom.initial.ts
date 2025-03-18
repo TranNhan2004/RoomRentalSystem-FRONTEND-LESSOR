@@ -1,12 +1,12 @@
 import { 
-  ChargesListQueryType,
-  ChargesListType,
+  ChargesQueryType,
+  ChargesType,
   MonitoringRentalQueryType,
   MonitoringRentalType,
-  MonthlyChargesDetailsQueryType,
-  MonthlyChargesDetailsType,
-  RentalRoomImageQueryType,
-  RentalRoomImageType,
+  MonthlyRoomInvoiceQueryType,
+  MonthlyRoomInvoiceType,
+  RoomImageQueryType,
+  RoomImageType,
   RentalRoomQueryType, 
   RentalRoomType,
   RoomCodeQueryType,
@@ -26,13 +26,13 @@ export const INITIAL_RENTAL_ROOM: RentalRoomType = {
   further_description: '',
 } as const;
 
-export const INITIAL_RENTAL_ROOM_IMAGE: RentalRoomImageType = {
+export const INITIAL_ROOM_IMAGE: RoomImageType = {
   id: '',
   image: '',
   rental_room: '',
 } as const;
 
-export const INITIAL_CHARGES_LIST: ChargesListType = {
+export const INITIAL_CHARGES: ChargesType = {
   id: '',
   rental_room: '',
   room_charge: 1000000,
@@ -53,7 +53,7 @@ export const INITIAL_ROOM_CODE: RoomCodeType = {
   is_shareable: false,
 } as const;
 
-export const INITIAL_MONTHLY_CHARGES_DETAILS: MonthlyChargesDetailsType = {
+export const INITIAL_MONTHLY_ROOM_INVOICE: MonthlyRoomInvoiceType = {
   id: '',
   room_code: '',
   old_kWh_reading: 1,
@@ -84,13 +84,13 @@ export const INITIAL_RENTAL_ROOM_QUERY: RentalRoomQueryType = {
   _district: '',
 } as const;
 
-export const INITIAL_CHARGES_LIST_QUERY: ChargesListQueryType = {
+export const INITIAL_CHARGES_QUERY: ChargesQueryType = {
   rental_room: '',
   from_date: new Date(),
   to_date: new Date(),
 } as const;
 
-export const INITIAL_RENTAL_ROOM_IMAGE_QUERY: RentalRoomImageQueryType = {
+export const INITIAL_ROOM_IMAGE_QUERY: RoomImageQueryType = {
   rental_room: '',
 } as const;
 
@@ -98,7 +98,7 @@ export const INITIAL_ROOM_CODE_QUERY: RoomCodeQueryType = {
   rental_room: '',
 } as const;
 
-export const INITIAL_MONTHLY_CHARGES_DETAILS_QUERY: MonthlyChargesDetailsQueryType = {
+export const INITIAL_MONTHLY_ROOM_INVOICE_QUERY: MonthlyRoomInvoiceQueryType = {
   room_code: '',
 } as const;
 
