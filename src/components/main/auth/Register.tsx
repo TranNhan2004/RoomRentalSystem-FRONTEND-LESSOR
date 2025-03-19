@@ -275,6 +275,7 @@ export const Register = () => {
                 ]}
                 onChange={handleGenderChange}
                 validate={validators.gender}
+                notUseEmptyValue
               />
             </div>
           </>

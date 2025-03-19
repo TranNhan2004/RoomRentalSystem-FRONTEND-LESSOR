@@ -13,12 +13,12 @@ import { Validators } from '@/types/Validators.type';
 import { DataForm } from '@/components/partial/data/DataForm';
 import { Label } from '@/components/partial/form/Label';
 import { Input } from '@/components/partial/form/Input';
-import { EMAIL_REG_EXP } from '@/lib/client/isValidForm';
 import { Select } from '@/components/partial/form/Select';
 import { dateStrOfMaxAge, dateStrOfMinAge } from '@/lib/client/dateLimit';
 import { AxiosError } from 'axios';
 import { GeneralMessage } from '@/messages/General.message';
 import { formatDate } from '@/lib/client/format';
+import { CITIZEN_NUMBER_REG_EXP, EMAIL_REG_EXP, PHONE_NUMBER_REG_EXP } from '@/lib/client/isValidForm';
 
 const EditInfo = () => {
   const router = useRouter();
@@ -138,7 +138,7 @@ const EditInfo = () => {
       if (!reqData.phone_number) {
         return UserMessage.PHONE_NUMBER_REQUIRED;
       }
-      if (reqData.phone_number.length !== 10) {
+      if (!PHONE_NUMBER_REG_EXP.test(reqData.phone_number)) {
         return UserMessage.PHONE_NUMBER_FORMAT_ERROR;
       }
       return null;
@@ -148,7 +148,7 @@ const EditInfo = () => {
       if (!reqData.citizen_number) {
         return UserMessage.CITIZEN_NUMBER_REQUIRED;
       }
-      if (reqData.citizen_number.length !== 12) {
+      if (!CITIZEN_NUMBER_REG_EXP.test(reqData.citizen_number)) {
         return UserMessage.CITIZEN_NUMBER_FORMAT_ERROR;
       }
       return null;

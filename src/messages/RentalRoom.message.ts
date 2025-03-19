@@ -98,7 +98,7 @@ export class MonitoringRentalMessage {
 
   public static readonly ROOM_CODE_SAME_TIME = 'Người dùng hiện đang thuê phòng trọ này! Không thể tạo thêm bản ghi mới, trừ khi dừng thuê!';
   public static readonly ROOM_CODE_UNAVAILABLE = 'Phòng trọ này đã hết chỗ!';
-
+  
   public static readonly RENTER_PHONE_NUMBER_FORMAT_ERROR = 'Số điện thoại phải có đủ 10 chữ số!';
 
   public static readonly STOP_RENT_WARNING = 'Việc dừng theo dõi cho thuê sẽ không thể thay đổi';

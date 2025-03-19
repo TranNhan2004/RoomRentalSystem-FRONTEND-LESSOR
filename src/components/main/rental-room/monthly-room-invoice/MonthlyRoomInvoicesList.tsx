@@ -35,15 +35,15 @@ export const MonthlyRoomInvoiceList = (props: MonthlyRoomInvoiceListProps) => {
   const [query, setQuery] = useState<MonthlyRoomInvoiceQueryType>(INITIAL_MONTHLY_ROOM_INVOICE_QUERY);
   const [loading, setLoading] = useState(true);
   
-  const originialDataRef = useRef<MonthlyRoomInvoiceType[]>([]);
+  const originalDataRef = useRef<MonthlyRoomInvoiceType[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         setLoading(true);
         const data = await monthlyRoomInvoiceService.getMany({ room_code: props.roomCodeId });
-        originialDataRef.current = data;
-        setData([...originialDataRef.current]);
+        originalDataRef.current = data;
+        setData([...originalDataRef.current]);
 
       } catch {
         await toastError(MonthlyRoomInvoiceMessage.GET_MANY_ERROR);
@@ -87,8 +87,8 @@ export const MonthlyRoomInvoiceList = (props: MonthlyRoomInvoiceListProps) => {
       try {
         await monthlyRoomInvoiceService.delete(id);
         await toastSuccess(MonthlyRoomInvoiceMessage.DELETE_SUCCESS);
-        originialDataRef.current = originialDataRef.current.filter(item => item.id !== id);
-        setData(originialDataRef.current); 
+        originalDataRef.current = originalDataRef.current.filter(item => item.id !== id);
+        setData(originalDataRef.current); 
       
       } catch (error) {
         await handleDeleteError(error);
@@ -106,10 +106,10 @@ export const MonthlyRoomInvoiceList = (props: MonthlyRoomInvoiceListProps) => {
         await monthlyRoomInvoiceService.patch(id, { is_settled: true });
         await toastSuccess(MonthlyRoomInvoiceMessage.SETTLE_SUCCESS);
       
-        const data = originialDataRef.current.find(data => data.id === id);
+        const data = originalDataRef.current.find(data => data.id === id);
         if (data && !data.is_settled) {  
           data.is_settled = true;
-          setData([...originialDataRef.current]);  
+          setData([...originalDataRef.current]);  
         }
       
       } catch {
@@ -151,7 +151,7 @@ export const MonthlyRoomInvoiceList = (props: MonthlyRoomInvoiceListProps) => {
         to_created_date: formatDate(query.to_created_date as Date, 'ymd'),
       });
 
-      originialDataRef.current = data;
+      originalDataRef.current = data;
       setData(data);
       
     } catch {
@@ -200,7 +200,7 @@ export const MonthlyRoomInvoiceList = (props: MonthlyRoomInvoiceListProps) => {
           <InputSearch 
             placeholder='Tìm kiếm theo số tiền phải trả, đã trả'
             options={['due_charge', 'paid_charge']}
-            originalData={originialDataRef.current}
+            originalData={originalDataRef.current}
             data={data}
             setData={setData}
           />
@@ -212,7 +212,7 @@ export const MonthlyRoomInvoiceList = (props: MonthlyRoomInvoiceListProps) => {
               { label: 'Mới nhất', value: 'desc-created_at' },
               { label: 'Cũ nhất', value: 'asc-created_at' },
             ]}
-            originalData={originialDataRef.current}
+            originalData={originalDataRef.current}
             data={data}
             setData={setData}
           />

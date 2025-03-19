@@ -45,7 +45,7 @@ export type RoomCodeType = {
   rental_room?: string;
   max_occupancy?: number;
   current_occupancy?: number;
-  is_shareable?: boolean;
+  is_shared?: boolean;
 }
 
 export type MonthlyRoomInvoiceType = {
@@ -84,14 +84,14 @@ export type RoomImageType = {
 
 export type RoomImageQueryType = {
   rental_room?: RoomImageType['rental_room'];
-  mode?: 'first' | 'many';
+  first_only?: boolean;
 }
 
 export type ChargesQueryType = {
   rental_room?: ChargesType['rental_room'];
   from_date?: Date | string;
   to_date?: Date | string;
-  mode?: 'first' | 'many';
+  first_only?: boolean;
 }
 
 export type RoomCodeQueryType = {

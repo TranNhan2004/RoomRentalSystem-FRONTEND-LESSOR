@@ -21,7 +21,7 @@ type RoomCodesListProps = {
 
 export const RoomCodesList = (props: RoomCodesListProps) => {
   const router = useRouter();
-  const originialDataRef = useRef<RoomCodeType[]>([]);
+  const originalDataRef = useRef<RoomCodeType[]>([]);
   const [data, setData] = useState<RoomCodeType[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -30,7 +30,7 @@ export const RoomCodesList = (props: RoomCodesListProps) => {
       try {
         setLoading(true);
         const data = await roomCodeService.getMany({ rental_room: props.roomId });
-        originialDataRef.current = data;
+        originalDataRef.current = data;
         setData(data);
       
       } catch {
@@ -78,8 +78,8 @@ export const RoomCodesList = (props: RoomCodesListProps) => {
       try {
         await roomCodeService.delete(id);
         await toastSuccess(RoomCodeMessage.DELETE_SUCCESS);
-        originialDataRef.current = originialDataRef.current.filter((item) => item.id !== id);
-        setData(originialDataRef.current); 
+        originalDataRef.current = originalDataRef.current.filter((item) => item.id !== id);
+        setData(originalDataRef.current); 
       
       } catch (error) {
         await handleDeleteError(error);
@@ -103,7 +103,7 @@ export const RoomCodesList = (props: RoomCodesListProps) => {
           <InputSearch 
             placeholder='Tìm kiếm theo mã phòng'
             options={['value']}
-            originalData={originialDataRef.current}
+            originalData={originalDataRef.current}
             data={data}
             setData={setData}
           />
@@ -115,7 +115,7 @@ export const RoomCodesList = (props: RoomCodesListProps) => {
               { label: 'Mã phòng (A-Z)', value: 'asc-value' },
               { label: 'Mã phòng (Z-A)', value: 'desc-value' },
             ]}
-            originalData={originialDataRef.current}
+            originalData={originalDataRef.current}
             data={data}
             setData={setData}
           />

@@ -22,7 +22,7 @@ export const ActivateAccount = (props: ActivateAccountProps) => {
       } catch {
         await toastError(AuthMessage.ACTIVATE_ERROR);
       }
-    }
+    };
 
     activateAccount();
   }, [props]);
@@ -35,14 +35,14 @@ export const ActivateAccount = (props: ActivateAccountProps) => {
         <span className="dot animate-bounce2">.</span>
         <span className="dot animate-bounce3">.</span>
       </div>
-    )
+    );
   }
 
   return (
     <div className='flex items-center justify-center text-lg space-x-2'>
       <h1>
-        Đã kích hoạt thành công thành công! Vui lòng trở lại trang
-        <Link href={'/auth/login'} className='underline text-blue-500 text-left'> đăng nhập</Link>
+        Đã kích hoạt thành công thành công! Vui lòng trở lại trang &nbsp;
+        <Link href={'/auth/login'} className='underline text-blue-500 text-left'>đăng nhập</Link>
       </h1>
     </div>
   );

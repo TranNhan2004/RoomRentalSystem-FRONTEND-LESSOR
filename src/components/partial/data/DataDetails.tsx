@@ -15,7 +15,7 @@ export const DataDetails = (props: DataDetailsProps) => {
   return (
     <div className='p-8 mt-[-3%] ml-[-3%]'>
       <h2 className='text-left text-2xl mb-5 font-bold'>{props.title}</h2>
-      <div className={`ml-2 space-y-2 ${props.isInline ? 'flex items-center space-x-4' : ''}`}>
+      <div className={`ml-2 space-y-4 ${props.isInline ? 'flex items-center space-x-4' : ''}`}>
         {
           props.data.map((line, index) => (
             <DataLine key={index} {...line} />

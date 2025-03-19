@@ -35,7 +35,7 @@ export const MonitoringRentalsList = (props: MonitoringRentalsListProps) => {
   const [query, setQuery] = useState<MonitoringRentalQueryType>(INITIAL_MONITORING_RENTAL_QUERY);
   const [loading, setLoading] = useState(true);
   
-  const originialDataRef = useRef<MonitoringRentalType[]>([]);
+  const originalDataRef = useRef<MonitoringRentalType[]>([]);
 
   const fetchRelatedData = useCallback(async (data: MonitoringRentalType[]) => {
     let newData = [...data];
@@ -65,9 +65,9 @@ export const MonitoringRentalsList = (props: MonitoringRentalsListProps) => {
       try {
         setLoading(true);
         const data = await monitoringRentalService.getMany({ room_code: props.roomCodeId });
-        originialDataRef.current = await fetchRelatedData(data);
+        originalDataRef.current = await fetchRelatedData(data);
         
-        setData([...originialDataRef.current]);
+        setData([...originalDataRef.current]);
 
       } catch {
         await toastError(MonitoringRentalMessage.GET_MANY_ERROR);
@@ -111,8 +111,8 @@ export const MonitoringRentalsList = (props: MonitoringRentalsListProps) => {
       try {
         await monitoringRentalService.delete(id);
         await toastSuccess(MonitoringRentalMessage.DELETE_SUCCESS);
-        originialDataRef.current = originialDataRef.current.filter(item => item.id !== id);
-        setData(originialDataRef.current); 
+        originalDataRef.current = originalDataRef.current.filter(item => item.id !== id);
+        setData(originalDataRef.current); 
       
       } catch (error) {
         await handleDeleteError(error);
@@ -131,10 +131,10 @@ export const MonitoringRentalsList = (props: MonitoringRentalsListProps) => {
         await monitoringRentalService.patch(id, { end_date: today });
         await toastSuccess(MonitoringRentalMessage.STOP_RENT_SUCCESS);
       
-        const data = originialDataRef.current.find(data => data.id === id);
+        const data = originalDataRef.current.find(data => data.id === id);
         if (data && !data.end_date) {  
           data.end_date = today;
-          setData([...originialDataRef.current]);  
+          setData([...originalDataRef.current]);  
         }
       
       } catch {
@@ -164,8 +164,8 @@ export const MonitoringRentalsList = (props: MonitoringRentalsListProps) => {
         to_date: formatDate(query.to_date as Date, 'ymd'),
       });
 
-      originialDataRef.current = await fetchRelatedData(data);
-      setData([...originialDataRef.current]);
+      originalDataRef.current = await fetchRelatedData(data);
+      setData([...originalDataRef.current]);
       
     } catch {
       await toastError(MonitoringRentalMessage.GET_MANY_ERROR);
@@ -200,7 +200,7 @@ export const MonitoringRentalsList = (props: MonitoringRentalsListProps) => {
           <InputSearch 
             placeholder='Tìm kiếm theo họ tên, số điện thoại người thuê'
             options={['_renter_first_name', '_renter_last_name', '_renter_phone_number']}
-            originalData={originialDataRef.current}
+            originalData={originalDataRef.current}
             data={data}
             setData={setData}
           />
@@ -212,7 +212,7 @@ export const MonitoringRentalsList = (props: MonitoringRentalsListProps) => {
               { label: 'Mới nhất', value: 'desc-start_date' },
               { label: 'Cũ nhất', value: 'asc-start_date' },
             ]}
-            originalData={originialDataRef.current}
+            originalData={originalDataRef.current}
             data={data}
             setData={setData}
           />

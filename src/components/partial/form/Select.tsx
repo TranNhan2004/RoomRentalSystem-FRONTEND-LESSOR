@@ -16,6 +16,7 @@ type SelectProps = {
   onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
   validate?: ValidateFunctionType;
   className?: string;
+  notUseEmptyValue?: boolean;
 }
                           
 export const Select = (props: SelectProps) => {
@@ -39,7 +40,7 @@ export const Select = (props: SelectProps) => {
             </option>
           ))
         }
-        <option value=''>---</option>
+        {!props.notUseEmptyValue && <option value=''>---</option>}
       </select>
       {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
     </div>

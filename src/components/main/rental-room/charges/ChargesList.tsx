@@ -34,7 +34,7 @@ export const ChargesList = (props: ChargesListProps) => {
   const [query, setQuery] = useState<ChargesQueryType>(INITIAL_CHARGES_QUERY);
   const [loading, setLoading] = useState(true);
   
-  const originialDataRef = useRef<ChargesType[]>([]);
+  const originalDataRef = useRef<ChargesType[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -43,7 +43,7 @@ export const ChargesList = (props: ChargesListProps) => {
         const data = await chargesService.getMany({ rental_room: props.roomId });
         
         setData(data);
-        originialDataRef.current = data;
+        originalDataRef.current = data;
     
       } catch {
         await toastError(ChargesMessage.GET_MANY_ERROR);
@@ -86,8 +86,8 @@ export const ChargesList = (props: ChargesListProps) => {
       try {
         await chargesService.delete(id);
         await toastSuccess(ChargesMessage.DELETE_SUCCESS);
-        originialDataRef.current = originialDataRef.current.filter(item => item.id !== id);
-        setData(originialDataRef.current); 
+        originalDataRef.current = originalDataRef.current.filter(item => item.id !== id);
+        setData(originalDataRef.current); 
       
       } catch (error) {
         await handleDeleteError(error);
@@ -106,10 +106,10 @@ export const ChargesList = (props: ChargesListProps) => {
         await chargesService.patch(id, { end_date: today });
         await toastSuccess(ChargesMessage.STOP_APPLY_SUCCESS);
       
-        const data = originialDataRef.current.find(data => data.id === id);
+        const data = originalDataRef.current.find(data => data.id === id);
         if (data && !data.end_date) {  
           data.end_date = today;
-          setData([...originialDataRef.current]);  
+          setData([...originalDataRef.current]);  
         }
       
       } catch {
@@ -142,7 +142,7 @@ export const ChargesList = (props: ChargesListProps) => {
         to_date: formatDate(query.to_date as Date, 'ymd'),
       });
 
-      originialDataRef.current = data;
+      originalDataRef.current = data;
       setData(data);
       
     } catch {
@@ -178,7 +178,7 @@ export const ChargesList = (props: ChargesListProps) => {
           <InputSearch 
             placeholder='Tìm kiếm theo giá phòng'
             options={['room_charge']}
-            originalData={originialDataRef.current}
+            originalData={originalDataRef.current}
             data={data}
             setData={setData}
           />
@@ -192,7 +192,7 @@ export const ChargesList = (props: ChargesListProps) => {
               { label: 'Mới nhất', value: 'desc-start_date' },
               { label: 'Cũ nhất', value: 'asc-start_date' },
             ]}
-            originalData={originialDataRef.current}
+            originalData={originalDataRef.current}
             data={data}
             setData={setData}
           />

@@ -50,7 +50,7 @@ export const INITIAL_ROOM_CODE: RoomCodeType = {
   rental_room: '',
   max_occupancy: 1,
   current_occupancy: 0,
-  is_shareable: false,
+  is_shared: false,
 } as const;
 
 export const INITIAL_MONTHLY_ROOM_INVOICE: MonthlyRoomInvoiceType = {

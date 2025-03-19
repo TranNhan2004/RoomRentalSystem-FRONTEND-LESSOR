@@ -27,10 +27,9 @@ import { PaginationNav } from '@/components/partial/data/PaginationNav';
 
 export const RentalRoomsList = () => {
   const router = useRouter();
-  const originialDataRef = useRef<RentalRoomType[]>([]);
+  const originalDataRef = useRef<RentalRoomType[]>([]);
   const myIdRef = useRef<string | undefined>(undefined);
   const [data, setData] = useState<RentalRoomType[]>([]);
-  const [displayedData, setDisplayedData] = useState<RentalRoomType[]>([]);
   const [loading, setLoading] = useState(true);
   const [query, setQuery] = useState<RentalRoomQueryType>(INITIAL_RENTAL_ROOM_QUERY); 
   const [provinceOptions, setProvinceOptions] = useState<OptionType[]>([]);
@@ -48,8 +47,8 @@ export const RentalRoomsList = () => {
     await Promise.all(
       data.map(async (item) => {
         const [imageData, chargesData] = await Promise.all([
-          roomImageService.getMany({ rental_room: item.id, mode: 'first' }),
-          chargesService.getMany({ rental_room: item.id, mode: 'first' })
+          roomImageService.getMany({ rental_room: item.id, first_only: true }),
+          chargesService.getMany({ rental_room: item.id, first_only: true }),
         ]);
         
         newData = newData.map(thisItem => {
@@ -81,9 +80,9 @@ export const RentalRoomsList = () => {
           communeService.getMany(),
         ]);
 
-        originialDataRef.current = await fetchRelatedData(data);
+        originalDataRef.current = await fetchRelatedData(data);
         
-        setData([...originialDataRef.current]);
+        setData([...originalDataRef.current]);
         setProvinceOptions(mapOptions(provinceData, ['name'], 'id'));
         setDistrictOptions(mapOptions(districtData, ['name'], 'id'));
         setCommuneOptions(mapOptions(communeData, ['name'], 'id'));
@@ -103,8 +102,8 @@ export const RentalRoomsList = () => {
   }, [fetchRelatedData]);
 
   useEffect(() => {
-    setDisplayedData(data.slice((currentPage - 1) * cardsPerPage, currentPage * cardsPerPage));
-  }, [data, currentPage]);
+    setData(originalDataRef.current.slice((currentPage - 1) * cardsPerPage, currentPage * cardsPerPage));
+  }, [currentPage]);
 
   const onPageChange = (pageNumber: number) => {
     setCurrentPage(pageNumber);
@@ -132,8 +131,8 @@ export const RentalRoomsList = () => {
       try {
         await rentalRoomService.delete(id);
         await toastSuccess(RentalRoomMessage.DELETE_SUCCESS);
-        originialDataRef.current = originialDataRef.current.filter((item) => item.id !== id);
-        setData(originialDataRef.current); 
+        originalDataRef.current = originalDataRef.current.filter((item) => item.id !== id);
+        setData(originalDataRef.current); 
       
       } catch (error) {
         await handleDeleteError(error);
@@ -161,26 +160,37 @@ export const RentalRoomsList = () => {
         const communes = communesArray.flat();
         
         const dataArray = await Promise.all(communes.map(
-          commune => rentalRoomService.getMany({ ...query, commune: commune.id })
+          commune => rentalRoomService.getMany({ 
+            ...query, 
+            commune: commune.id,
+            lessor: myIdRef.current  
+          })
         ));
 
         const data = dataArray.flat();
-        originialDataRef.current = await fetchRelatedData(data);
-        setData([...originialDataRef.current]);
+        originalDataRef.current = await fetchRelatedData(data);
+        setData([...originalDataRef.current]);
 
       } else if (query._district !== '' && query.commune === '') {
         const communes = await communeService.getMany({ district: query._district });
         const dataArray = await Promise.all(communes.map(
-          commune => rentalRoomService.getMany({ ...query, commune: commune.id })
+          commune => rentalRoomService.getMany({ 
+            ...query, 
+            commune: commune.id, 
+            lessor: myIdRef.current 
+          })
         ));
         const data = dataArray.flat();
-        originialDataRef.current = await fetchRelatedData(data);
-        setData([...originialDataRef.current]);
+        originalDataRef.current = await fetchRelatedData(data);
+        setData([...originalDataRef.current]);
 
       } else {
-        const data = await rentalRoomService.getMany(query);
-        originialDataRef.current = await fetchRelatedData(data);
-        setData([...originialDataRef.current]);
+        const data = await rentalRoomService.getMany({
+          ...query,
+          lessor: myIdRef.current 
+        });
+        originalDataRef.current = await fetchRelatedData(data);
+        setData([...originalDataRef.current]);
       }
       
     } catch {
@@ -244,7 +254,7 @@ export const RentalRoomsList = () => {
           <InputSearch 
             placeholder='Tìm kiếm theo tên phòng trọ'
             options={['name']}
-            originalData={originialDataRef.current}
+            originalData={originalDataRef.current}
             data={data}
             setData={setData}
           />
@@ -258,7 +268,7 @@ export const RentalRoomsList = () => {
               { label: 'Mới nhất', value: 'desc-created_at' },
               { label: 'Cũ nhất', value: 'asc-created_at' },
             ]}
-            originalData={originialDataRef.current}
+            originalData={originalDataRef.current}
             data={data}
             setData={setData}
           />
@@ -330,9 +340,9 @@ export const RentalRoomsList = () => {
         <div className='flex-grow mt-12'>
           <div className='grid grid-cols-4 gap-4'>
             {
-              displayedData.length === 0 
+              data.length === 0 
                 ? 'Không có dữ liệu' 
-                : displayedData.map((item, index) => (
+                : data.map((item, index) => (
                   <RentalRoomCard
                     key={index}
                     id={item.id}
