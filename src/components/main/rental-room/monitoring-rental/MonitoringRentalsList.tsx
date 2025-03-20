@@ -38,26 +38,16 @@ export const MonitoringRentalsList = (props: MonitoringRentalsListProps) => {
   const originalDataRef = useRef<MonitoringRentalType[]>([]);
 
   const fetchRelatedData = useCallback(async (data: MonitoringRentalType[]) => {
-    let newData = [...data];
-    await Promise.all(
-      data.map(async (item) => {
-        const renter = await userService.get(item.renter ?? '');
-        
-        newData = newData.map(thisItem => {
-          if (thisItem.id === item.id) {
-            return { 
-              ...thisItem,
-              _rental_first_name: renter.first_name,
-              _rental_last_name: renter.last_name,
-              _rental_phone_number: renter.phone_number,
-            };
-          }
-          return thisItem;
-        });  
-      })
-    );
+    const renterData = await Promise.all(data.map(
+      item => userService.get(item.renter ?? '')
+    ));
 
-    return newData;
+    return data.map((item, index) => ({ 
+      ...item,
+      _renter_first_name: renterData[index].first_name,
+      _renter_last_name: renterData[index].last_name,
+      _renter_phone_number: renterData[index].phone_number,
+    }));
   }, []);
 
   useEffect(() => {

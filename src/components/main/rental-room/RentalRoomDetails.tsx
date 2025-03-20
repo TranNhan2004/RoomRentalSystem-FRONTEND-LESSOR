@@ -15,7 +15,7 @@ import { RoomCodesList } from './room-code/RoomCodesList';
 import { ChargesList } from './charges/ChargesList';
 import { ActionButton } from '@/components/partial/button/ActionButton';
 import { Loading } from '@/components/partial/data/Loading';
-import { formatDate } from '@/lib/client/format';
+import { formatDate, round } from '@/lib/client/format';
 import { RatingStar } from '@/components/partial/data/RatingStar';
 import { ReviewsList } from '../review/ReviewsList';
 
@@ -92,7 +92,7 @@ export const RentalRoomDetails = (props: RentalRoomDetailsProps) => {
               <div className='flex items-center'>
                 <DataLine label='Đánh giá trung bình' value={''} />   
                 <RatingStar value={data.average_rating ?? 0} />
-                <span className='ml-2 text-gray-800'>{data.average_rating}/5</span>
+                <span className='ml-2 text-gray-800'>{round(data.average_rating, 1)}/5</span>
               </div>
               <DataLine label='Mô tả' value={data.further_description || 'Không có mô tả'} />
               <DataLine label='Ngày tạo' value={formatDate(data.created_at, 'dmy')} />

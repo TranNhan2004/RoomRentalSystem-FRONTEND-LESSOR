@@ -25,3 +25,8 @@ export const formatCurrency = (value: number | undefined) => new Intl.NumberForm
   style: 'currency',
   currency: 'VND',
 }).format(value ?? -1);
+
+export const round = (value: number | undefined, fractionDigits: number) => {
+  const tenPower = Math.pow(10, fractionDigits);
+  return Math.round((value ?? 0) * tenPower) / tenPower;
+};

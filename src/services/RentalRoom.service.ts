@@ -15,7 +15,7 @@ import {
 import { ApiService } from "./Api.service";
 import { formatDate } from "@/lib/client/format";
 
-const smoothData = async (data: ChargesType) => {
+const smoothData = async (data: ChargesType | MonitoringRentalType) => {
   const dataToSend: Record<string, unknown> = { ...data };
   if (data.start_date) {
     dataToSend.start_date = formatDate(data.start_date, 'ymd');
@@ -104,6 +104,14 @@ ApiService<
 
   constructor() {
     super('/app.rental-room/monitoring-rentals');
+  }
+
+  public async post(data: MonitoringRentalType) {
+    return await super.post(await smoothData(data));
+  }
+
+  public async patch(id: string, data: MonitoringRentalType) {
+    return await super.patch(id, await smoothData(data));
   }
 };
 

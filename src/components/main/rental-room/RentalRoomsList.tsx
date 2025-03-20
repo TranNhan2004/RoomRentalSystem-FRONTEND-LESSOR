@@ -30,6 +30,7 @@ export const RentalRoomsList = () => {
   const originalDataRef = useRef<RentalRoomType[]>([]);
   const myIdRef = useRef<string | undefined>(undefined);
   const [data, setData] = useState<RentalRoomType[]>([]);
+  const [displayedData, setDisplayedData] = useState<RentalRoomType[]>([]);
   const [loading, setLoading] = useState(true);
   const [query, setQuery] = useState<RentalRoomQueryType>(INITIAL_RENTAL_ROOM_QUERY); 
   const [provinceOptions, setProvinceOptions] = useState<OptionType[]>([]);
@@ -43,28 +44,22 @@ export const RentalRoomsList = () => {
   const cardsPerPage = 20;
 
   const fetchRelatedData = useCallback(async (data: RentalRoomType[]) => {
-    let newData = [...data];
-    await Promise.all(
-      data.map(async (item) => {
-        const [imageData, chargesData] = await Promise.all([
-          roomImageService.getMany({ rental_room: item.id, first_only: true }),
-          chargesService.getMany({ rental_room: item.id, first_only: true }),
-        ]);
-        
-        newData = newData.map(thisItem => {
-          if (thisItem.id === item.id) {
-            return {
-              ...thisItem,
-              _image: imageData.length ? imageData[0].image : '',
-              _room_charge: chargesData.length ? chargesData[0].room_charge : -1
-            };
-          }
-          return thisItem;
-        });
-      })
-    );
+    const imageDataArray = await Promise.all(data.map(
+      item => roomImageService.getMany({ rental_room: item.id, first_only: true })
+    ));
+  
+    const chargesDataArray = await Promise.all(data.map(
+      item => chargesService.getMany({ rental_room: item.id, first_only: true })
+    ));
 
-    return newData;
+    const imageData = imageDataArray.flat();
+    const chargesData = chargesDataArray.flat();
+
+    return data.map(item => ({
+      ...item,
+      _image: imageData.length ? imageData[0].image : '',
+      _room_charge: chargesData.length ? chargesData[0].room_charge : -1,
+    }));
   }, []);
 
   useEffect(() => {
@@ -102,8 +97,8 @@ export const RentalRoomsList = () => {
   }, [fetchRelatedData]);
 
   useEffect(() => {
-    setData(originalDataRef.current.slice((currentPage - 1) * cardsPerPage, currentPage * cardsPerPage));
-  }, [currentPage]);
+    setDisplayedData([...data.slice((currentPage - 1) * cardsPerPage, currentPage * cardsPerPage)]);
+  }, [data, currentPage]);
 
   const onPageChange = (pageNumber: number) => {
     setCurrentPage(pageNumber);
@@ -340,17 +335,12 @@ export const RentalRoomsList = () => {
         <div className='flex-grow mt-12'>
           <div className='grid grid-cols-4 gap-4'>
             {
-              data.length === 0 
+              displayedData.length === 0 
                 ? 'Không có dữ liệu' 
-                : data.map((item, index) => (
+                : displayedData.map((item) => (
                   <RentalRoomCard
-                    key={index}
-                    id={item.id}
-                    name={item.name}
-                    manager={item.manager}
-                    averageRating={item.average_rating}
-                    image={item._image}
-                    roomCharge={item._room_charge}
+                    key={item.id}
+                    item={item}
                     detailsFunction={detailsFunction}
                     deleteFunction={deleteFunction}
                   />

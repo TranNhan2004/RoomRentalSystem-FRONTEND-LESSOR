@@ -52,8 +52,8 @@ export default function InstructionsPage() {
             </h2>
             <p className="text-gray-600">
               Lỗi tham chiếu xảy ra khi bạn cố gắng xóa một dữ liệu, nhưng có những dữ liệu khác đang phụ thuộc hoặc liên quan đến nó. 
-              Ví dụ, nếu bạn có một danh sách phòng trọ và mỗi phòng trọ có nhiều mã phòng khác nhau, bạn không thể xóa phòng trọ khi mã phòng của nó còn tồn tại. 
-              Để giải quyết, bạn cần kiểm tra và xóa các dữ liệu liên quan trước. Lưu ý dữ liệu <strong>ĐÁNH GIÁ</strong> không được bảo vệ bởi cơ chế này, vì vậy bạn có thể an tâm xóa phòng trọ nếu vẫn còn dữ liệu <strong>ĐÁNH GIÁ</strong> từ người thuê.
+              Trong hệ thống chỉ có dữ liệu <strong>PHÒNG TRỌ</strong> là được bảo vệ bởi cơ chế này, nên để xóa được phòng trọ bạn cần xóa sạch 3 loại dữ liệu liên quan đến nó bao gồm: <strong>HÌNH ẢNH</strong>, <strong>MỨC GIÁ</strong> và <strong>MÃ PHÒNG</strong>.
+              Lưu ý dữ liệu <strong>ĐÁNH GIÁ</strong> sẽ bị mất khi xóa <strong>PHÒNG TRỌ</strong>, dữ liệu <strong>THEO DÕI THUÊ PHÒNG</strong> và <strong>HÓA ĐƠN TIỀN TRỌ HẰNG THÁNG</strong> sẽ bị mất khi xóa <strong>MÃ PHÒNG</strong>.
             </p>
           </li>
         </ul>
