@@ -1,6 +1,8 @@
 export class RentalRoomMessage {
   public static readonly NAME_REQUIRED = 'Tên phòng trọ không được để trống!';
   public static readonly COMMUNE_REQUIRED = 'Địa chỉ xã của phòng trọ không được để trống!';
+  public static readonly DISTRICT_REQUIRED = 'Địa chỉ huyện của phòng trọ không được để trống!';
+  public static readonly PROVINCE_REQUIRED = 'Địa chỉ tỉnh của phòng trọ không được để trống!';
   public static readonly ADDITIONAL_ADDRESS_REQUIRED = 'Địa chỉ cụ thể của phòng trọ không được để trống!';
   public static readonly TOTAL_NUMBER_REQUIRED = 'Tổng số phòng trọ không được để trống!';
   public static readonly TOTAL_NUMBER_POSITIVE = 'Tổng số phòng phải từ 1 trở lên!';

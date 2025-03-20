@@ -20,7 +20,7 @@ import { GeneralMessage } from '@/messages/General.message';
 import { formatDate } from '@/lib/client/format';
 import { CITIZEN_NUMBER_REG_EXP, EMAIL_REG_EXP, PHONE_NUMBER_REG_EXP } from '@/lib/client/isValidForm';
 
-const EditInfo = () => {
+export const EditInfo = () => {
   const router = useRouter();
   const [reqData, setReqData] = useState<UserType>(INITIAL_USER);
 
@@ -273,5 +273,3 @@ const EditInfo = () => {
     </DataForm>
   );
 };
-
-export default EditInfo;

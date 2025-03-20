@@ -5,6 +5,8 @@ export type RentalRoomType = {
   id?: string;
   name?: string;
   commune?: string;
+  _district?: DistrictType['id'];
+  _province?: ProvinceType['id'];
   additional_address?: string;
   closing_time?: string;
   total_number?: number;

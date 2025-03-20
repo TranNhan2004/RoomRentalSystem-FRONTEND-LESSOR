@@ -19,6 +19,8 @@ export const INITIAL_RENTAL_ROOM: RentalRoomType = {
   id: '',
   name: '',
   commune: '',
+  _district: '',
+  _province: '',
   additional_address: '',
   closing_time: '',
   total_number: 1,

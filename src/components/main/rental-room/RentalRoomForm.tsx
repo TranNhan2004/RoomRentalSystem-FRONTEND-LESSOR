@@ -99,6 +99,20 @@ export const RentalRoomForm = (props: RentalRoomFormProps) => {
       } 
       return null;
     },
+
+    _district: () => {
+      if (!props.reqData._district) {
+        return RentalRoomMessage.DISTRICT_REQUIRED;
+      } 
+      return null;
+    },
+
+    _province: () => {
+      if (!props.reqData._province) {
+        return RentalRoomMessage.PROVINCE_REQUIRED;
+      } 
+      return null;
+    },
     
     additional_address: () => {
       if (!props.reqData.additional_address) {
@@ -141,33 +155,38 @@ export const RentalRoomForm = (props: RentalRoomFormProps) => {
         </div>
 
         <div className='grid grid-cols-2 items-center'>
-          <Label htmlFor='province'>Tỉnh: </Label>
+          <Label htmlFor='province'>Tỉnh/Thành phố: </Label>
           <Select 
             id='province'
+            value={props.reqData._province}
             className='w-[300px] ml-[-360px]'
             options={provinceOptions}
             onChange={handleProvinceChange}
+            validate={validators._province}
           />
         </div>
         
         <div className='grid grid-cols-2 items-center'>
-          <Label htmlFor='district'>Huyện: </Label>
+          <Label htmlFor='district'>Huyện/Quận/Thị xã: </Label>
           <Select 
             id='district'
+            value={props.reqData._district}
             className='w-[300px] ml-[-360px]'
             options={districtOptions}
             onChange={handleDistrictChange}
+            validate={validators._district}
           />
         </div>
 
         <div className='grid grid-cols-2 items-center'>
-          <Label htmlFor='district' required>Xã: </Label>
+          <Label htmlFor='district' required>Xã/Phường/Thị trấn: </Label>
           <Select 
             id='district'
             value={props.reqData.commune}
             className='w-[300px] ml-[-360px]'
             options={communeOptions}
             onChange={handleCommuneChange}
+            validate={validators.commune}
           />
         </div>
 
