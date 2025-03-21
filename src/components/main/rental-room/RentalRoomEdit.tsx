@@ -11,7 +11,7 @@ import { INITIAL_RENTAL_ROOM } from '@/initials/RentalRoom.initial';
 import { RentalRoomMessage } from '@/messages/RentalRoom.message';
 import { rentalRoomService } from '@/services/RentalRoom.service';
 import { Loading } from '@/components/partial/data/Loading';
-import { communeService, districtService, provinceService } from '@/services/Address.service';
+import { communeService, districtService } from '@/services/Address.service';
 
 type RentalRoomEditProps = {
   id: string;
@@ -29,13 +29,12 @@ export const RentalRoomEdit = (props: RentalRoomEditProps) => {
         const data = await rentalRoomService.get(props.id);
         const communeData = await communeService.get(data.commune ?? '');
         const districtData = await districtService.get(communeData.district ?? '');
-        const provinceData = await provinceService.get(districtData.province ?? '');
 
         setReqData({
           ...data,
           commune: communeData.id,
           _district: districtData.id,
-          _province: provinceData.id,
+          _province: districtData.province,
         });
 
       } catch {

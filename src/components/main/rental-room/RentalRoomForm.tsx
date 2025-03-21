@@ -50,6 +50,7 @@ export const RentalRoomForm = (props: RentalRoomFormProps) => {
   
 
   const handleProvinceChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    props.setReqData({ ...props.reqData, _province: e.target.value });
     if (e.target.value == '') {
       setDistrictOptions(mapOptions(originalDistrictDataRef.current, ['name'], 'id'));
       setCommuneOptions(mapOptions(originalCommuneDataRef.current, ['name'], 'id'));
@@ -67,6 +68,7 @@ export const RentalRoomForm = (props: RentalRoomFormProps) => {
   };
   
   const handleDistrictChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    props.setReqData({ ...props.reqData, _district: e.target.value });
     if (e.target.value == '') {
       setCommuneOptions(mapOptions(originalCommuneDataRef.current, ['name'], 'id'));
     } else {
@@ -155,7 +157,7 @@ export const RentalRoomForm = (props: RentalRoomFormProps) => {
         </div>
 
         <div className='grid grid-cols-2 items-center'>
-          <Label htmlFor='province'>Tỉnh/Thành phố: </Label>
+          <Label htmlFor='province' required>Tỉnh/Thành phố: </Label>
           <Select 
             id='province'
             value={props.reqData._province}
@@ -167,7 +169,7 @@ export const RentalRoomForm = (props: RentalRoomFormProps) => {
         </div>
         
         <div className='grid grid-cols-2 items-center'>
-          <Label htmlFor='district'>Huyện/Quận/Thị xã: </Label>
+          <Label htmlFor='district' required>Huyện/Quận/Thị xã: </Label>
           <Select 
             id='district'
             value={props.reqData._district}
