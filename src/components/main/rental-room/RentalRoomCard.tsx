@@ -32,11 +32,11 @@ export const RentalRoomCard = (props: RentalRoomCardProps) => {
       <div className="p-4">
         <h2 className="text-xl font-bold text-gray-800 mb-2">{props.item.name}</h2>
 
-        <div className="text-lg font-semibold text-gray-800 mb-3">
+        <div className="text-lg font-semibold text-gray-800 mb-2">
           {formatCurrency(props.item._room_charge)}
         </div>
 
-        <div className="flex items-center mb-1">
+        <div className="flex items-center mb-2">
           <RatingStar value={props.item.average_rating ?? 0} />
           <span className="ml-2 text-gray-600 text-sm">
             {`${round(props.item.average_rating, 1)}/5`}

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { handleDeleteAlert, toastError, toastSuccess } from '@/lib/client/alert';
 import { useRouter } from 'next/navigation';
 import { Title } from '@/components/partial/data/Title';
@@ -12,7 +12,7 @@ import { OptionType, Select } from '@/components/partial/form/Select';
 import { getMyInfo } from '@/lib/client/authToken';
 import { RentalRoomQueryType, RentalRoomType } from '@/types/RentalRoom.type';
 import { INITIAL_RENTAL_ROOM_QUERY } from '@/initials/RentalRoom.initial';
-import { chargesService, roomImageService, rentalRoomService } from '@/services/RentalRoom.service';
+import { rentalRoomService } from '@/services/RentalRoom.service';
 import { RentalRoomMessage } from '@/messages/RentalRoom.message';
 import { communeService, districtService, provinceService } from '@/services/Address.service';
 import { mapOptions } from '@/lib/client/handleOptions';
@@ -43,25 +43,6 @@ export const RentalRoomsList = () => {
   
   const cardsPerPage = 20;
 
-  const fetchRelatedData = useCallback(async (data: RentalRoomType[]) => {
-    const imageDataArray = await Promise.all(data.map(
-      item => roomImageService.getMany({ rental_room: item.id, first_only: true })
-    ));
-  
-    const chargesDataArray = await Promise.all(data.map(
-      item => chargesService.getMany({ rental_room: item.id, first_only: true })
-    ));
-
-    const imageData = imageDataArray.flat();
-    const chargesData = chargesDataArray.flat();
-
-    return data.map(item => ({
-      ...item,
-      _image: imageData.length ? imageData[0].image : '',
-      _room_charge: chargesData.length ? chargesData[0].room_charge : -1,
-    }));
-  }, []);
-
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -75,8 +56,8 @@ export const RentalRoomsList = () => {
           communeService.getMany(),
         ]);
 
-        originalDataRef.current = await fetchRelatedData(data);
-        
+        originalDataRef.current = [...data];
+              
         setData([...originalDataRef.current]);
         setProvinceOptions(mapOptions(provinceData, ['name'], 'id'));
         setDistrictOptions(mapOptions(districtData, ['name'], 'id'));
@@ -94,7 +75,7 @@ export const RentalRoomsList = () => {
     };
 
     fetchData();
-  }, [fetchRelatedData]);
+  }, []);
 
   useEffect(() => {
     setDisplayedData([...data.slice((currentPage - 1) * cardsPerPage, currentPage * cardsPerPage)]);
@@ -163,7 +144,7 @@ export const RentalRoomsList = () => {
         ));
 
         const data = dataArray.flat();
-        originalDataRef.current = await fetchRelatedData(data);
+        originalDataRef.current = [...data];
         setData([...originalDataRef.current]);
 
       } else if (query._district !== '' && query.commune === '') {
@@ -176,7 +157,7 @@ export const RentalRoomsList = () => {
           })
         ));
         const data = dataArray.flat();
-        originalDataRef.current = await fetchRelatedData(data);
+        originalDataRef.current = [...data];
         setData([...originalDataRef.current]);
 
       } else {
@@ -184,7 +165,7 @@ export const RentalRoomsList = () => {
           ...query,
           lessor: myIdRef.current 
         });
-        originalDataRef.current = await fetchRelatedData(data);
+        originalDataRef.current = [...data];
         setData([...originalDataRef.current]);
       }
       
@@ -275,7 +256,7 @@ export const RentalRoomsList = () => {
             refreshOnClick={refreshOnClick}
           >
             <div className='grid grid-cols-2 items-center mt-1 mb-1'>
-              <Label htmlFor='province-query'>Tỉnh: </Label>
+              <Label htmlFor='province-query'>Tỉnh/Thành phố: </Label>
               <Select
                 id='province-query'
                 value={query._province}
@@ -286,7 +267,7 @@ export const RentalRoomsList = () => {
             </div>    
 
             <div className='grid grid-cols-2 items-center mt-1 mb-1'>
-              <Label htmlFor='district-query'>Huyện: </Label>
+              <Label htmlFor='district-query'>Huyện/Quận/Thị xã: </Label>
               <Select
                 id='district-query'
                 value={query._district}
@@ -297,7 +278,7 @@ export const RentalRoomsList = () => {
             </div> 
 
             <div className='grid grid-cols-2 items-center mt-1 mb-1'>
-              <Label htmlFor='commune-query'>Xã: </Label>
+              <Label htmlFor='commune-query'>Xã/Phường/Thị trấn: </Label>
               <Select
                 id='commune-query'
                 value={query.commune}
@@ -347,6 +328,9 @@ export const RentalRoomsList = () => {
                 )) 
             }
           </div>
+        </div>
+        <div className='flex justify-end text-sm italic text-gray-500 mr-5 mt-5'>
+          <p>Tổng cộng {data.length} phòng trọ</p>
         </div>
         <PaginationNav 
           totalPages={Math.ceil(data.length / cardsPerPage)}

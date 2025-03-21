@@ -59,7 +59,6 @@ export const RentalRoomEdit = (props: RentalRoomEditProps) => {
 
   const patchData = async (actionAfter?: () => void) => {
     try {
-      alert(JSON.stringify(reqData));
       await rentalRoomService.patch(props.id, reqData);
       await toastSuccess(RentalRoomMessage.PATCH_SUCCESS);
       actionAfter?.();
