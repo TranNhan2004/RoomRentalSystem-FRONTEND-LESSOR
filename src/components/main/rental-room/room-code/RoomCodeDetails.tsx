@@ -71,7 +71,7 @@ export const RoomCodeDetails = (props: RoomCodeDetailsProps) => {
           },
           {
             label: 'Có thể ở ghép',
-            value: data.is_shareable ? 'Có thể' : 'Không thể'
+            value: data.is_shared ? 'Có thể' : 'Không thể'
           }
         ]}
       />

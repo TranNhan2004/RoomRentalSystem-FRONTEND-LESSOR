@@ -41,6 +41,11 @@ export const MonthlyRoomInvoiceAdd = (props: MonthlyRoomInvoiceAddProps) => {
         await toastError(MonthlyRoomInvoiceMessage.PREV_RECORD_NOT_FOUND);
         return;
       }
+
+      if (error.response.data[0] === MonthlyRoomInvoiceMessage.BACKEND_ROOM_CODE_IS_EMPTY) {
+        await toastError(MonthlyRoomInvoiceMessage.ROOM_CODE_IS_EMPTY);
+        return;
+      }
     }
 
     if (error.response?.status === 500) {

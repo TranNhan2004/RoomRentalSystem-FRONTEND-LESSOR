@@ -126,6 +126,7 @@ export class MonthlyRoomInvoiceMessage {
   public static readonly BACKEND_PREV_RECORD_NOT_FOUND = 'Previous record not found.';
   public static readonly BACKEND_NEW_KWH_READING_INVALID_SUBSTR = 'new_kWh_reading__gte';
   public static readonly BACKEND_NEW_M3_READING_INVALID_SUBSTR = 'new_m3_reading__gte';
+  public static readonly BACKEND_ROOM_CODE_IS_EMPTY = 'Room is not occupied.';
   
   public static readonly OLD_KWH_READING_REQUIRED = 'Chỉ số điện cũ không được để trống!';
   public static readonly NEW_KWH_READING_REQUIRED = 'Chỉ số điện mới không được để trống!';
@@ -140,6 +141,8 @@ export class MonthlyRoomInvoiceMessage {
   public static readonly PAID_CHARGE_INVALID = 'Số tiền đã trả không được nhỏ hơn 0!';
   public static readonly PAID_CHARGE_INVALID_2 = 'Số tiền đã trả không được lớn hơn số tiền phải trả!';
   public static readonly END_DATE_INVALID = 'Ngày kết thúc phải lớn hơn ngày bắt đầu!';
+
+  public static readonly ROOM_CODE_IS_EMPTY = 'Phòng đang trống, không thể tạo hóa đơn!';
 
   public static readonly SETTLE_WARNING = 'Sau khi kết toán hóa đơn, bạn không thể chỉnh sửa nội dung bên trong nữa!';
 

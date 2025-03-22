@@ -122,7 +122,7 @@ export const ChargesList = (props: ChargesListProps) => {
 
   const stopApplyDisabledFunction = (id: string) => {
     const item = data.find(item => item.id === id);
-    return !!item?.end_date || formatDate(item?.start_date, 'ymd') >= formatDate(new Date(), 'ymd');
+    return !!item?.end_date || new Date(formatDate(item?.start_date, 'ymd')) >= new Date();
   };
 
   const detailsFunction = (id: string) => {

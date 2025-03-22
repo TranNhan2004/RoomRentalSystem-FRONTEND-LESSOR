@@ -75,7 +75,7 @@ export const MonitoringRentalsList = (props: MonitoringRentalsListProps) => {
       id: `${item.id}`,
       basicInfo: (
         <>
-          <DataLine label='Tên người thuê' value={item._renter_first_name + ' ' + item._renter_last_name} />
+          <DataLine label='Họ tên người thuê' value={item._renter_last_name + ' ' + item._renter_first_name} />
           <DataLine label='Số điện thoại' value={item._renter_phone_number} />
           <DataLine label='Ngày bắt đầu thuê' value={formatDate(item.start_date, 'dmy')} />
           <DataLine 
@@ -117,7 +117,7 @@ export const MonitoringRentalsList = (props: MonitoringRentalsListProps) => {
   const stopRentFunction = async (id: string) => {
     const confirmedMethod = async () => {
       try {
-        const today = new Date(); 
+        const today = new Date();
         await monitoringRentalService.patch(id, { end_date: today });
         await toastSuccess(MonitoringRentalMessage.STOP_RENT_SUCCESS);
       
@@ -137,7 +137,7 @@ export const MonitoringRentalsList = (props: MonitoringRentalsListProps) => {
 
   const stopRentDisabledFunction = (id: string) => {
     const item = data.find(item => item.id === id);
-    return !!item?.end_date || formatDate(item?.start_date, 'ymd') >= formatDate(new Date(), 'ymd');
+    return !!item?.end_date || new Date(formatDate(item?.start_date, 'ymd')) >= new Date();
   };
 
   const addOnClick = () => {
