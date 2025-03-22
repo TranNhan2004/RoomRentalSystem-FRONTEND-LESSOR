@@ -102,6 +102,7 @@ export const RoomImagesList = (props: RoomImagesListProps) => {
 
   const confirmOnClick = async () => {
     try {
+      setUploadedImage(INITIAL_ROOM_IMAGE);
       setIsSubmitted(true);
       const image = await roomImageService.post({ 
         ...uploadedImage, 
@@ -118,7 +119,6 @@ export const RoomImagesList = (props: RoomImagesListProps) => {
       await toastError(RoomImageMessage.POST_ERROR);
 
     } finally {
-      setUploadedImage(INITIAL_ROOM_IMAGE);
       setIsSubmitted(false);
       if (fileInputRef.current) {
         fileInputRef.current.value = '';

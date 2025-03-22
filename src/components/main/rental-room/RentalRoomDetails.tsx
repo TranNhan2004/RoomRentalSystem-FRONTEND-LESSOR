@@ -81,7 +81,7 @@ export const RentalRoomDetails = (props: RentalRoomDetailsProps) => {
         <div className='w-2/3'>
           <div className='p-4 mt-5'>
             <h2 className='text-2xl font-bold'>Chi tiết phòng trọ</h2>
-            <div className='mt-4 ml-2 space-y-4'>
+            <div className='mt-4 ml-2 space-y-4 text-justify'>
               <DataLine label='Tên' value={data.name} />
               <DataLine label='Thuộc tỉnh/thành phố' value={provinceData.name} />
               <DataLine label='Thuộc huyện/quận/thị xã' value={districtData.name} />

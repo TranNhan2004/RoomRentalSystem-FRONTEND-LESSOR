@@ -54,6 +54,14 @@ export const RentalRoomEdit = (props: RentalRoomEditProps) => {
       return;
     }
 
+    if (
+      error.response?.status === 400 &&
+      error.response.data[0] === RentalRoomMessage.BACKEND_TOTAL_NUMBER_INVALID
+    ) {
+      await toastError(RentalRoomMessage.TOTAL_NUMBER_INVALID);
+      return;
+    }
+
     await toastError(RentalRoomMessage.PATCH_ERROR);
   };
 
