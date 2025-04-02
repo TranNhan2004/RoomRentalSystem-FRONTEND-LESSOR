@@ -12,7 +12,7 @@ import { AuthMessage } from '@/messages/UserAccount.message';
 import { EMAIL_REG_EXP, isValidForm } from '@/lib/client/isValidForm';
 import { Validators } from '@/types/Validators.type';
 
-const INITIAL_COUNTDOWN = 5;
+const INITIAL_COUNTDOWN = 60;
 
 export const ResetPasswordBefore = () => {
   const [reqData, setReqData] = useState<ResetPasswordRequestBeforeType>(INITIAL_RESET_PASSWORD_REQUEST_BEFORE);

@@ -90,7 +90,7 @@ export const RentalRoomDetails = (props: RentalRoomDetailsProps) => {
               <DataLine label='Giờ đóng cửa' value={data.closing_time || 'Chưa xác định'} />
               <DataLine label='Tổng số phòng' value={data.total_number} />
               <div className='flex items-center'>
-                <DataLine label='Đánh giá trung bình' value={''} />   
+                <DataLine label='Đánh giá' value={''} />   
                 <RatingStar value={data.average_rating ?? 0} />
                 <span className='ml-2 text-gray-800'>{round(data.average_rating, 1)}/5</span>
               </div>

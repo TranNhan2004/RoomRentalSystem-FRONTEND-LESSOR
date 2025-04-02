@@ -137,7 +137,7 @@ export const MonitoringRentalsList = (props: MonitoringRentalsListProps) => {
 
   const stopRentDisabledFunction = (id: string) => {
     const item = data.find(item => item.id === id);
-    return !!item?.end_date || new Date(formatDate(item?.start_date, 'ymd')) >= new Date();
+    return !!item?.end_date || formatDate(item?.start_date, 'ymd') >= formatDate(new Date(), 'ymd');
   };
 
   const addOnClick = () => {
