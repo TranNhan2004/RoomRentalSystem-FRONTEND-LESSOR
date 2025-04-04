@@ -39,9 +39,9 @@ export default function HomePage() {
         <div className="p-8 bg-blue-400 rounded-lg shadow-lg">
           <div className="flex items-center mb-4">
             <CurrencyDollarIcon className="h-6 w-6 text-white mr-2" />
-            <h2 className="text-xl font-bold">Thống kê thu nhập</h2>
+            <h2 className="text-xl font-bold">Quản lý hóa đơn</h2>
           </div>
-          <p className="text-justify">Chủ trọ có thể xem tổng quan về thu nhập từ các phòng trọ.</p>
+          <p className="text-justify">Chủ trọ có thể quản lý các hóa đơn tiền trọ hằng tháng của các người thuê.</p>
         </div>
 
         <div className="p-8 bg-yellow-400 rounded-lg shadow-lg">
